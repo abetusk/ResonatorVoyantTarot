@@ -1,0 +1,1080 @@
+<html>
+<head>
+
+	<!--
+	 To the extent possible under law, the person who associated CC0 with
+	 this source code has waived all copyright and related or neighboring rights
+	 to this source code.
+	 
+	 You should have received a copy of the CC0 legalcode along with this
+	 work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+	-->
+
+  <meta charset="utf-8">
+  <title>Resonator Voyant Tarot</title>
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script type='text/javascript' src='js/pixi.js'></script>
+
+  <script type='text/javascript' src='js/jquery.js'></script>
+  <script type='text/javascript' src='js/browser-sibyl.js'></script>
+  <script type='text/javascript' src='js/canvg.js'></script>
+  <script type='text/javascript' src='js/jszip.js'></script>
+
+  <link rel='stylesheet' href='css/skeleton.css'>
+  <link rel='stylesheet' href='css/custom.css'>
+
+  <script type='text/javascript' src='js/ui_divine.js'></script>
+
+</head>
+
+  <body>
+
+    <!-- initial dialog for question/seed selection/input -->
+
+    <dialog id='ui_modal_info' style='display:none;'>
+      <div style='text-align:center;'>
+        <h3>Resonator Voyant Tarot</h3>
+      </div>
+
+      <p>
+        Resonator Voyant Tarot is an experiment in creating generative tarot cards.
+      </p>
+
+      <p>
+        The person seeking seeking knowledge can type in a question that will then be used
+        as the seed to the random number generator to create a unique deck of tarot cards.
+        A tarot reading is drawn, using the newly created deck, using the "celtic cross" method.
+      </p>
+
+      <p>
+        Though steeped in spirituality, the reasons for doing a tarot reading need not be mystical as
+        it can be a source of creativity and help with imaginative problem solving.
+      </p>
+
+      <p>
+        Each deck is created from a "vocabulary" of images with predefined rules
+        for joining them together. Each card has a template with some fixed
+        elements and other random elements put together.
+      </p>
+
+      <p>
+        For exaple, a major arcana card of "The Fool" would have a fixed
+        element of the fool image with the elements coming out of the base
+        image chosen randomly as well as the background image and color scheme
+        for the card.
+        Another example is a minor arcana card that has the suite graphic (e.g.
+        "swords") positioned in a pattern appropriate for the numbered card
+        with a random "creature" created in the center as well as the background
+        pattern and color scheme.
+      </p>
+
+      <p>
+        Where appropriate, all original <a href='https://github.com/abetusk/resonator_voyant_tarot'>source code</a>
+        is licensed under <a href='https://creativecommons.org/publicdomain/zero/1.0/'>CC0</a>.
+        All third party libraries were chosen to be under a free/libre license, so please
+        check the individual libraries for their respective licenses.
+      </p>
+
+      <p>
+        Text for the tarot reading were taken from a combination of Arthur Edward Waite's <a href='https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot'>"The Pictoral Key to the Tarot"</a>
+        and Dariusk's <a href='https://github.com/dariusk/corpora/blob/master/data/divination/tarot_interpretations.json'>corpora</a> project, both
+        either in the public domain or under a CC0 license.
+      </p>
+
+      <p>
+        Original artwork by Nina Paley and used with permission via a <a href='https://creativecommons.org/licenses/by/4.0/'>CC-BY</a> license.
+      </p>
+
+    </dialog>
+
+    <dialog id="ui_modal">
+      <div style='text-align:center;'>
+        <h3>Resonator Voyant Tarot</h3>
+      </div>
+
+      <p>
+        This is a small experiment in creating a generative tarot deck.
+      </p>
+
+      <p>
+        To start the reading and deck generation, think of a question you want answered and type it in.
+      </p>
+
+      <p>
+        The question will be used as a seed to randomly create the deck. Though your question is
+        only local to your browser, it's encouraged to not type anything too sensitive. 
+      </p>
+
+      <p>
+        Leave blank to create a random deck.
+      </p>
+
+      <input type='text' id='ui_modal_text' >
+      
+      <div class='row'>
+        <div class='columns'>
+          <!-- <label id='ui_modal_generate' for="toggle" style='background:#e7e7e7; text-align:center; border-radius:4px;' >Generate</label> -->
+          <button id='ui_modal_generate' style='width:100%; background:#e7e7e7;'> generate </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- .........  -->
+    <div id='ui_content'>
+
+    <canvas id="ui_backbuffer_text_canvas" style='display:none;' width='190' height='317'></canvas>
+    <canvas id="ui_backbuffer_fg_canvas" style='display:none;' width='190' height='317'></canvas>
+    <canvas id="ui_backbuffer_bg_canvas" style='display:none;' width='300' height='500'></canvas>
+
+    <div id='caption_0_m' style='position:absolute; display:none;'> <div id='caption_0_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_1_m' style='position:absolute; display:none;'> <div id='caption_1_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_2_m' style='position:absolute; display:none;'> <div id='caption_2_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_3_m' style='position:absolute; display:none;'> <div id='caption_3_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_4_m' style='position:absolute; display:none;'> <div id='caption_4_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_5_m' style='position:absolute; display:none;'> <div id='caption_5_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_6_m' style='position:absolute; display:none;'> <div id='caption_6_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_7_m' style='position:absolute; display:none;'> <div id='caption_7_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_8_m' style='position:absolute; display:none;'> <div id='caption_8_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+    <div id='caption_9_m' style='position:absolute; display:none;'> <div id='caption_9_m_text' style='width:150px; margin-left:10px; color:#777;'> </div> </div>
+
+    <div id='caption_0' style='position:absolute; display:none;'>
+      <div id='caption_0_text' style='width:200px; margin-left:30px; color:#777;'>
+      </div>
+      <div id='caption_0_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 30px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="30px" x2="30px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="30px" y1="5px" x2="200px" y2="5px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div id='caption_1' style='position:absolute; display:none;'>
+      <div id='caption_1_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 45px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="40px" x2="170px" y2="40px" stroke="#999" stroke-width="2px" />
+          <line x1="170px" y1="40px" x2="200px" y2="5px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+      <div id='caption_1_text' style='margin-top:10px; width:200px; color:#777;'>
+      </div>
+    </div>
+
+    <div id='caption_2' style='position:absolute; display:none;'>
+      <div id='caption_2_text' style='margin-bottom:10px; width:200px; color:#777;'>
+      </div>
+      <div id='caption_2_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 35px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="5px" x2="200px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="97px" y1="5px" x2="97px" y2="30px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div id='caption_3' style='position:absolute; display:none;'>
+      <div id='caption_3_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 35px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="30px" x2="200px" y2="30px" stroke="#999" stroke-width="2px" />
+          <line x1="97px" y1="5px" x2="97px" y2="30px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+      <div id='caption_3_text' style='margin-bottom:10px; width:200px; color:#777;'>
+      </div>
+    </div>
+
+    <div id='caption_4' style='position:absolute; display:none;'>
+      <div id='caption_4_text' style='margin-bottom:10px; width:200px; color:#777;'>
+      </div>
+      <div id='caption_4_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 35px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="5px" x2="200px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="97px" y1="5px" x2="97px" y2="30px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div id='caption_5' style='position:absolute; display:none;'>
+      <div id='caption_5_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 35px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="30px" x2="200px" y2="30px" stroke="#999" stroke-width="2px" />
+          <line x1="97px" y1="5px" x2="97px" y2="30px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+      <div id='caption_5_text' style='margin-bottom:10px; width:200px; color:#777;'>
+      </div>
+
+    </div>
+
+    <div id='caption_6' style='position:absolute; display:none;'>
+      <div id='caption_6_text' style='width:200px; color:#777;'>
+      </div>
+      <div id='caption_6_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 30px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="5px" x2="150px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="150px" y1="5px" x2="200px" y2="25px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div id='caption_7' style='position:absolute; display:none;'>
+      <div id='caption_7_svg' style='height:35px;' >
+        <svg viewBox="0 0 305px 30px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="25px" x2="150px" y2="25px" stroke="#999" stroke-width="2px" />
+          <line x1="150px" y1="25px" x2="200px" y2="5px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+      <div id='caption_7_text' style='width:200px; color:#777;'>
+      </div>
+    </div>
+
+    <div id='caption_8' style='position:absolute; display:none;'>
+      <div id='caption_8_text' style='width:200px; color:#777;'>
+      </div>
+      <div id='caption_8_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 30px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="5px" x2="150px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="150px" y1="5px" x2="200px" y2="25px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div id='caption_9' style='position:absolute; display:none;'>
+      <div id='caption_9_text' style='width:200px; color:#777;'>
+      </div>
+      <div id='caption_9_svg' style='height:35px;'>
+        <svg viewBox="0 0 305px 30px" xmlns="http://www.w3.org/2000/svg">
+          <line x1="5px" y1="5px" x2="150px" y2="5px" stroke="#999" stroke-width="2px" />
+          <line x1="150px" y1="5px" x2="200px" y2="25px" stroke="#999" stroke-width="2px" />
+        </svg>
+      </div>
+    </div>
+
+    <div class='container'>
+
+      <div class='row'>
+        <div class='one column'> &nbsp; </div>
+        <div class='ten columns' style='text-align:center;'><h1>Resonator Voyant Tarot</h1></div>
+        <div class='one column' style='text-align:right;'> <button id='ui_about'><small>about</small></button> </div>
+      </div>
+
+      <!-- for testing modal -->
+      <div id='ui_modal_test' style='display:none;'>modal test</div>
+
+      <div class='row'>
+        <div class='eight columns' id='ui_display_question'>
+          <p> <b>Envision a question that you would like insight or answers to ...</b></p>
+          <p> 
+        </div>
+
+        <div class='four columns' style='text-align:right;'>
+          <tbutton id='ui_button_reading'>all readings</tbutton>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='eight columns'>
+          <p> </p>
+        </div>
+
+        <div class='four columns' style='text-align:right;'>
+          <tbutton id='ui_button_deck' >show full deck</tbutton>
+        </div>
+      </div>
+
+      <div class='row' style='height:125px; '>
+        <div class='four columns' style='text-align:left;'>
+          <tbutton id='ui_button_download'>download deck</tbutton>
+          <div id='ui_download_loading' style='display:none; margin-left:10px; color:#777; '>
+            <div style='text-align:left;'>
+              <small>creating zipfile... </small> <div class='sp-loadbar' style='text-align:right;'> </div>
+            </div>
+          </div>
+          <div id='ui_button_download_message' style='display:none; margin-left:30px; color:#777; '> deck not ready! </div>
+          <div id='ui_button_download_queued_message' style='display:none; margin-left:10px; color:#777; '> deck download already in progress... </div>
+        </div>
+
+        <div class='four columns' style='text-align:center;'>
+          <div id='ui_loading' style='display:none;'>
+            <!-- <p style='color:#777;'><small>generating tarot deck... <br> please be patient</small></p> -->
+            <span style='color:#777;'><small>generating tarot deck... <br> please be patient</small></span>
+            <div class='sp sp-loadbar'> </div>
+          </div>
+          <div id='ui_loading_placeholder' style='display:block;'> &nbsp; </div>
+        </div>
+
+        <div class='four columns' style='text-align:right;'>
+          <p>
+            <small>Hover over or click on cards to view the reading.  </small>
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- CELTIC CROSS READING -->
+
+      <div class='tarot_container' id='ui_tarot_reading' style='display:grid;'>
+
+        <div id='ui_card0' class='x0'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a>  -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card0' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card0_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card0_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card0_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card0_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card1' class='x1'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card1' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card1_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card1_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card1_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card1_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card2' class='x2'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a>  -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card2' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card2_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card2_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card2_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card2_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card3' class='x3'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card3' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card3_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card3_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card3_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card3_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card4' class='x4'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card4' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card4_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card4_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card4_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card4_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+
+        <!-- <div id='ui_card5' class='x5'><a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a></div> -->
+        <div id='ui_card5' class='x5'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card5' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card5_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card5_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card5_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card5_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card6' class='x6'>
+          <!-- <a href="example_deck_svg/78-back.svg"> <img class="u-max-full-width" src="example_deck_svg/78-back.svg"> </a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card6' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card6_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card6_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card6_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card6_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+        <div id='ui_card7' class='x7'>
+          <!-- <a href="example_deck_svg/78-back.svg"><img class="u-max-full-width" src="example_deck_svg/78-back.svg"></a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card7' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card7_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card7_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card7_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card7_bg' width='500' height='500' style='display:none;'></canvas>
+
+        </div>
+
+        <div id='ui_card8' class='x8'>
+          <!-- <a href="example_deck_svg/78-back.svg"> <img class="u-max-full-width" src="example_deck_svg/78-back.svg"> </a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card8' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card8_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card8_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card8_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card8_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+
+        <div id='ui_card9' class='x9'>
+          <!-- <a href="example_deck_svg/78-back.svg"> <img class="u-max-full-width" src="example_deck_svg/78-back.svg"> </a> -->
+
+          <div class='canvas_container'>
+            <canvas id='ui_canvas_card9' width='190' height='317'></canvas>
+          </div>
+          <canvas id='ui_canvas_card9_fg' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card9_suit' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card9_text' width='190' height='317' style='display:none;'></canvas>
+          <canvas id='ui_canvas_card9_bg' width='500' height='500' style='display:none;'></canvas>
+        </div>
+
+      </div>
+
+      <!-- FULL DUECK -->
+
+      <div class='deck_container' id='ui_tarot_deck' style='display:none;'>
+
+<div class='row'>
+
+  <div class='three columns' style='height=330px;'>
+    <div class='canvas_container'>
+      <div id='ui_deck0' class='deck_card'>
+        <canvas id='ui_canvas_deck0' width='190' height='317' style='display:none;'></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id='ui_deck1' class='deck_card'>
+        <canvas id='ui_canvas_deck1' width='190' height='317' style='display:none;'></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id='ui_deck2' class='deck_card'>
+        <canvas id='ui_canvas_deck2' width='190' height='317' style='display:none;'></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id='ui_deck3' class='deck_card'>
+        <canvas id='ui_canvas_deck3' width='190' height='317' style='display:none;'></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck4" class="deck_card">
+        <canvas id="ui_canvas_deck4" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck5" class="deck_card">
+        <canvas id="ui_canvas_deck5" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck6" class="deck_card">
+        <canvas id="ui_canvas_deck6" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck7" class="deck_card">
+        <canvas id="ui_canvas_deck7" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck8" class="deck_card">
+        <canvas id="ui_canvas_deck8" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck9" class="deck_card">
+        <canvas id="ui_canvas_deck9" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck10" class="deck_card">
+        <canvas id="ui_canvas_deck10" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck11" class="deck_card">
+        <canvas id="ui_canvas_deck11" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck12" class="deck_card">
+        <canvas id="ui_canvas_deck12" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck13" class="deck_card">
+        <canvas id="ui_canvas_deck13" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck14" class="deck_card">
+        <canvas id="ui_canvas_deck14" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck15" class="deck_card">
+        <canvas id="ui_canvas_deck15" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck16" class="deck_card">
+        <canvas id="ui_canvas_deck16" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck17" class="deck_card">
+        <canvas id="ui_canvas_deck17" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck18" class="deck_card">
+        <canvas id="ui_canvas_deck18" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck19" class="deck_card">
+        <canvas id="ui_canvas_deck19" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck20" class="deck_card">
+        <canvas id="ui_canvas_deck20" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck21" class="deck_card">
+        <canvas id="ui_canvas_deck21" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck22" class="deck_card">
+        <canvas id="ui_canvas_deck22" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck23" class="deck_card">
+        <canvas id="ui_canvas_deck23" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck24" class="deck_card">
+        <canvas id="ui_canvas_deck24" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck25" class="deck_card">
+        <canvas id="ui_canvas_deck25" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck26" class="deck_card">
+        <canvas id="ui_canvas_deck26" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck27" class="deck_card">
+        <canvas id="ui_canvas_deck27" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck28" class="deck_card">
+        <canvas id="ui_canvas_deck28" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck29" class="deck_card">
+        <canvas id="ui_canvas_deck29" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck30" class="deck_card">
+        <canvas id="ui_canvas_deck30" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck31" class="deck_card">
+        <canvas id="ui_canvas_deck31" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck32" class="deck_card">
+        <canvas id="ui_canvas_deck32" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck33" class="deck_card">
+        <canvas id="ui_canvas_deck33" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck34" class="deck_card">
+        <canvas id="ui_canvas_deck34" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck35" class="deck_card">
+        <canvas id="ui_canvas_deck35" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck36" class="deck_card">
+        <canvas id="ui_canvas_deck36" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck37" class="deck_card">
+        <canvas id="ui_canvas_deck37" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck38" class="deck_card">
+        <canvas id="ui_canvas_deck38" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck39" class="deck_card">
+        <canvas id="ui_canvas_deck39" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck40" class="deck_card">
+        <canvas id="ui_canvas_deck40" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck41" class="deck_card">
+        <canvas id="ui_canvas_deck41" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck42" class="deck_card">
+        <canvas id="ui_canvas_deck42" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck43" class="deck_card">
+        <canvas id="ui_canvas_deck43" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck44" class="deck_card">
+        <canvas id="ui_canvas_deck44" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck45" class="deck_card">
+        <canvas id="ui_canvas_deck45" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck46" class="deck_card">
+        <canvas id="ui_canvas_deck46" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck47" class="deck_card">
+        <canvas id="ui_canvas_deck47" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck48" class="deck_card">
+        <canvas id="ui_canvas_deck48" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck49" class="deck_card">
+        <canvas id="ui_canvas_deck49" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck50" class="deck_card">
+        <canvas id="ui_canvas_deck50" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck51" class="deck_card">
+        <canvas id="ui_canvas_deck51" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck52" class="deck_card">
+        <canvas id="ui_canvas_deck52" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck53" class="deck_card">
+        <canvas id="ui_canvas_deck53" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck54" class="deck_card">
+        <canvas id="ui_canvas_deck54" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck55" class="deck_card">
+        <canvas id="ui_canvas_deck55" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck56" class="deck_card">
+        <canvas id="ui_canvas_deck56" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck57" class="deck_card">
+        <canvas id="ui_canvas_deck57" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck58" class="deck_card">
+        <canvas id="ui_canvas_deck58" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck59" class="deck_card">
+        <canvas id="ui_canvas_deck59" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck60" class="deck_card">
+        <canvas id="ui_canvas_deck60" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck61" class="deck_card">
+        <canvas id="ui_canvas_deck61" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck62" class="deck_card">
+        <canvas id="ui_canvas_deck62" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck63" class="deck_card">
+        <canvas id="ui_canvas_deck63" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck64" class="deck_card">
+        <canvas id="ui_canvas_deck64" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck65" class="deck_card">
+        <canvas id="ui_canvas_deck65" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck66" class="deck_card">
+        <canvas id="ui_canvas_deck66" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck67" class="deck_card">
+        <canvas id="ui_canvas_deck67" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck68" class="deck_card">
+        <canvas id="ui_canvas_deck68" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck69" class="deck_card">
+        <canvas id="ui_canvas_deck69" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck70" class="deck_card">
+        <canvas id="ui_canvas_deck70" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck71" class="deck_card">
+        <canvas id="ui_canvas_deck71" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck72" class="deck_card">
+        <canvas id="ui_canvas_deck72" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck73" class="deck_card">
+        <canvas id="ui_canvas_deck73" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck74" class="deck_card">
+        <canvas id="ui_canvas_deck74" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck75" class="deck_card">
+        <canvas id="ui_canvas_deck75" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck76" class="deck_card">
+        <canvas id="ui_canvas_deck76" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id="ui_deck77" class="deck_card">
+        <canvas id="ui_canvas_deck77" width="190" height="317" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+
+
+  <div class='three columns'>
+    <div class='canvas_container'>
+      <div id='ui_deck78' class='deck_card'>
+        <canvas id='ui_canvas_deck78' width='190' height='317' style='display:none;'></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class='three columns'></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+    </div> <!-- ui_content -->
+  </body>
+</html>
+

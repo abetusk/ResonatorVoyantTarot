@@ -1,0 +1,281 @@
+/*
+ *
+ * To the extent possible under law, the person who associated CC0 with
+ * this source code has waived all copyright and related or neighboring rights
+ * to this source code.
+ *
+ * You should have received a copy of the CC0 legalcode along with this
+ * work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ *
+ */
+
+*{
+  box-sizing:border-box;
+}
+
+.tbutton,
+tbutton,
+input[type="tbutton"] {
+  display: inline-block;
+  height: 38px;
+  padding: 0 30px;
+  color: #777;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.tbutton:hover,
+tbutton:hover,
+input[type="tbutton"]:hover,
+.tbutton:focus,
+tbutton:focus,
+input[type="tbutton"]:focus {
+  color: #777;
+  border-color: #888;
+  outline: 0;
+}
+
+tbutton,
+.tbutton {
+  margin-bottom: 1rem;
+}
+
+/* rounded corners for canvas contained therein */
+.canvas_container {
+  border-radius: 15px;
+  overflow: hidden;
+  width: 190px;
+  height:317px;
+
+  margin-top:5px;
+  margin-bottom:15px;
+  margin-left:5px;
+  margin-right:5px;
+}
+
+
+[class ^= "x"]{
+  /* background-color: skyblue; */
+  display: grid;
+  place-items: center;
+
+  width: 191.25px;
+  height: 300px;
+}
+
+.x1 {
+  margin-right: 10px;
+}
+
+.deck_card {
+  width: 191.25px;
+  height: 300px;
+  /*
+  margin-top:25px;
+  margin-bottom:25px;
+  */
+}
+
+/*
+[class ^="e"]{
+  background-color: orange;
+  display: grid;
+  place-items: center;
+}
+*/
+
+.tarot_container{
+  display: grid;
+  grid-gap: 50px;
+  grid-template-areas:
+  "x0"
+  "x1"
+  "x2"
+  "x3"
+  "x4"
+  "x5"
+  "x6"
+  "x7"
+  "x8"
+  "x9"
+
+  /*
+  "e0 x2 e2"
+  "x4 x0 x5"
+  "e3 x3 e5"
+  "e6 x9 e7"
+  "e6 x8 e7"
+  "e6 x7 e7"
+  "e6 x6 e7"
+  */
+}
+
+.eg{ grid-area: e; }
+
+.e0{ grid-area: e0; }
+.e1{ grid-area: e1; }
+.e2{ grid-area: e2; }
+.e3{ grid-area: e3; }
+.e4{ grid-area: e4; }
+.e5{ grid-area: e5; }
+.e6{ grid-area: e6; }
+.e7{ grid-area: e7; }
+.e8{ grid-area: e8; }
+
+.x0{ grid-area: x0; }
+.x1{ grid-area: x1; }
+.x2{ grid-area: x2; }
+.x3{ grid-area: x3; }
+.x4{ grid-area: x4; }
+.x5{ grid-area: x5; }
+.x6{ grid-area: x6; }
+.x7{ grid-area: x7; }
+.x8{ grid-area: x8; }
+.x9{ grid-area: x9; }
+
+@media (min-width: 800px) {
+.tarot_container{
+  display: grid;
+  /* height: 100vh; */
+  grid-gap: 65px;
+  grid-template-areas:
+  "e0 e1 e2 x9"
+  "e0 x2 e2 x9"
+  "e0 x2 e2 x8"
+  "x4 x0 x5 x8"
+  "x4 x0 x5 x7"
+  "e3 x3 e5 x7"
+  "e3 x3 e5 x6"
+  "e3 e4 e5 x6"
+
+  /*
+  "e0 e0 e0 e1 e1 e2 e2 e2 e2 e2 x6 x6"
+  "e0 e0 e0 e1 e1 e2 e2 e2 e2 e2 x6 x6"
+  "e0 e0 e0 x0 x0 e2 e2 e2 e2 e2 x6 x6"
+  "e0 e0 e0 x0 x0 e2 e2 e2 e2 e2 x6 x6"
+  "e0 e0 e0 x0 x0 e2 e2 e2 e2 e2 x7 x7"
+  "e0 e0 e0 x0 x0 e2 e2 e2 e2 e2 x7 x7"
+  "x1 x1 e3 x2 x2 e4 x3 x3 e5 e5 x7 x7"
+  "x1 x1 e3 x2 x2 e4 x3 x3 e5 e5 x7 x7"
+  "x1 x1 e3 x2 x2 e4 x3 x3 e5 e5 x8 x8"
+  "x1 x1 e3 x2 x2 e4 x3 x3 e5 e5 x8 x8"
+  "e8 e8 e8 x4 x4 e6 e6 e6 e6 e6 x8 x8"
+  "e8 e8 e8 x4 x4 e6 e6 e6 e6 e6 x8 x8"
+  "e8 e8 e8 x4 x4 e6 e6 e6 e6 e6 x9 x9"
+  "e8 e8 e8 x4 x4 e6 e6 e6 e6 e6 x9 x9"
+  "e8 e8 e8 e7 e7 e6 e6 e6 e6 e6 x9 x9";
+  "e8 e8 e8 e7 e7 e6 e6 e6 e6 e6 x9 x9";
+  */
+}
+
+/* .tarot_container div { max-width:100%; } */
+
+.x1 {
+  transform: rotate(-90deg);
+  grid-area: x0;
+}
+
+}
+
+
+/* modal */
+
+
+/*
+body{
+  font-family: monospace;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin:0;
+  padding: 0;
+  width: 100%;
+}
+*/
+
+/*
+#toggle:checked ~ dialog {
+  display: block;
+}
+*/
+
+/*
+label{
+  background: skyblue;
+  color: white;
+  padding: .5em 1em;
+  border-radius: 4px;
+}
+*/
+
+  /*
+@keyframes appear {
+  0%{
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+*/
+
+
+#toggle {
+  visibility: hidden;
+  opacity: 0;
+  position: relative;
+  z-index: -1;
+}
+
+
+dialog {
+  /* animation: appear 350ms ease-in-out 1; */
+  max-width: 500px;
+  background: #fafafa;
+  z-index: 99;
+}
+
+/* Spinner LoadBar */
+/* https://codepen.io/bernethe/pen/dorozd */
+
+.sp {
+  width:32px;
+  height:32px;
+  clear: both;
+  margin: 20px auto;
+}
+.sp-loadbar {
+	width: 50px;
+	height: 18px;
+	border: 1px #777 solid;
+	border-radius: 4px;
+	background: linear-gradient(-60deg, transparent 0%, transparent 50%, #777 50%, #777 75%, transparent 75%, transparent);
+	background-size: 20px 30px;
+	background-position: 0px 0px;
+	-webkit-animation: spLoadBar 0.8s infinite linear;
+	animation: spLoadBar 0.8s infinite linear;
+}
+@-webkit-keyframes spLoadBar {
+	from { background-position: 0px 0px; }
+	to { background-position: -20px 0px; }
+}
+@keyframes spLoadBar {
+	from { background-position: 0px 0px; }
+	to { background-position: -20px 0px; }
+}
+
