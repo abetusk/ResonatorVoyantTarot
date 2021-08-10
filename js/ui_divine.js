@@ -377,6 +377,28 @@ function _crnd(a) {
   return _copy;
 }
 
+// hacky email obfuscation
+//
+function _mangle(x) {
+  var _m = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  var z = [];
+  for (var ii=0; ii<x.length; ii++) {
+    z.push(x[ii]);
+    z.push( _m[Math.floor(Math.random()*_m.length)] );
+  }
+  return z.join("");
+}
+
+function _unmangle(x) {
+  var z = [];
+  for (var ii=0; ii<x.length; ii+=2) {
+    z.push(x[ii]);
+  }
+  return z.join("");
+}
+
+
+
 
 // callback for loading the JSON `tarot_interpretations.json`
 //
@@ -1743,6 +1765,43 @@ function init_svg_text() {
 
 }
 
+function _process_input_seed() {
+  g_ui.modal_state = "off";
+  $("#ui_modal").fadeOut();
+  $("#ui_content").fadeTo("slow", 1);
+
+  var ele = document.getElementById("ui_modal_text");
+  seed_text = ele.value;
+
+  g_data.is_seed_random = false;
+  if (seed_text.length === 0) {
+    console.log("using random");
+    seed_text = rndstr();
+
+    g_data.is_seed_random = true;
+  }
+
+  console.log("seed:", seed_text);
+  g_data.seed = seed_text;
+
+  // `init` will bog down the browser, so
+  // we want the modal to disappear as
+  // quickly as possible.
+  //
+  setTimeout(init, 1000);
+
+  $("#ui_loading").fadeIn();
+  var _lbt = document.getElementById("ui_loading_placeholder");
+  _lbt.style.display = "none";
+}
+
+
+function ui_modal_text_keypress(e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    _process_input_seed();
+  }
+}
 
 $(document).ready(function() {
 
@@ -1754,6 +1813,14 @@ $(document).ready(function() {
     var ele = document.getElementById(id);
     ele.style.display = "none";
   }
+
+  // unmangle email address in about modal
+  //
+  var ui_email = document.getElementById("ui_email");
+  var _email_href_tok = ui_email.href.split(":");
+  ui_email.href = _email_href_tok[0] + ":" + _unmangle(_email_href_tok[1]);
+  ui_email.innerHTML = _unmangle(ui_email.innerHTML);
+
 
 
   // card1 is under card0 so when card0 is hovered over,
@@ -2116,6 +2183,10 @@ $(document).ready(function() {
   */
 
   $("#ui_modal_generate").click( function(e) {
+
+    _process_input_seed();
+    return;
+
     g_ui.modal_state = "off";
     $("#ui_modal").fadeOut();
     $("#ui_content").fadeTo("slow", 1);
@@ -2194,6 +2265,10 @@ $(document).ready(function() {
 
   $("#ui_content").click(function(e) {
     if (g_ui.modal_state == "on") {
+
+      _process_input_seed();
+      return;
+
       g_ui.modal_state = "off";
       $("#ui_modal").fadeOut();
       $("#ui_content").fadeTo("slow", 1);
@@ -2224,6 +2299,11 @@ $(document).ready(function() {
   $(document).keyup(function(e) {
     if (e.key === "Escape") {
       if (g_ui.modal_state == "on") {
+
+        _process_input_seed();
+        return;
+
+
         g_ui.modal_state = "off";
         $("#ui_modal").fadeOut();
         $("#ui_content").fadeTo("slow", 1);

@@ -45,7 +45,7 @@
       <p>
         The person seeking seeking knowledge can type in a question that will then be used
         as the seed to the random number generator to create a unique deck of tarot cards.
-        A tarot reading is drawn, using the newly created deck, using the "celtic cross" method.
+        A tarot reading is drawn, using the newly created deck, using the "Celtic cross" method.
       </p>
 
       <p>
@@ -60,14 +60,15 @@
       </p>
 
       <p>
-        For exaple, a major arcana card of "The Fool" would have a fixed
-        element of the fool image with the elements coming out of the base
-        image chosen randomly as well as the background image and color scheme
-        for the card.
+        For example, a major arcana card of "The Fool" would have a fixed
+        "fool" image with randomly chosen elements coming out of the base.
         Another example is a minor arcana card that has the suite graphic (e.g.
         "swords") positioned in a pattern appropriate for the numbered card
-        with a random "creature" created in the center as well as the background
-        pattern and color scheme.
+        with a random "creature" created in the center.
+      </p>
+
+      <p>Color palettes are also chosen randomly, with a consistent color palette
+        chosen for each suite.
       </p>
 
       <p>
@@ -78,13 +79,35 @@
       </p>
 
       <p>
-        Text for the tarot reading were taken from a combination of Arthur Edward Waite's <a href='https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot'>"The Pictoral Key to the Tarot"</a>
+        Text for the tarot reading were taken from a combination of Arthur Edward Waite's <a href='https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot'>"The Pictorial Key to the Tarot"</a>
         and Dariusk's <a href='https://github.com/dariusk/corpora/blob/master/data/divination/tarot_interpretations.json'>corpora</a> project, both
         either in the public domain or under a CC0 license.
       </p>
 
       <p>
         Original artwork by Nina Paley and used with permission via a <a href='https://creativecommons.org/licenses/by/4.0/'>CC-BY</a> license.
+      </p>
+
+      <!-- simple hacky email mangling. call _unmangle to strike out every second character to reover intended email address -->
+      <p>
+        If you would like me to print a custom deck, please feel free email me at
+        <a id='ui_email' href="mailto:a6bUeitIuIs6k0@xmeercrh2aUemlkeapHhpaMn9tD.5cvoWm2">a6bUeitIuIs6k0@xmeercrh2aUemlkeapHhpaMn9tD.5cvoWm2</a>
+        (price would probably be from $60 to $100).
+        Obviously feel free to print and/or sell your own.
+      </p>
+
+      <p>
+        Here are my Bitcoin and Dogecoin addresses for anyone feeling generous enough to donate:
+      </p>
+
+      <p style='text-align:center;'>
+        <img style='width:150px;' src='images/btc-rcv-pub.png'> <br/>
+        <small>3BtLA7AdvLSb2jm5YUWSwitLT5DhuJ2dTn</small>
+      </p>
+
+      <p style='text-align:center;'>
+        <img style='width:150px' src='images/dog-rcv-pub.png'> <br >
+        <small>DSWZRctVzc1h2xvSCw2gK5wuSKxheSeZ1E</small>
       </p>
 
     </dialog>
@@ -111,7 +134,7 @@
         Leave blank to create a random deck.
       </p>
 
-      <input type='text' id='ui_modal_text' >
+      <input type='text' id='ui_modal_text' onkeypress="ui_modal_text_keypress(event)" >
       
       <div class='row'>
         <div class='columns'>
