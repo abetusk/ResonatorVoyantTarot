@@ -26,9 +26,6 @@
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
-This will create the `js/browser-sibyl.js` used as the engine to create the SVG
-cards and has the data for SVG graphics and tarot reading.
-
 ## Overview
 
 ![tarot reading screenshot](images/rvt_screenshot.png)
@@ -77,6 +74,10 @@ via:
 ```
 cd scripts ; ./build.sh
 ```
+
+This will create the `js/browser-sibyl.js` used as the engine to create the SVG
+cards and has the data for SVG graphics and tarot reading.
+
 
 ## License
 
