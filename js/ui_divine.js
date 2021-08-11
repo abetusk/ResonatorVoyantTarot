@@ -1621,7 +1621,8 @@ function init() {
   //---
 
   init_svg_text();
-  _load("data/tarot_interpretations.json", _tarot_json_cb);
+  g_tarot["data"] = sibyl.tarot_interpretations;
+  g_tarot["ready"] = true;
 
   console.log("s>>", Date.now());
   g_data["tarot_sched"] = realize_tarot_sched(g_data.seed, g_data);

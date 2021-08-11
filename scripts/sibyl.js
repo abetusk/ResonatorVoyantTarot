@@ -42,6 +42,7 @@ var alea = require("./alea.js");
 var fs = require("fs");
 var getopt = require("posix-getopt");
 var lodash = require("lodash");
+var tarot_interpretations = require("./tarot_interpretations.js");
 
 var parser;
 var opt;
@@ -3358,6 +3359,7 @@ if (require.main !== module) {
     "random_creature" : random_creature,
 
     "tarot_template": TAROT_TEMPLATE,
+    "tarot_interpretations": tarot_interpretations,
 
     "cmd": sibyl_cmd,
 
