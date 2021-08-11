@@ -2,7 +2,7 @@
 
 <p align="center">
 
-  <a href='https://abetusk.github.io/ResonatorVoyantTarot'><img src="images/rvt_header.gif" alt="Resonator Voyant Tarot" ></a>
+  <a href='https://abetusk.github.io/ResonatorVoyantTarot'><img src="images/rvt_hdr.gif" alt="Resonator Voyant Tarot" ></a>
 
   <h3 align="center"><a href='https://abetusk.github.io/ResonatorVoyantTarot'>Resonator Voyant Tarot</a></h3>
   <p align="center">
