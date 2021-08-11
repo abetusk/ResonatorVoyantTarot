@@ -25,6 +25,7 @@
 - [Quick Start](#quick-start)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
+- [TODO](#todo)
 
 ## Overview
 
@@ -109,6 +110,12 @@ The above is a non-exhaustive list of software used.
 Please see individual source files for their individual copyright.
 
 
+## TODO
 
-
-
+* Show card interpretations for the 'full deck' view
+* Allow for suite elements to be rotated. Sword suites can have some 'texture' added to them with a little rotation.
+* Allow for different suites other than the "default" four (swords, keys, pentacles, cups)
+* Rotate cups (and maybe others) under Queen and King cards (or allow option to do so)
+* Fix some of the color scheme where the background images appear indistinguishable from the background color
+* Provide script to render SVG deck large enough for print
+* Print a custom deck (one possibility is [makeplayingcards.com](https://www.makeplayingcards.com/promotional/personalized-tarot-cards.html))
