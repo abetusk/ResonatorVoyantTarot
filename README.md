@@ -51,6 +51,104 @@ with a random "creature" created in the center.
 Color palettes are also chosen randomly, with a consistent color
 palette chosen for each suite. 
 
+## Methodology
+
+Each creature has attach points where items are placed.
+Base creatures
+are fixed for the non numbered minor arcana cards and then expanded
+randomly, where numbered minor arcana cards have 'templates' for the
+suite and have a center creature filled out randomly.
+
+Each graphic item has different types of "attach points", labelled 'crown', 
+'horns', 'arm', 'leg', 'tail' as well as a 'nesting box' area, along with 
+another 'anchor' point, representing the bottom of the graphic.
+Some items have 
+restrictions on where they can attach but for the most part, any item can be 
+placed at any other attach point.
+Each attach point has a position and 
+orientation, so kind of like a vector 'normal', so that newly attached 
+creatures know where to be placed and how much to be rotated when attached.
+
+When building a "creature", a new item is chosen at random and the new random 
+creature is attached to one of an already placed item's attach point, shifting 
+and rotating the new creature around it's anchor point and attaching it to one 
+of the already placed creatures attach points.
+The new creature is rescaled by 
+a certain factor (say 0.5).
+The nesting areas are chosen similarly except the 
+rescale factor depends on the size of the nest box.
+For the major arcana, a base creature is pre-chosen and fixed (chariot, 
+empress, etc.) with random creatures attached to that base image, up to a 
+certain depth (called the "complexity").
+For the minor arcana, each card has a 
+small library of "template card" where it has just nest boxes with predefined 
+regions for the first N nestboxes, meant to have the suite item be placed in 
+them, with the (N+1)th nestbox region somewhere in the center, meant for a 
+creature.
+
+By having attach points with different classes ('horns', 'arms', etc.), you can 
+exploit a certain symmetry, so you only need to choose one creature for the 
+'arm' attach point and repeat it.
+For example, if the empress had an 'arm' 
+attach point, one on each side, you could choose a 'snake' graphic on the left 
+and repeat it on the right.
+The convention is that odd attach point indexes 
+have their y-axis flipped, so you can lend yourself well to the type of mirror 
+symmetry seen in human and other animal body forms.
+
+For items that have restrictions, different lists are built up with those 
+restrictions so the random draw doesn't have to keep resampling.
+When drawing a 
+new creature, the space of available items is restricted so that you don't get 
+into a situation where a major arcana base creature is being chosen in another 
+card.
+For example, the Emperor chooses from a list without the Empress, so that 
+the Empress doesn't show up in a nestbox or at an attach point (and vice 
+versa).
+Same for all the card types, where the minor arcana don't draw from 
+lists that have other minor arcana template cards in them.
+The minor arcana 
+also have most of the major arcana base creatures restricted, though some are 
+allowed (like "death", "man_standing", "woman_standing", etc.) because they're 
+generic enough to not be completely tied to the major arcana card.
+
+For the "Lovers" and the "Justice" card, special processing is done.
+For the 
+"Lovers", there's no base graphic that represents the card, so a special 
+"Lovers" template card of just nestboxes is used, with the man and women item 
+always placed in two of the nestboxes and the rest chosen at random.
+For the 
+"Justice" card, I wanted the scales to hold different graphics, so the second 
+right nestbox where the other part of scale is has a random item chosen instead 
+of duplicating the one from the left part of the scale.
+
+The minor arcana "Paige", "Knight", "Queen" and "King" cards have a base graphic
+of a dog, horse, crown and other type of crown respectively, with a single suite
+(pentacle, sword, etc.) item placed at the 'crown' attach point for the "Paige"
+and "Knight" and attached at the 'tail' for the "Queen" and "King".
+The rest of
+the "Paige", "Knight", "Queen" and "King" creatures are built by randomly adding
+other items to their free attach points.
+The "Ace" has a base item chosen from a
+restricted set ("book", "door", etc.) with the suite item placed in it's nesting
+box, with no further random items attached.
+
+The background image is built by choosing just one or two creatures and "tiling" 
+them in the background.
+Same with the "back" card but from a restricted set.
+
+Two color schemes are chosen for each major arcana card, one for the background 
+and one for the foreground creature.
+Three color schemes are chosen, one for 
+the background suite, one for the suite items themselves and another for the 
+creature.
+The color scheme is chosen so that the three color choices and their 
+luminance are far enough away to be differentiable.
+For each, as the creature 
+is built up, the color schemes primary and secondary colors are swapped so that 
+nested and attached items can be differentiated more clearly.
+
+
 ## Quick Start
 
 [Live Demo](https://abetusk.github.io/ResonatorVoyantTarot/)
