@@ -35,14 +35,14 @@
 //
 
 // The `realize_tarot_sched` creates the 'schedule' of creatures
-// and backgrounds for each of the cards which is later used to 
+// and backgrounds for each of the cards which is later used to
 // generate the SVG.
 //
 
 // `populate_deck_image` poulates the whole deck with SVG images.
 //
 
-var SIBYL_DIVING_VERSION = "0.1.2";
+var SIBYL_DIVINE_VERSION = "0.1.3";
 
 var CARD_HEIGHT= 317;
 var CARD_WIDTH = 190;
@@ -51,10 +51,10 @@ var _RESCALE = CARD_HEIGHT / 720.0;
 
 function rndstr(m) {
   m = ((typeof m === "undefined") ? 32 : m);
-  var seed = "";
-  var x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var n = x.length;
-  for (var ii=0; ii<m; ii++) {
+  let seed = "";
+  let x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let n = x.length;
+  for (let ii=0; ii<m; ii++) {
     seed += x[ Math.floor(Math.random()*n) ];
   }
   return seed;
@@ -68,7 +68,6 @@ function rndstr(m) {
 var g_tarot = {
   "ready": false,
   "reading" : [
-   //{ "sentence":"<b><u>King of Coins</u> <small>(light)</small></b></u><br>Becoming so conservative you resist all change on principle alone"},
    { "sentence":"..."},
    { "sentence":"..."},
    { "sentence":"..."},
@@ -231,29 +230,31 @@ var g_data = {
     { "n":-1, "fg":undefined, "bg":undefined, "text":undefined, "suit":undefined }
   ],
 
+  "debug": [],
+
   "rnd" : []
 
 
 };
 
 function postprocess_g_data() {
-  for (var ii=0; ii<10; ii++) {
+  for (let ii=0; ii<10; ii++) {
     g_data.rnd.push( Math.random()*3/4 + 0.25 );
     g_data.rnd.push( Math.random()/2 + 0.5 );
     g_data.rnd.push( Math.random()/2 + 0.5 );
   }
 
-  for (var ii=0; ii<g_data.minor_arcana_suit.length; ii++) {
+  for (let ii=0; ii<g_data.minor_arcana_suit.length; ii++) {
     g_data.exclude_all.push(g_data.minor_arcana_suit[ii]);
   }
 
-  for (var ii=0; ii<g_data.major_arcana.length; ii++) {
+  for (let ii=0; ii<g_data.major_arcana.length; ii++) {
     if (g_data.major_arcana[ii].exclude) {
       g_data.exclude_all.push(g_data.major_arcana[ii].symbol);
     }
   }
 
-  for (var ii=0; ii<sibyl.tarot_template.length; ii++) {
+  for (let ii=0; ii<sibyl.tarot_template.length; ii++) {
     g_data.exclude_all.push(sibyl.tarot_template[ii].name);
   }
 
@@ -269,7 +270,7 @@ function postprocess_g_data() {
   // creature, so exclude them for the minor
   // arcana base creature choice.
   //
-  for (var ii=0; ii<g_data.exclude_all.length; ii++) {
+  for (let ii=0; ii<g_data.exclude_all.length; ii++) {
     g_data.exclude_all_and_wing.push(g_data.exclude_all[ii]);
   }
   g_data.exclude_all_and_wing.push("wing");
@@ -319,20 +320,20 @@ var card_mapping = [
 var g_rng = Math.random;
 
 function rseed() {
-  var seed = "";
-  var x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var n = x.length;
-  for (var ii=0; ii<32; ii++) {
+  let seed = "";
+  let x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let n = x.length;
+  for (let ii=0; ii<32; ii++) {
     seed += x[ Math.floor(Math.random()*n) ];
   }
   return seed;
 }
 
 function rstr(_rng, n) {
-  var _s = "";
+  let _s = "";
 
-  for (var ii=0; ii<(n/2); ii++) {
-    var t = Math.floor(_rng()*256).toString(16);
+  for (let ii=0; ii<(n/2); ii++) {
+    let t = Math.floor(_rng()*256).toString(16);
     t = ((t.length == 1) ? ('0' + t) : t);
     _s += t;
   }
@@ -340,10 +341,10 @@ function rstr(_rng, n) {
 }
 
 function remove_from_array(orig, filt) {
-  var r = [];
-  for (var ii=0; ii<orig.length; ii++) {
-    var found = false;
-    for (var jj=0; jj<filt.length; jj++) {
+  let r = [];
+  for (let ii=0; ii<orig.length; ii++) {
+    let found = false;
+    for (let jj=0; jj<filt.length; jj++) {
       if (filt[jj] == orig[ii]) {
         found = true;
         break;
@@ -368,8 +369,8 @@ function _irnd(n) {
 //
 function _crnd(a) {
   if (typeof a === "undefined") { return undefined; }
-  var idx = _irnd(a.length);
-  var copy = undefined;
+  let idx = _irnd(a.length);
+  let copy = undefined;
   if (typeof a[idx] === "object") {
     _copy = Object.assign({}, a[idx]);
   }
@@ -380,9 +381,9 @@ function _crnd(a) {
 // hacky email obfuscation
 //
 function _mangle(x) {
-  var _m = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var z = [];
-  for (var ii=0; ii<x.length; ii++) {
+  let _m = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let z = [];
+  for (let ii=0; ii<x.length; ii++) {
     z.push(x[ii]);
     z.push( _m[Math.floor(Math.random()*_m.length)] );
   }
@@ -390,8 +391,8 @@ function _mangle(x) {
 }
 
 function _unmangle(x) {
-  var z = [];
-  for (var ii=0; ii<x.length; ii+=2) {
+  let z = [];
+  for (let ii=0; ii<x.length; ii+=2) {
     z.push(x[ii]);
   }
   return z.join("");
@@ -414,12 +415,12 @@ function _tarot_json_cb(x) {
 // generic load funciton to fetch a server file
 //
 function _load(url, _cb) {
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.addEventListener("loadend", _cb);
   xhr.open("GET", url);
   xhr.send();
   return xhr;
-} 
+}
 
 // n undefined or 0 -  capitalize every word except for 'of'
 // n > 0            -  capitalize n non 'of' words
@@ -429,17 +430,17 @@ function _load(url, _cb) {
 //
 function _capitalize(txt,n) {
   n = ((typeof n === "undefined") ? 0 : n);
-  var uc = true;
+  let uc = true;
 
   if (n<0) {
     uc = false;
     n = -n;
   }
 
-  var tok = txt.split(" ");
-  var n_cap = 0;
+  let tok = txt.split(" ");
+  let n_cap = 0;
 
-  for (var ii=0; ii<tok.length; ii++) {
+  for (let ii=0; ii<tok.length; ii++) {
     if ((n!=0) && (n_cap >= n)) { break; }
 
     if (tok[ii].toLowerCase() != "of") {
@@ -466,20 +467,20 @@ function _capitalize(txt,n) {
 // for the interpretations
 //
 function tarot_reading_celtic_cross(tarot_data) {
-  var d = tarot_data.tarot_interpretations;
-  var n = d.length;
-  var a_idx = [];
+  let d = tarot_data.tarot_interpretations;
+  let n = d.length;
+  let a_idx = [];
 
-  var card_spread = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ];
-  var n_card = card_spread.length;
+  let card_spread = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ];
+  let n_card = card_spread.length;
 
-  //var light_phrases = [ "consider", "aim for", "try", "explore", "look into" ];
-  var light_phrases = [ "consider", "aim for", "try", "explore", "look into", "contemplate", "deliberate on", "ruminate over", "reflect on" ];
-  var shadow_phrases = [ "be wary of", "avoid", "steer clear of", "forgo", "refain from", "resist", "stop", "be suspicious of" ];
+  //let light_phrases = [ "consider", "aim for", "try", "explore", "look into" ];
+  let light_phrases = [ "consider", "aim for", "try", "explore", "look into", "contemplate", "deliberate on", "ruminate over", "reflect on" ];
+  let shadow_phrases = [ "be wary of", "avoid", "steer clear of", "forgo", "refain from", "resist", "stop", "be suspicious of" ];
 
   // sentence narratives
   //
-  var narrative_fatalistic = [
+  let narrative_fatalistic = [
     "To resolve your situation",
     "To help clear the obstacle",
     "To help achieve your hope or goal",
@@ -494,7 +495,7 @@ function tarot_reading_celtic_cross(tarot_data) {
     "To help see the outcome"
   ];
 
-  var narrative_optimistic = [
+  let narrative_optimistic = [
     "Your situation",
     "An influence now coming into play",
     "Your hope or goal",
@@ -507,7 +508,7 @@ function tarot_reading_celtic_cross(tarot_data) {
     "The possible future"
   ];
 
-  var _narrative = [
+  let _narrative = [
     "The heart of the issue or influence affecting the matter of inquiry",
     "The obstacle that stands in the way",
     "Either the goal or the best potential result in the current situation",
@@ -522,7 +523,7 @@ function tarot_reading_celtic_cross(tarot_data) {
     "The ultimate result or cumulation about the influences from the other cards in the divination"
   ];
 
-  var narrative_descriptive = [
+  let narrative_descriptive = [
     "The influence that is affecting you or the matter of inquiry generally",
     "The nature of the obstacle in front of you",
     "The aim or ideal of the matter", // "The best that can be acheived under the circumstances ],
@@ -536,7 +537,7 @@ function tarot_reading_celtic_cross(tarot_data) {
   ];
 
 
-  var descriptive_join= [
+  let descriptive_join= [
     "is about",
     "pertains to",
     "refers to",
@@ -546,49 +547,50 @@ function tarot_reading_celtic_cross(tarot_data) {
   ];
 
 
-  //var narrative = narrative_fatalistic;
-  var narrative = narrative_descriptive;
+  //let narrative = narrative_fatalistic;
+  let narrative = narrative_descriptive;
 
 
-  for (var ii=0; ii<n; ii++) { a_idx.push(ii); }
+  for (let ii=0; ii<n; ii++) { a_idx.push(ii); }
 
-  for (var ii=0; ii<n_card; ii++) {
-    var p = Math.floor( Math.random() * (n - ii) );
-    var t = a_idx[ii];
+  for (let ii=0; ii<n_card; ii++) {
+    let p = Math.floor( Math.random() * (n - ii) );
+    let t = a_idx[ii];
     a_idx[ii] = a_idx[p];
     a_idx[p] = t;
   }
 
-  var res = [];
+  let res = [];
 
-  for (var ii=0; ii<n_card; ii++) {
-    var p = a_idx[ii];
+  for (let ii=0; ii<n_card; ii++) {
+    let p = a_idx[ii];
 
-    var light_shadow = ["light", "shadow"][Math.floor(Math.random()*2)];
+    let light_shadow = ["light", "shadow"][Math.floor(Math.random()*2)];
 
-    var _n = d[p].fortune_telling.length;
+    let _n = d[p].fortune_telling.length;
     _n = 2;
 
-    var idx = Math.floor(Math.random() * _n);
+    let idx = Math.floor(Math.random() * _n);
 
-    var fortune = d[p].fortune_telling[idx];
+    let fortune = d[p].fortune_telling[idx];
 
-    var __n = d[p].meanings[light_shadow].length;
+    let __n = d[p].meanings[light_shadow].length;
     __n = 2;
     idx = Math.floor(Math.random() * __n);
-    var meaning = d[p].meanings[light_shadow][idx];
+    let meaning = d[p].meanings[light_shadow][idx];
 
-    var _name = d[p].name.replace(/[wW]ands/, "Keys");
+    let _name = d[p].name.replace(/[wW]ands/, "Keys");
+    _name = d[p].name.replace(/[cC]oin/, "Pentacle");
 
-    //var phrase = ((light_shadow == "light") ? _crnd(light_phrases) : _crnd(shadow_phrases) );
-    var phrase = _crnd(descriptive_join);
-    //var sentence = _name + "(" + light_shadow + "): " + narrative[ii] + ", " + phrase + " ... " + meaning;
-    var sentence = _name + "(" + light_shadow + "): " + narrative[ii] + ", " + phrase + " ... " + meaning;
+    //let phrase = ((light_shadow == "light") ? _crnd(light_phrases) : _crnd(shadow_phrases) );
+    let phrase = _crnd(descriptive_join);
+    //let sentence = _name + "(" + light_shadow + "): " + narrative[ii] + ", " + phrase + " ... " + meaning;
+    let sentence = _name + "(" + light_shadow + "): " + narrative[ii] + ", " + phrase + " ... " + meaning;
 
-    var html_sentence = "<b><u>[" + (ii+1).toString() + "] " + _capitalize(_name) + "</u></b> <small>(" + light_shadow + ")</small><br>";
+    let html_sentence = "<b><u>[" + (ii+1).toString() + "] " + _capitalize(_name) + "</u></b> <small>(" + light_shadow + ")</small><br>";
     html_sentence += _capitalize(narrative[ii],1) + ", " + _capitalize(phrase,-1) + " " + _capitalize(meaning,-1);
 
-    var val = {
+    let val = {
       "index": p,
       "modifier":light_shadow,
       "name": d[p].name,
@@ -608,13 +610,13 @@ function tarot_reading_celtic_cross(tarot_data) {
 }
 
 function display_tarot() {
-  for (var ii=0; ii<10; ii++)  {
-    var id = "ui_canvas_card" + ii.toString();
+  for (let ii=0; ii<10; ii++)  {
+    let id = "ui_canvas_card" + ii.toString();
     $("#" + id).fadeTo(400, 1.0);
   }
 
   $("#ui_loading").fadeOut();
-  var _lbt = document.getElementById("ui_loading_placeholder");
+  let _lbt = document.getElementById("ui_loading_placeholder");
   _lbt.style.display = "block";
 }
 
@@ -634,20 +636,20 @@ function finit() {
   //
   setTimeout( function() { document.getElementById("ui_button_reading").click() }, 1000 );
 
-  var reading = tarot_reading_celtic_cross(g_tarot.data);
+  let reading = tarot_reading_celtic_cross(g_tarot.data);
   g_tarot["reading"] = reading;
 
 
   // load each of the SVG tarot cards
   //
-  for (var ii=0; ii<reading.length; ii++) {
+  for (let ii=0; ii<reading.length; ii++) {
 
     setTimeout( (function(_x,_y,_m) {
       return function() {
         init_pixi_layered_card(_x,_y);
         if (_m == "shadow") {
           setTimeout( function() {
-            var _e = document.getElementById(_x);
+            let _e = document.getElementById(_x);
             _e.style.transform = "rotate(180deg)";
             g_data.card_queue--;
             if (g_data.card_queue==0) {
@@ -664,7 +666,7 @@ function finit() {
       }
     })("ui_canvas_card" + ii.toString(), g_data.tarot_sched[reading[ii].index], reading[ii].modifier), 0);
 
-    var ui_id = "ui_card" + ii.toString();
+    let ui_id = "ui_card" + ii.toString();
 
     // We don't have a good 'wand' graphic, so we've replaced it with keys.
     // Update the reading to reflect the change
@@ -682,21 +684,21 @@ function finit() {
 // _img_text      - optional text data (static)
 //
 function start_card_canvas(pixi_canvas_id, _img_bg, _img_fg, _img_suit, _img_text) {
-  var bg_s = 1440;
+  let bg_s = 1440;
 
-  var w = 190, h = 317;
+  let w = 190, h = 317;
   const app = new PIXI.Application({ antialias: true, width: w, height: h, view: document.getElementById(pixi_canvas_id)  });
 
-  var _scale = h/720.0;
+  let _scale = h/720.0;
 
-  var rnd = [
+  let rnd = [
     Math.random()*3/4 + 0.25,
     Math.random()/2 + 0.5,
     Math.random()/2 + 0.5 ];
 
   app.stage.interactive = true;
 
-  var bg = PIXI.Sprite.from(_img_bg);
+  let bg = PIXI.Sprite.from(_img_bg);
 
   bg.anchor.set(0.5);
 
@@ -708,22 +710,23 @@ function start_card_canvas(pixi_canvas_id, _img_bg, _img_fg, _img_suit, _img_tex
 
   app.stage.addChild(bg);
 
-  var container = new PIXI.Container();
+  let container = new PIXI.Container();
   container.x = app.screen.width / 2;
   container.y = app.screen.height / 2;
 
+  let st = null;
   if (typeof _img_suit !== "undefined") {
-    var st = PIXI.Sprite.from(_img_suit);
+    st = PIXI.Sprite.from(_img_suit);
     st.anchor.set(0.5);
     container.addChild(st);
   }
 
-  var fg = PIXI.Sprite.from(_img_fg);
+  let fg = PIXI.Sprite.from(_img_fg);
   fg.anchor.set(0.5);
   container.addChild(fg);
 
   if (typeof _img_text !== "undefined") {
-    var txt = PIXI.Sprite.from(_img_text);
+    let txt = PIXI.Sprite.from(_img_text);
     txt.anchor.set(0.5);
     container.addChild(txt);
   }
@@ -738,7 +741,7 @@ function start_card_canvas(pixi_canvas_id, _img_bg, _img_fg, _img_suit, _img_tex
   let count = 0;
   app.ticker.add( (function(_freq0, _freq1, _freq2) {
     return function() {
-      var f = _freq0, fx = _freq1, fy = _freq2;
+      let f = _freq0, fx = _freq1, fy = _freq2;
       fg.y = Math.sin(f*count)*10;
       count += 0.025;
       bg.x = Math.sin(fx*count/2 + (Math.PI/21.0) )*20;
@@ -749,39 +752,39 @@ function start_card_canvas(pixi_canvas_id, _img_bg, _img_fg, _img_suit, _img_tex
 }
 
 async function render_svg_to_png(canvas_id, svg_str) {
-  var canvas = document.getElementById(canvas_id);
-  var gfx_ctx = canvas.getContext('2d');
-  var v = await canvg.Canvg.fromString(gfx_ctx, svg_str);
+  let canvas = document.getElementById(canvas_id);
+  let gfx_ctx = canvas.getContext('2d');
+  let v = await canvg.Canvg.fromString(gfx_ctx, svg_str);
   await v.render();
-  var png = canvas.toDataURL();
+  let png = canvas.toDataURL();
   return png;
 }
 
 function realize_svg_card_back(tarot_data) {
 
-  var bg_ctx = sibyl.bg_ctx;
-  var background_sched = tarot_data.bg;
+  let bg_ctx = sibyl.bg_ctx;
+  let background_sched = tarot_data.bg;
 
-  //var bg_id = "back_card_ok12345_" + tarot_data.card_idx.toString();
+  //let bg_id = "back_card_ok12345_" + tarot_data.card_idx.toString();
   //sibyl.bg_ctx.svg_id = "__back_card_" + tarot_data.card_idx.toString();
-  var bg_id = "_back_card_";
+  let bg_id = "_back_card_";
   sibyl.bg_ctx.svg_id = "__back_card_";
   sibyl.bg_ctx.create_background_rect = false;
   sibyl.bg_ctx.create_svg_header = false;
   sibyl.bg_ctx.scale = 0.2;
   sibyl.bg_ctx.global_scale = 0.5;
 
-  var bg_cp = tarot_data.colors[2][0].hex;
-  var bg_cs = tarot_data.colors[2][1].hex;
+  let bg_cp = tarot_data.colors[2][0].hex;
+  let bg_cs = tarot_data.colors[2][1].hex;
 
-  var bg_svg_str_single = '<g id="' + bg_id + '">\n' + sibyl.mystic_symbolic_sched(bg_ctx, background_sched, bg_cp, bg_cs) + '\n</g>';
+  let bg_svg_str_single = '<g id="' + bg_id + '">\n' + sibyl.mystic_symbolic_sched(bg_ctx, background_sched, bg_cp, bg_cs) + '\n</g>';
 
-  var w = 500;
-  var h = 500;
+  let w = 500;
+  let h = 500;
 
-  var first_bg = true;
+  let first_bg = true;
 
-  var svg_extra_header = "";
+  let svg_extra_header = "";
   svg_extra_header += "<rect x=\"-" + w.toString() +
     "\" y=\"-" + h.toString() + "\" " +
     "width=\"" + (3*w).toString() +
@@ -791,15 +794,15 @@ function realize_svg_card_back(tarot_data) {
     "\" data-is-background=\"true\">\n</rect>\n" +
     "<g transform=\"translate( -200 -200 )\">"  ;
 
-  var _n_x = 8;
-  var _n_y = 11;
-  var dx = 175*sibyl.bg_ctx.global_scale;
-  var dy = 100*sibyl.bg_ctx.global_scale;
-  var bg_svg_str = "";
-  for (var x_idx=0; x_idx<_n_x; x_idx++) {
-    for (var y_idx=0; y_idx<_n_y; y_idx++) {
-      var _x = Math.floor( x_idx - (_n_x/2) )*dx ;
-      var _y = Math.floor( y_idx - (_n_y/2) )*dy ;
+  let _n_x = 8;
+  let _n_y = 11;
+  let dx = 175*sibyl.bg_ctx.global_scale;
+  let dy = 100*sibyl.bg_ctx.global_scale;
+  let bg_svg_str = "";
+  for (let x_idx=0; x_idx<_n_x; x_idx++) {
+    for (let y_idx=0; y_idx<_n_y; y_idx++) {
+      let _x = Math.floor( x_idx - (_n_x/2) )*dx ;
+      let _y = Math.floor( y_idx - (_n_y/2) )*dy ;
 
       if ((y_idx%2)==1) { _x += dx/2; }
 
@@ -820,8 +823,7 @@ function realize_svg_card_back(tarot_data) {
   }
 
 
-  //var bg_hdr = '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500px" height="500px">';
-  var bg_hdr = '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="190px" height="317px">';
+  let bg_hdr = '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="190px" height="317px">';
   bg_hdr += svg_extra_header;
   bg_svg_str = bg_hdr + bg_svg_str + "</g>" + "</svg>";
 
@@ -829,26 +831,26 @@ function realize_svg_card_back(tarot_data) {
 
 }
 
-//function init_pixi_layered_card(canvas_id, tarot_data) {
 function realize_svg_card(tarot_data) {
-  var creature_sched = tarot_data.fg;
-  var suite_sched = {};
 
-  var full_svg = "";
+  let creature_sched = tarot_data.fg;
+  let suite_sched = {};
 
-  var has_suit = false;
-  var has_numeral = false;
-  var has_text = true;
+  let full_svg = "";
 
-  //ugh
+  let has_suit = false;
+  let has_numeral = false;
+  let has_text = true;
+
+  // ugh
+  // used to keep consisten colors across suite
   //
   sibyl.remap_fill_id( sibyl.mystic_symbolic );
   sibyl.remap_fill_id( sibyl.bg_symbol );
 
-
-  var major_arcana = g_data.major_arcana;
-  var _svg_header = '<svg version="1.1" id="Frame_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720px" height="720px">';
-  var name = "";
+  let major_arcana = g_data.major_arcana;
+  let _svg_header = '<svg version="1.1" id="Frame_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720px" height="720px">';
+  let name = "";
   if (tarot_data.family == "major") {
     name = tarot_data.designation;
   }
@@ -858,14 +860,14 @@ function realize_svg_card(tarot_data) {
 
   // 317/720*2
   //
-  //var _scale = 0.88;
-  var _scale = 1.0;
-  var dxy = [0,0];
+  //let _scale = 0.88;
+  let _scale = 1.0;
+  let dxy = [0,0];
 
-  var _r = _RESCALE;
+  let _r = _RESCALE;
 
-  var _suite_scale = { "ace":_r*1.0, "page":_r*0.75, "knight":_r*0.75, "queen":_r*0.7, "king":_r*0.7 };
-  var _suite_dxy = { "ace":[0,0],"page":[9,-22], "knight":[26,-5],"queen":[0,-31], "king":[0,-31] };
+  let _suite_scale = { "ace":_r*1.0, "page":_r*0.75, "knight":_r*0.75, "queen":_r*0.7, "king":_r*0.7 };
+  let _suite_dxy = { "ace":[0,0],"page":[9,-22], "knight":[26,-5],"queen":[0,-31], "king":[0,-31] };
 
   if (tarot_data.family != "major") {
 
@@ -885,15 +887,15 @@ function realize_svg_card(tarot_data) {
       _scale = 0.88;
       has_text = false;
 
-      var tok = creature_sched.base.split("_");
+      let tok = creature_sched.base.split("_");
       has_suit = true;
-      var n = parseInt(tok[2]);
-      var suit = creature_sched.attach.nesting[0].base;
+      let n = parseInt(tok[2]);
+      let suit = creature_sched.attach.nesting[0].base;
 
       suite_sched["base"] = creature_sched.base;
       suite_sched["attach"] = {"nesting":[]};
 
-      for (var ii=0; ii<n; ii++) {
+      for (let ii=0; ii<n; ii++) {
         suite_sched["attach"]["nesting"].push( { "base": suit } );
         creature_sched["attach"]["nesting"][ii]["base"] = "empty";
       }
@@ -913,15 +915,13 @@ function realize_svg_card(tarot_data) {
     }
   }
 
-  var background_sched = tarot_data.bg;
+  let background_sched = tarot_data.bg;
 
-  var seed = '123x';
+  let fg_ctx = sibyl.fg_ctx;
+  let bg_ctx = sibyl.bg_ctx;
 
-  var fg_ctx = sibyl.fg_ctx;
-  var bg_ctx = sibyl.bg_ctx;
-
-  var _fg_info = sibyl.preprocess_svgjson( sibyl.mystic_symbolic, "#000", "#fff" );
-  var _bg_info = sibyl.preprocess_svgjson( sibyl.mystic_symbolic, "#000", "#fff" );
+  let _fg_info = sibyl.preprocess_svgjson( sibyl.mystic_symbolic, "#000", "#fff" );
+  let _bg_info = sibyl.preprocess_svgjson( sibyl.mystic_symbolic, "#000", "#fff" );
 
   // we don't want to restrict the vocabulary after we've chosen the schedule
   //
@@ -946,15 +946,16 @@ function realize_svg_card(tarot_data) {
 
   fg_ctx.svg_id = rndstr();
 
-  var fg_cp = tarot_data.colors[1][0].hex;
-  var fg_cs = tarot_data.colors[1][1].hex;
+  let fg_cp = tarot_data.colors[1][0].hex;
+  let fg_cs = tarot_data.colors[1][1].hex;
   if (tarot_data.invert_color_creature) {
     fg_cp = tarot_data.colors[1][1].hex;
     fg_cs = tarot_data.colors[1][0].hex;
   }
-  var creature_svg_str  = sibyl.mystic_symbolic_sched(fg_ctx, creature_sched, fg_cp, fg_cs);
 
-  var svg_creature_only = 
+  let creature_svg_str  = sibyl.mystic_symbolic_sched(fg_ctx, creature_sched, fg_cp, fg_cs);
+
+  let svg_creature_only =
     '<g transform=" translate(' + dxy[0].toString() + " " + dxy[1].toString() + ')">' +
     creature_svg_str +
     "</g>";
@@ -966,12 +967,12 @@ function realize_svg_card(tarot_data) {
     "</svg>";
 
   //---
-
+  //
   // background tiled pattern
   //
 
-  var suite_svg_str = "";
-  var svg_suite_only = "";
+  let suite_svg_str = "";
+  let svg_suite_only = "";
   if (has_suit) {
     fg_ctx.create_svg_header = true;
     fg_ctx.svg_id = rndstr();
@@ -981,9 +982,7 @@ function realize_svg_card(tarot_data) {
     svg_suite_only = sibyl.mystic_symbolic_sched(fg_ctx, suite_sched);
   }
 
-  //var bg_id = "bg_ok1234";
-  //sibyl.bg_ctx.svg_id = "__background_creature_" + seed;
-  var bg_id = "_background_" + tarot_data.card_idx.toString();
+  let bg_id = "_background_" + tarot_data.card_idx.toString();
   sibyl.bg_ctx.svg_id = "__back_card_" + tarot_data.card_idx.toString();
 
   sibyl.bg_ctx.create_background_rect = false;
@@ -993,34 +992,33 @@ function realize_svg_card(tarot_data) {
 
   bg_ctx.svg_id = rndstr();
 
-  var bg_cp = tarot_data.colors[2][0].hex;
-  var bg_cs = tarot_data.colors[2][1].hex;
+  let bg_cp = tarot_data.colors[2][0].hex;
+  let bg_cs = tarot_data.colors[2][1].hex;
 
-  var bg_svg_str_single = '<g id="' + bg_id + '">\n' + sibyl.mystic_symbolic_sched(bg_ctx, background_sched, bg_cp, bg_cs) + '\n</g>';
+  let bg_svg_str_single = '<g id="' + bg_id + '">\n' + sibyl.mystic_symbolic_sched(bg_ctx, background_sched, bg_cp, bg_cs) + '\n</g>';
 
-  var svg_extra_header = "";
+  let svg_extra_header = "";
 
-  var w = 500;
-  var h = 500;
+  let w = 500;
+  let h = 500;
 
-  var first_bg = true;
+  let first_bg = true;
   svg_extra_header += "<rect x=\"-" + w.toString() +
     "\" y=\"-" + h.toString() + "\" " +
     "width=\"" + (3*w).toString() +
     "\" height=\"" + (3*h).toString() +
-    //"\" fill=\"" + _bg +
     "\" fill=\"" + bg_cp +
     "\" data-is-background=\"true\">\n</rect>\n";
 
-  var _n_x = 8;
-  var _n_y = 11;
-  var dx = 175*sibyl.bg_ctx.global_scale;
-  var dy = 100*sibyl.bg_ctx.global_scale;
-  var bg_svg_str;
-  for (var x_idx=0; x_idx<_n_x; x_idx++) {
-    for (var y_idx=0; y_idx<_n_y; y_idx++) {
-      var _x = Math.floor( x_idx - (_n_x/2) )*dx ;
-      var _y = Math.floor( y_idx - (_n_y/2) )*dy ;
+  let _n_x = 8;
+  let _n_y = 11;
+  let dx = 175*sibyl.bg_ctx.global_scale;
+  let dy = 100*sibyl.bg_ctx.global_scale;
+  let bg_svg_str = "";
+  for (let x_idx=0; x_idx<_n_x; x_idx++) {
+    for (let y_idx=0; y_idx<_n_y; y_idx++) {
+      let _x = Math.floor( x_idx - (_n_x/2) )*dx ;
+      let _y = Math.floor( y_idx - (_n_y/2) )*dy ;
 
       if ((y_idx%2)==1) { _x += dx/2; }
 
@@ -1040,21 +1038,21 @@ function realize_svg_card(tarot_data) {
     }
   }
 
-  var svg_background_only = bg_svg_str;
+  let svg_background_only = bg_svg_str;
 
-  var bg_hdr = '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500px" height="500px">';
+  let bg_hdr = '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500px" height="500px">';
   bg_hdr += svg_extra_header;
   bg_svg_str = bg_hdr + bg_svg_str + "</svg>";
 
-  var text_svg_str = g_data.svg_text[name];
-  var svg_text_only = g_data.svg_text_inner[name];
+  let text_svg_str = g_data.svg_text[name];
+  let svg_text_only = g_data.svg_text_inner[name];
 
-  var full_svg = 
+  full_svg =
     '<svg version="1.1" id="bg_frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="190px" height="317px">' +
 
-    svg_extra_header + 
+    svg_extra_header +
     "<g transform=\"translate(-250 -250)\">" +
-    svg_background_only + 
+    svg_background_only +
     "</g>" +
 
     // eyeball'd until it looked correct....
@@ -1068,7 +1066,7 @@ function realize_svg_card(tarot_data) {
     svg_creature_only +
     "</g>" +
 
-    "<g transform=\"translate(0 0)\">" + 
+    "<g transform=\"translate(0 0)\">" +
     svg_text_only +
     "</g>" +
 
@@ -1079,15 +1077,25 @@ function realize_svg_card(tarot_data) {
 
 function init_pixi_layered_card(canvas_id, tarot_data) {
 
-  var svg_data = realize_svg_card(tarot_data);
-  var creature_svg_str = svg_data.fg;
-  var bg_svg_str = svg_data.bg;
-  var suite_svg_str = svg_data.suite;
-  var text_svg_str = svg_data.text;
+  //let svg_data = realize_svg_card(tarot_data);
 
-  var has_suit = false;
-  var has_numeral = false;
-  var has_text = true;
+  // for some reason, this causes some of the suites to be
+  // rendered wrong, so do a 'deep' copy to hand off to
+  // the 'realize_svg_card' function.
+  //
+  let _tarot_data = JSON.parse(JSON.stringify(tarot_data));
+  let svg_data = realize_svg_card(_tarot_data);
+
+
+
+  let creature_svg_str = svg_data.fg;
+  let bg_svg_str = svg_data.bg;
+  let suite_svg_str = svg_data.suite;
+  let text_svg_str = svg_data.text;
+
+  let has_suit = false;
+  let has_numeral = false;
+  let has_text = true;
 
   if (tarot_data.family != "major") {
 
@@ -1108,16 +1116,16 @@ function init_pixi_layered_card(canvas_id, tarot_data) {
 
   g_data.png_card[canvas_id].n = 3 + (has_suit?1:0);
 
-  var _cid_fg = canvas_id + "_fg";
-  var _cid_su = canvas_id + "_suit";
-  var _cid_bg = canvas_id + "_bg";
-  var _cid_txt = canvas_id + "_text";
-  var _cid = canvas_id;
+  let _cid_fg = canvas_id + "_fg";
+  let _cid_su = canvas_id + "_suit";
+  let _cid_bg = canvas_id + "_bg";
+  let _cid_txt = canvas_id + "_text";
+  let _cid = canvas_id;
 
   render_svg_to_png(_cid_fg, creature_svg_str).then( _png => {
     g_data.png_card[_cid].n--;
     g_data.png_card[_cid].fg = _png;
-    if (g_data.png_card[_cid].n==0) { 
+    if (g_data.png_card[_cid].n==0) {
       start_card_canvas(_cid, g_data.png_card[_cid].bg, g_data.png_card[_cid].fg, g_data.png_card[_cid].suit, g_data.png_card[_cid].text);
     }
   } );
@@ -1126,7 +1134,7 @@ function init_pixi_layered_card(canvas_id, tarot_data) {
     render_svg_to_png(_cid_su, suite_svg_str).then( _png => {
       g_data.png_card[_cid].n--;
       g_data.png_card[_cid].suit = _png;
-      if (g_data.png_card[_cid].n==0) { 
+      if (g_data.png_card[_cid].n==0) {
         start_card_canvas(_cid, g_data.png_card[_cid].bg, g_data.png_card[_cid].fg, g_data.png_card[_cid].suit, g_data.png_card[_cid].text);
       }
     } );
@@ -1135,16 +1143,15 @@ function init_pixi_layered_card(canvas_id, tarot_data) {
   render_svg_to_png(_cid_bg, bg_svg_str).then( _png => {
     g_data.png_card[_cid].n--;
     g_data.png_card[_cid].bg = _png;
-    if (g_data.png_card[_cid].n==0) { 
+    if (g_data.png_card[_cid].n==0) {
       start_card_canvas(_cid, g_data.png_card[_cid].bg, g_data.png_card[_cid].fg, g_data.png_card[_cid].suit, g_data.png_card[_cid].text);
     }
   } );
 
-  //var text_svg_str = g_data.svg_text[name];
   render_svg_to_png(_cid_txt, text_svg_str).then( _png => {
     g_data.png_card[_cid].n--;
     g_data.png_card[_cid].text = _png;
-    if (g_data.png_card[_cid].n==0) { 
+    if (g_data.png_card[_cid].n==0) {
       start_card_canvas(_cid, g_data.png_card[_cid].bg, g_data.png_card[_cid].fg, g_data.png_card[_cid].suit, g_data.png_card[_cid].text);
     }
   } );
@@ -1152,24 +1159,24 @@ function init_pixi_layered_card(canvas_id, tarot_data) {
 }
 
 function realize_tarot_sched(_seed, ctx) {
-  var tarot_sched = [];
+  let tarot_sched = [];
 
-  var card_num = 0;
+  let card_num = 0;
 
   sibyl.reseed(_seed);
 
-  var minor_arcana_suit = ctx.minor_arcana_suit;
-  var minor_arcana = ctx.minor_arcana;
-  var major_arcana = ctx.major_arcana;
-  var exclude_all = ctx.exclude_all;
-  var exclude_all_and_wing = ctx.exclude_all_and_wing;
-  var ace_choice = ctx.ace_choice;
+  let minor_arcana_suit = ctx.minor_arcana_suit;
+  let minor_arcana = ctx.minor_arcana;
+  let major_arcana = ctx.major_arcana;
+  let exclude_all = ctx.exclude_all;
+  let exclude_all_and_wing = ctx.exclude_all_and_wing;
+  let ace_choice = ctx.ace_choice;
 
-  var tarot_card_json = sibyl.tarot_template;
-  var minor_arcana_template = {};
-  for (var ii=0; ii<tarot_card_json.length; ii++) {
-    var name = tarot_card_json[ii].name;
-    var tok = name.split("_");
+  let tarot_card_json = sibyl.tarot_template;
+  let minor_arcana_template = {};
+  for (let ii=0; ii<tarot_card_json.length; ii++) {
+    let name = tarot_card_json[ii].name;
+    let tok = name.split("_");
 
     if (!(tok[2] in minor_arcana_template)) {
       minor_arcana_template[tok[2]] = [];
@@ -1179,19 +1186,19 @@ function realize_tarot_sched(_seed, ctx) {
   }
 
 
-  var c0 = sibyl.rand_color_n(2);
-  var c1 = sibyl.rand_color_n(2);
-  var c2 = sibyl.rand_color_n(2);
-  var c3 = sibyl.rand_color_n(2);
+  let c0 = sibyl.rand_color_n(2);
+  let c1 = sibyl.rand_color_n(2);
+  let c2 = sibyl.rand_color_n(2);
+  let c3 = sibyl.rand_color_n(2);
 
-  var cf = sibyl.rand_color_n(8);
-  var _cx = [];
-  for (var ii=0; ii<4; ii++) {
-    var r = sibyl.rand_color();
+  let cf = sibyl.rand_color_n(8);
+  let _cx = [];
+  for (let ii=0; ii<4; ii++) {
+    let r = sibyl.rand_color();
     _cx.push( [ { "hex": r.background.hex, "hsv": r.background.hsv }, {"hex":r.background2.hex, "hsv":r.background2.hsv} ] );
   }
 
-  var colors = {
+  let colors = {
     "pentacle": [ cf[0], cf[4], _cx[0] ],
     "key":      [ cf[1], cf[5], _cx[1] ],
     "sword":    [ cf[2], cf[6], _cx[2] ],
@@ -1201,9 +1208,9 @@ function realize_tarot_sched(_seed, ctx) {
 
   // fir create schedules for major arcana
   //
-  for (var ma_idx=0; ma_idx < ctx.major_arcana.length; ma_idx++) {
+  for (let ma_idx=0; ma_idx < ctx.major_arcana.length; ma_idx++) {
 
-    var tarot_data = {
+    let tarot_data = {
       "fg": {},
       "bg": {},
       "colors":{},
@@ -1213,22 +1220,22 @@ function realize_tarot_sched(_seed, ctx) {
       "card_idx":card_num
     };
 
-    var _c0 = sibyl.rand_color_n(2);
-    var _c1 = sibyl.rand_color_n(2);
+    let _c0 = sibyl.rand_color_n(2);
+    let _c1 = sibyl.rand_color_n(2);
 
-    var cf = sibyl.rand_color_n(8);
-    var _cx = [];
-    for (var ii=0; ii<4; ii++) {
-      var r = sibyl.rand_color();
+    let cf = sibyl.rand_color_n(8);
+    let _cx = [];
+    for (let ii=0; ii<4; ii++) {
+      let r = sibyl.rand_color();
       _cx.push( [ { "hex": r.background.hex, "hsv":r.background.hsv }, {"hex":r.background2.hex, "hsv":r.background2.hsv } ] );
     }
 
-    var ma_colors = [ cf[0], cf[4], _cx[0] ];
+    let ma_colors = [ cf[0], cf[4], _cx[0] ];
     tarot_data["colors"] = ma_colors;
 
-    var _orig = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, {});
+    let _orig = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, {});
 
-    var _t = sibyl.preprocess_svgjson(sibyl.bg_symbol, undefined, undefined, false, exclude_all);
+    let _t = sibyl.preprocess_svgjson(sibyl.bg_symbol, undefined, undefined, false, exclude_all);
     sibyl.bg_ctx.choice = _t.choice;
     sibyl.bg_ctx.symbol = _t.symbol;
     sibyl.bg_ctx.data = _t.data;
@@ -1237,8 +1244,8 @@ function realize_tarot_sched(_seed, ctx) {
     sibyl.bg_ctx.max_nest_depth = 1;
     sibyl.bg_ctx.complexity = 1;
     sibyl.mystic_symbolic_random( sibyl.bg_ctx );
-    var bg0 = sibyl.bg_ctx.realized_child.base;
-    var bg1 = "";
+    let bg0 = sibyl.bg_ctx.realized_child.base;
+    let bg1 = "";
     if ("attach" in sibyl.bg_ctx.realized_child) {
       bg1 = sibyl.bg_ctx.realized_child.attach.nesting[0].base;
     }
@@ -1248,22 +1255,23 @@ function realize_tarot_sched(_seed, ctx) {
       tarot_data.bg["attach"] = { "nesting": [ { "base" : bg1 + ma_colors[2][1].hex + ma_colors[2][0].hex } ] };
     }
 
-    var base_creature = _orig.symbol[ major_arcana[ma_idx].symbol ];
-    var _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
+    let base_creature = _orig.symbol[ major_arcana[ma_idx].symbol ];
+    //let _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
+    _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
 
     sibyl.fg_ctx.choice = _t.choice;
     sibyl.fg_ctx.symbol = _t.symbol;
     sibyl.fg_ctx.data = _t.data;
     sibyl.mystic_symbolic_random( sibyl.fg_ctx, base_creature );
 
-    var json_card = sibyl.fg_ctx.realized_child;
+    let json_card = sibyl.fg_ctx.realized_child;
 
     // lovers is a card built up of other base objects,
     // so we need to do some special processing.
     //
     if (major_arcana[ma_idx].symbol == "lovers_nestbox") {
-      var _c = ma_colors[1][0].hex + ma_colors[1][1].hex;
-      var x = json_card.attach.nesting[0];
+      let _c = ma_colors[1][0].hex + ma_colors[1][1].hex;
+      let x = json_card.attach.nesting[0];
       json_card.attach.nesting = [
         { "base": "woman_stand" + _c },
         { "base": "man_stand" + _c },
@@ -1287,11 +1295,11 @@ function realize_tarot_sched(_seed, ctx) {
     card_num++;
   }
 
-  for (var suit_idx=0; suit_idx < minor_arcana_suit.length; suit_idx++) {
-    for (var card_idx=0; card_idx < minor_arcana.length; card_idx++) {
+  for (let suit_idx=0; suit_idx < minor_arcana_suit.length; suit_idx++) {
+    for (let card_idx=0; card_idx < minor_arcana.length; card_idx++) {
 
-      var suit = ctx.minor_arcana_suit[suit_idx];
-      var tarot_data = {
+      let suit = ctx.minor_arcana_suit[suit_idx];
+      let tarot_data = {
         "fg": {},
         "bg": {},
         "colors":colors[suit],
@@ -1301,16 +1309,16 @@ function realize_tarot_sched(_seed, ctx) {
         "card_idx":card_num
       };
 
-      var _seed = rseed();
+      let _seed = rseed();
 
-      var color_suit = colors[suit][0][0].hex + colors[suit][0][1].hex;
-      var suit_ent = minor_arcana_suit[suit_idx]  + colors[suit][0][0].hex + colors[suit][0][1].hex;
-      var suit_ent_r = minor_arcana_suit[suit_idx]  + colors[suit][0][1].hex + colors[suit][0][0].hex;
+      let color_suit = colors[suit][0][0].hex + colors[suit][0][1].hex;
+      let suit_ent = minor_arcana_suit[suit_idx]  + colors[suit][0][0].hex + colors[suit][0][1].hex;
+      let suit_ent_r = minor_arcana_suit[suit_idx]  + colors[suit][0][1].hex + colors[suit][0][0].hex;
 
 
       // generate background creature
       //
-      var _t = sibyl.preprocess_svgjson(sibyl.bg_symbol, undefined, undefined, false, exclude_all);
+      let _t = sibyl.preprocess_svgjson(sibyl.bg_symbol, undefined, undefined, false, exclude_all);
       sibyl.bg_ctx.choice = _t.choice;
       sibyl.bg_ctx.symbol = _t.symbol;
       sibyl.bg_ctx.data = _t.data;
@@ -1319,8 +1327,8 @@ function realize_tarot_sched(_seed, ctx) {
       sibyl.bg_ctx.max_nest_depth = 1;
       sibyl.bg_ctx.complexity = 1;
       sibyl.mystic_symbolic_random( sibyl.bg_ctx );
-      var bg0 = sibyl.bg_ctx.realized_child.base;
-      var bg1 = "";
+      let bg0 = sibyl.bg_ctx.realized_child.base;
+      let bg1 = "";
       if ("attach" in sibyl.bg_ctx.realized_child) {
         bg1 = sibyl.bg_ctx.realized_child.attach.nesting[0].base;
       }
@@ -1331,12 +1339,12 @@ function realize_tarot_sched(_seed, ctx) {
       }
 
 
-      var json_card = {
+      let json_card = {
         "base": "goat",
         "attach" : { "nesting" : [ ] }
       };
 
-      var invert_color_creature = false;
+      let invert_color_creature = false;
       tarot_data["invert_color_creature"] = false;
 
       // number cards that aren't ace or page to king
@@ -1349,8 +1357,8 @@ function realize_tarot_sched(_seed, ctx) {
         sibyl.fg_ctx.choice = _t.choice;
         sibyl.fg_ctx.symbol = _t.symbol;
         sibyl.fg_ctx.data = _t.data;
-        var base_creature_name = sibyl.random_creature( sibyl.fg_ctx, "base" );
-        var base_creature = sibyl.fg_ctx.symbol[base_creature_name];
+        let base_creature_name = sibyl.random_creature( sibyl.fg_ctx, "base" );
+        let base_creature = sibyl.fg_ctx.symbol[base_creature_name];
 
         _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
         sibyl.fg_ctx.choice = _t.choice;
@@ -1359,13 +1367,13 @@ function realize_tarot_sched(_seed, ctx) {
         //sibyl.mystic_symbolic_random( sibyl.fg_ctx );
         sibyl.mystic_symbolic_random( sibyl.fg_ctx, base_creature );
 
-        var card_template = sibyl.crnd(minor_arcana_template[card_idx+1]);
+        let card_template = sibyl.crnd(minor_arcana_template[card_idx+1]);
         json_card = {
           "base": card_template.name,
           "attach" : { "nesting" : [ ] }
         };
 
-        for (var ii=0; ii<=card_idx; ii++) {
+        for (let ii=0; ii<=card_idx; ii++) {
           json_card.attach.nesting.push( { "base" : suit_ent } );
         }
         json_card.attach.nesting.push( sibyl.fg_ctx.realized_child );
@@ -1380,7 +1388,7 @@ function realize_tarot_sched(_seed, ctx) {
       //
       else if (card_idx==0) {
 
-        var ace_base = sibyl.crnd(ace_choice);
+        let ace_base = sibyl.crnd(ace_choice);
         json_card = {
           "base": ace_base ,
           //"attach" : { "nesting" : [ { "base": suit_ent + color_suit }  ] }
@@ -1393,9 +1401,9 @@ function realize_tarot_sched(_seed, ctx) {
       //
       else if (card_idx==10) {
 
-        var xc = colors[suit][1][1].hex + colors[suit][1][0].hex;
+        let xc = colors[suit][1][1].hex + colors[suit][1][0].hex;
 
-        var base_ele = sibyl.fg_ctx.symbol[ "dog" ];
+        let base_ele = sibyl.fg_ctx.symbol[ "dog" ];
         _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
         sibyl.fg_ctx.choice = _t.choice;
         sibyl.fg_ctx.symbol = _t.symbol;
@@ -1410,7 +1418,7 @@ function realize_tarot_sched(_seed, ctx) {
       //
       else if (card_idx==11) {
 
-        var base_ele = sibyl.fg_ctx.symbol[ "horse" ];
+        let base_ele = sibyl.fg_ctx.symbol[ "horse" ];
         _t = sibyl.preprocess_svgjson(sibyl.mystic_symbolic, undefined, undefined, false, exclude_all);
         sibyl.fg_ctx.choice = _t.choice;
         sibyl.fg_ctx.symbol = _t.symbol;
@@ -1430,7 +1438,7 @@ function realize_tarot_sched(_seed, ctx) {
         sibyl.fg_ctx.symbol = _t.symbol;
         sibyl.fg_ctx.data = _t.data;
 
-        var base_ele = sibyl.fg_ctx.symbol[ "crown_5pt" ];
+        let base_ele = sibyl.fg_ctx.symbol[ "crown_5pt" ];
         sibyl.mystic_symbolic_random( sibyl.fg_ctx, base_ele );
 
         json_card = sibyl.fg_ctx.realized_child;
@@ -1447,7 +1455,7 @@ function realize_tarot_sched(_seed, ctx) {
         sibyl.fg_ctx.symbol = _t.symbol;
         sibyl.fg_ctx.data = _t.data;
 
-        var base_ele = sibyl.fg_ctx.symbol[ "crown_ornate" ];
+        let base_ele = sibyl.fg_ctx.symbol[ "crown_ornate" ];
         sibyl.mystic_symbolic_random( sibyl.fg_ctx, base_ele );
 
         json_card = sibyl.fg_ctx.realized_child;
@@ -1462,14 +1470,14 @@ function realize_tarot_sched(_seed, ctx) {
   }
 
 
-  var back_card_color = sibyl.rand_color();
-  var bca = [
+  let back_card_color = sibyl.rand_color();
+  let bca = [
     [ { "hex": "#000" }, { "hex":"#fff" } ],
     [ { "hex": "#000" }, { "hex":"#fff" } ],
     [ { "hex": back_card_color.background.hex, "hsv": back_card_color.background.hsv },
       { "hex": back_card_color.background2.hex,  "hsv": back_card_color.background2.hsv } ]
   ];
-  var back_symbol_name = sibyl.crnd(ctx.back_creature_choice);
+  let back_symbol_name = sibyl.crnd(ctx.back_creature_choice);
 
 
   // last entry is the back of the cards
@@ -1481,87 +1489,21 @@ function realize_tarot_sched(_seed, ctx) {
     "colors" : bca,
     "card_idx": 78
   });
-  
+
 
   return tarot_sched;
 
 }
 
 function populate_deck_image_single(idx) {
-
-
-  console.log(">>", idx);
-
-  console.log("cp0:", Date.now());
-
-  var svg_data = realize_svg_card(g_data.tarot_sched[idx]);
-
+  let svg_data = realize_svg_card(g_data.tarot_sched[idx]);
+  g_data.debug.push(svg_data);
   document.getElementById("ui_deck" + idx.toString()).innerHTML = svg_data.svg_card;
-  return;
-
-  console.log("cp1:", Date.now());
-
-  var c = document.createElement("canvas");
-  c.width = 190;
-  c.height = 317;
-  var gfx_ctx = c.getContext('2d');
-  //gfx_ctx.drawImage( svg_img, 0, 0 );
-
-
-  var svg = new Blob([svg_data.svg_card], {type: "image/svg+xml;charset=utf-8"});
-  var url = URL.createObjectURL(svg);
-
-  var img = new Image();
-  img.onload = function() {
-    gfx_ctx.drawImage(img, 0, 0);
-    var png = canvas.toDataURL("image/png");
-    document.getElementById("ui_deck" + idx.toString()).innerHTML = '<img src="' + png + '"/>';
-    URL.revokeOBjectURL(png);
-  };
-
-  return;
-  //---
-
-  var svg_img = new Image();
-  svg_img.src = 'data:image/svg+xml;base64,' + window.btoa(svg_data.svg_card);
-
-  console.log(svg_img);
-
-  //----
-  var _img = document.getElementById("ui_img_deck" + idx.toString());
-  _img.src = svg_img;
-  //----
-  return;
-
-
-  console.log("cp2:", Date.now());
-
-  var png_img = c.toDataURL('image/png');
-  var _img = document.getElementById("ui_img_deck" + idx.toString());
-  _img.src = png_img;
-
-  console.log("cp3:", Date.now());
-
-  console.log(svg_img, png_img, _img);
-
-  return;
-
-  render_svg_to_png("ui_canvas_deck" + idx.toString(), svg_data.svg_card).then(
-    (function(_ui_id) {
-      return function(_png) {
-        var _img = document.getElementById(_ui_id);
-        //var _img = document.createElement("img");
-        _img.src = _png;
-        //ele.appendChild(_img);
-      };
-    })("ui_img_deck" + idx.toString())
-  );
-
 }
 
 function populate_deck_image() {
 
-  var card_back_svg = realize_svg_card_back(g_data.tarot_sched[78]);
+  let card_back_svg = realize_svg_card_back(g_data.tarot_sched[78]);
 
   render_svg_to_png("ui_canvas_deck78", card_back_svg).then(
     _png => {
@@ -1569,17 +1511,16 @@ function populate_deck_image() {
       // populate all other cards initially with card backing
       // including the back card spot.
       //
-      //for (var ii=0; ii<=78; ii++) {
-      for (var ii=0; ii<78; ii++) {
-        var ui_id = "ui_deck" + ii.toString();
-        var ele = document.getElementById(ui_id);
-        var _img = document.createElement("img");
+      for (let ii=0; ii<78; ii++) {
+        let ui_id = "ui_deck" + ii.toString();
+        let ele = document.getElementById(ui_id);
+        let _img = document.createElement("img");
         _img.src = _png;
         _img.id = "ui_img_deck" + ii.toString();
         ele.appendChild(_img);
       }
 
-      var _tmp = realize_svg_card_back(g_data.tarot_sched[78]);
+      let _tmp = realize_svg_card_back(g_data.tarot_sched[78]);
       document.getElementById("ui_deck78").innerHTML = _tmp;
 
     }
@@ -1587,10 +1528,7 @@ function populate_deck_image() {
 
   g_data.deck_queue_count = 78;
 
-  //for (var ii=0; ii<78; ii++) {
-  for (var ii=0; ii<78; ii++) {
-
-    //if (ii==0) { console.log(">>", svg_data.svg_card); }
+  for (let ii=0; ii<78; ii++) {
 
     setTimeout( (function(_x) {
       return function() {
@@ -1610,7 +1548,7 @@ function populate_deck_image() {
 //
 function init() {
 
-  var qd_ele = document.getElementById("ui_display_question");
+  let qd_ele = document.getElementById("ui_display_question");
   if (g_data.is_seed_random) {
     qd_ele.innerHTML = "<p>Deck was created with random seed: <b>" + g_data.seed + "</b></p>";
   }
@@ -1624,9 +1562,9 @@ function init() {
   g_tarot["data"] = sibyl.tarot_interpretations;
   g_tarot["ready"] = true;
 
-  console.log("s>>", Date.now());
+  //console.log("s>>", Date.now());
   g_data["tarot_sched"] = realize_tarot_sched(g_data.seed, g_data);
-  console.log("e>>", Date.now());
+  //console.log("e>>", Date.now());
 
   populate_deck_image();
 
@@ -1646,17 +1584,16 @@ function _bbox(ele) {
 //
 function caption_update(ui_id, txt, cap_name, dxy) {
   dxy = ((typeof dxy === "undefined") ? [-220, 120] : dxy);
-  //var _m = (g_ui.mobile_view?"_m":"");
+  //let _m = (g_ui.mobile_view?"_m":"");
 
-  var caption = document.getElementById(cap_name)
-
-  var captxt = document.getElementById(cap_name + "_text");
+  let caption = document.getElementById(cap_name)
+  let captxt = document.getElementById(cap_name + "_text");
   captxt.innerHTML = txt;
 
-  var ele = document.getElementById(ui_id);
-  var domrect = ele.getBoundingClientRect();
+  let ele = document.getElementById(ui_id);
+  let domrect = ele.getBoundingClientRect();
 
-  var b = _bbox(ele);
+  let b = _bbox(ele);
 
   caption.style.position = "absolute";
   if (g_ui.mobile_view) {
@@ -1667,21 +1604,21 @@ function caption_update(ui_id, txt, cap_name, dxy) {
     caption.style.left = (b[0][0] + dxy[0]).toString() + "px";
     caption.style.top = (b[1][1] + dxy[1]).toString() + "px";
 
-    var _l = (b[0][0] + dxy[0]).toString() + "px";
-    var _t = (b[1][1] + dxy[1]).toString() + "px";
+    let _l = (b[0][0] + dxy[0]).toString() + "px";
+    let _t = (b[1][1] + dxy[1]).toString() + "px";
   }
 
 }
 
 function init_svg_text() {
 
-  var svg_header = '<svg version="1.1"' +
+  let svg_header = '<svg version="1.1"' +
     ' id="Frame_0" xmlns="http://www.w3.org/2000/svg"' +
     ' xmlns:xlink="http://www.w3.org/1999/xlink"' +
     ' width="190px"' +
     ' height="317px">'
 
-  var txt_ele_numeral = '<text x="0" y="0" id="_text_numeral">' +
+  let txt_ele_numeral = '<text x="0" y="0" id="_text_numeral">' +
     '<tspan' +
     '  id="_tspan_numeral"' +
     //'  x="216"' +
@@ -1701,10 +1638,11 @@ function init_svg_text() {
     '</tspan>' +
     '</text> ';
 
-  var txt_ele_name =
+  let txt_ele_name =
     //'<rect rx="23" x="41" y="608" width="351" height="46" fill="#efefef" > ' +
     //'<rect rx="10" x="18" y="267" width="154" height="20" fill="#efefef" > ' +
-    '<rect rx="10" x="12" y="267" width="166" height="20" fill="#efefef" > ' +
+    //'<rect rx="10" x="12" y="267" width="166" height="20" fill="#efefef" > ' +
+    '<rect rx="10" x="5" y="267" width="182" height="20" fill="#efefef" > ' +
     '</rect>' +
     '<text x="0" y="0" id="_text_name">' +
     '<tspan' +
@@ -1728,10 +1666,10 @@ function init_svg_text() {
 
 
 
-  for (var suit_idx=0; suit_idx < g_data.minor_arcana_suit.length; suit_idx++) {
-    for (var num_idx=0; num_idx < g_data.minor_arcana.length; num_idx++) {
+  for (let suit_idx=0; suit_idx < g_data.minor_arcana_suit.length; suit_idx++) {
+    for (let num_idx=0; num_idx < g_data.minor_arcana.length; num_idx++) {
 
-      var name = g_data.minor_arcana[num_idx].toUpperCase() + " of " + g_data.minor_arcana_suit[suit_idx].toUpperCase() + "S";
+      let name = g_data.minor_arcana[num_idx].toUpperCase() + " of " + g_data.minor_arcana_suit[suit_idx].toUpperCase() + "S";
 
       g_data.svg_text[name] = svg_header;
       g_data.svg_text_inner[name] = "";
@@ -1752,8 +1690,8 @@ function init_svg_text() {
   }
 
 
-  for (var ma_idx=0; ma_idx<g_data.major_arcana.length; ma_idx++) {
-    var name = g_data.major_arcana[ma_idx].name;
+  for (let ma_idx=0; ma_idx<g_data.major_arcana.length; ma_idx++) {
+    let name = g_data.major_arcana[ma_idx].name;
 
     g_data.svg_text[name] = svg_header;
     g_data.svg_text[name] += txt_ele_numeral.replace('<!--::TEXT::-->', g_data.numeral[ma_idx]);
@@ -1771,7 +1709,7 @@ function _process_input_seed() {
   $("#ui_modal").fadeOut();
   $("#ui_content").fadeTo("slow", 1);
 
-  var ele = document.getElementById("ui_modal_text");
+  let ele = document.getElementById("ui_modal_text");
   seed_text = ele.value;
 
   g_data.is_seed_random = false;
@@ -1792,7 +1730,7 @@ function _process_input_seed() {
   setTimeout(init, 1000);
 
   $("#ui_loading").fadeIn();
-  var _lbt = document.getElementById("ui_loading_placeholder");
+  let _lbt = document.getElementById("ui_loading_placeholder");
   _lbt.style.display = "none";
 }
 
@@ -1809,16 +1747,16 @@ $(document).ready(function() {
   // Initially hide the 10 divination cards so we don't
   // get a jerky update as the canvases start to render
   //
-  for (var ii=0; ii<10; ii++)  {
-    var id = "ui_canvas_card" + ii.toString();
-    var ele = document.getElementById(id);
+  for (let ii=0; ii<10; ii++)  {
+    let id = "ui_canvas_card" + ii.toString();
+    let ele = document.getElementById(id);
     ele.style.display = "none";
   }
 
   // unmangle email address in about modal
   //
-  var ui_email = document.getElementById("ui_email");
-  var _email_href_tok = ui_email.href.split(":");
+  let ui_email = document.getElementById("ui_email");
+  let _email_href_tok = ui_email.href.split(":");
   ui_email.href = _email_href_tok[0] + ":" + _unmangle(_email_href_tok[1]);
   ui_email.innerHTML = _unmangle(ui_email.innerHTML);
 
@@ -1832,7 +1770,7 @@ $(document).ready(function() {
   // if the reading button has been toggled.
   //
   $("#ui_card0").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card0", g_tarot.reading[0].sentence, "caption_0" + _m, [200,-150]);
     caption_update("ui_card0", g_tarot.reading[0].sentence, "caption_0" + _m, g_ui.caption_dxy["ui_card0"]);
     $("#caption_0" + _m).fadeIn();
@@ -1840,7 +1778,7 @@ $(document).ready(function() {
   });
 
   $("#ui_card0").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_0" + _m).fadeOut();
     }
@@ -1850,7 +1788,7 @@ $(document).ready(function() {
   //--
 
   $("#ui_card1").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card1", g_tarot.reading[1].sentence, "caption_1" + _m, [-180,250]);
     caption_update("ui_card1", g_tarot.reading[1].sentence, "caption_1" + _m, g_ui.caption_dxy["ui_card1"]);
     $("#caption_1" + _m).fadeIn();
@@ -1858,7 +1796,7 @@ $(document).ready(function() {
   });
 
   $("#ui_card1").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_1" + _m).fadeOut();
     }
@@ -1867,14 +1805,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card2").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card2", g_tarot.reading[2].sentence, "caption_2" + _m, [0,-180]);
     caption_update("ui_card2", g_tarot.reading[2].sentence, "caption_2" + _m, g_ui.caption_dxy["ui_card2"]);
     $("#caption_2" + _m).fadeIn();
   });
 
   $("#ui_card2").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_2" + _m).fadeOut();
     }
@@ -1883,14 +1821,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card3").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card3", g_tarot.reading[3].sentence, "caption_3" + _m, [0,330]);
     caption_update("ui_card3", g_tarot.reading[3].sentence, "caption_3" + _m, g_ui.caption_dxy["ui_card3"]);
     $("#caption_3" + _m).fadeIn();
   });
 
   $("#ui_card3").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_3" + _m).fadeOut();
     }
@@ -1899,14 +1837,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card4").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card4", g_tarot.reading[4].sentence, "caption_4" + _m, [0,-180]);
     caption_update("ui_card4", g_tarot.reading[4].sentence, "caption_4" + _m, g_ui.caption_dxy["ui_card4"]);
     $("#caption_4" + _m).fadeIn();
   });
 
   $("#ui_card4").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_4" + _m).fadeOut();
     }
@@ -1916,14 +1854,14 @@ $(document).ready(function() {
 
 
   $("#ui_card5").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card5", g_tarot.reading[5].sentence, "caption_5" + _m, [0,330]);
     caption_update("ui_card5", g_tarot.reading[5].sentence, "caption_5" + _m, g_ui.caption_dxy["ui_card5"]);
     $("#caption_5" + _m).fadeIn();
   });
 
   $("#ui_card5").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_5" + _m).fadeOut();
     }
@@ -1932,14 +1870,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card6").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card6", g_tarot.reading[6].sentence, "caption_6" + _m);
     caption_update("ui_card6", g_tarot.reading[6].sentence, "caption_6" + _m, g_ui.caption_dxy["ui_card6"]);
     $("#caption_6" + _m).fadeIn();
   });
 
   $("#ui_card6").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_6" + _m).fadeOut();
     }
@@ -1948,14 +1886,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card7").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card7", g_tarot.reading[7].sentence, "caption_7" + _m, [-220, 300]);
     caption_update("ui_card7", g_tarot.reading[7].sentence, "caption_7" + _m, g_ui.caption_dxy["ui_card7"]);
     $("#caption_7" + _m).fadeIn();
   });
 
   $("#ui_card7").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_7" + _m).fadeOut();
     }
@@ -1964,14 +1902,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card8").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card8", g_tarot.reading[8].sentence, "caption_8" + _m, [-220,-120]);
     caption_update("ui_card8", g_tarot.reading[8].sentence, "caption_8" + _m, g_ui.caption_dxy["ui_card8"]);
     $("#caption_8" + _m).fadeIn();
   });
 
   $("#ui_card8").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_8" + _m).fadeOut();
     }
@@ -1980,14 +1918,14 @@ $(document).ready(function() {
   //--
 
   $("#ui_card9").mouseenter( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     //caption_update("ui_card9", g_tarot.reading[9].sentence, "caption_9" + _m, [-220,-20]);
     caption_update("ui_card9", g_tarot.reading[9].sentence, "caption_9" + _m, g_ui.caption_dxy["ui_card9"]);
     $("#caption_9" + _m).fadeIn();
   });
 
   $("#ui_card9").mouseleave( function(e) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
+    let _m = (g_ui.mobile_view ? "_m" : "");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       $("#caption_9" + _m).fadeOut();
     }
@@ -1997,17 +1935,18 @@ $(document).ready(function() {
 
   // initially update captions with default data
   //
-  for (var ii=0; ii<10; ii++) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
-    var ui_id = "ui_card" + ii.toString();
-    var cap_id = "caption_" + ii.toString() + _m;
+  for (let ii=0; ii<10; ii++) {
+    let _m = (g_ui.mobile_view ? "_m" : "");
+    let ui_id = "ui_card" + ii.toString();
+    let cap_id = "caption_" + ii.toString() + _m;
+
     caption_update(ui_id, g_tarot.reading[ii].sentence, cap_id, g_ui.caption_dxy[ui_id]);
   }
 
   //--
 
   $("#ui_button_reading").mouseenter( function(e) {
-    var ele = document.getElementById("ui_button_reading");
+    let ele = document.getElementById("ui_button_reading");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       ele.style.color = "#333";
     }
@@ -2017,7 +1956,7 @@ $(document).ready(function() {
   });
 
   $("#ui_button_reading").mouseleave( function(e) {
-    var ele = document.getElementById("ui_button_reading");
+    let ele = document.getElementById("ui_button_reading");
     if (g_ui.button_state.ui_button_reading.state == "off") {
       ele.style.color = "#777";
     }
@@ -2036,27 +1975,28 @@ $(document).ready(function() {
     // disable if all cards are being viewed
     //
     if (g_ui.button_state.ui_button_deck.state == "on") {
-      var _ele_read = document.getElementById("ui_tarot_reading");
-      var _ele_deck = document.getElementById("ui_tarot_deck");
+      let _ele_read = document.getElementById("ui_tarot_reading");
+      let _ele_deck = document.getElementById("ui_tarot_deck");
 
       _ele_read.style.display = "grid";
       _ele_deck.style.display = "none";
 
 
-      var btn_deck = document.getElementById("ui_button_deck");
+      let btn_deck = document.getElementById("ui_button_deck");
       g_ui.button_state.ui_button_deck.state = "off";
       btn_deck.style.backgroundColor = "transparent";
       btn_deck.style.color = "#777";
 
       g_ui.button_state.ui_button_reading.state = "on";
-      var ele = document.getElementById("ui_button_reading");
+      let ele = document.getElementById("ui_button_reading");
       ele.style.backgroundColor = "#777";
       ele.style.color = "#fff";
 
-      var _m = (g_ui.mobile_view ? "_m" : "");
-      for (var ii=0; ii<10; ii++) {
-        var ui_id = "ui_card" + ii.toString();
-        var cap_id = "caption_" + ii.toString() + _m;
+      let _m = (g_ui.mobile_view ? "_m" : "");
+      for (let ii=0; ii<10; ii++) {
+        let ui_id = "ui_card" + ii.toString();
+        let cap_id = "caption_" + ii.toString() + _m;
+
         caption_update(ui_id, g_tarot.reading[ii].sentence, cap_id, g_ui.caption_dxy[ui_id]);
         $("#caption_" + ii.toString() + _m).fadeIn();
       }
@@ -2066,14 +2006,15 @@ $(document).ready(function() {
 
     if (g_ui.button_state.ui_button_reading.state == "off") {
       g_ui.button_state.ui_button_reading.state = "on";
-      var ele = document.getElementById("ui_button_reading");
+      let ele = document.getElementById("ui_button_reading");
       ele.style.backgroundColor = "#777";
       ele.style.color = "#fff";
 
-      var _m = (g_ui.mobile_view ? "_m" : "");
-      for (var ii=0; ii<10; ii++) {
-        var ui_id = "ui_card" + ii.toString();
-        var cap_id = "caption_" + ii.toString() + _m;
+      let _m = (g_ui.mobile_view ? "_m" : "");
+      for (let ii=0; ii<10; ii++) {
+        let ui_id = "ui_card" + ii.toString();
+        let cap_id = "caption_" + ii.toString() + _m;
+
         caption_update(ui_id, g_tarot.reading[ii].sentence, cap_id, g_ui.caption_dxy[ui_id]);
         $("#caption_" + ii.toString() + _m).fadeIn();
       }
@@ -2081,12 +2022,12 @@ $(document).ready(function() {
     }
     else {
       g_ui.button_state.ui_button_reading.state = "off";
-      var ele = document.getElementById("ui_button_reading");
+      let ele = document.getElementById("ui_button_reading");
       ele.style.backgroundColor = "transparent";
       ele.style.color = "#333";
 
-      var _m = (g_ui.mobile_view ? "_m" : "");
-      for (var ii=0; ii<10; ii++) {
+      let _m = (g_ui.mobile_view ? "_m" : "");
+      for (let ii=0; ii<10; ii++) {
         $("#caption_" + ii.toString() + _m).fadeOut();
       }
 
@@ -2096,13 +2037,13 @@ $(document).ready(function() {
 
   //---
 
-  // doing the highlight and focus is easier then 
-  // figuring out how to do it incss.
+  // doing the highlight and focus is easier then
+  // figuring out how to do it in css.
   // Enable the appropriate button state in the g_ui
   // state object.
   //
   $("#ui_button_deck").mouseenter( function(e) {
-    var ele = document.getElementById("ui_button_deck");
+    let ele = document.getElementById("ui_button_deck");
     if (g_ui.button_state.ui_button_deck.state == "off") {
       ele.style.color = "#333";
     }
@@ -2112,7 +2053,7 @@ $(document).ready(function() {
   });
 
   $("#ui_button_deck").mouseleave( function(e) {
-    var ele = document.getElementById("ui_button_deck");
+    let ele = document.getElementById("ui_button_deck");
     if (g_ui.button_state.ui_button_deck.state == "off") {
       ele.style.color = "#777";
     }
@@ -2126,12 +2067,12 @@ $(document).ready(function() {
   //
   $("#ui_button_deck").click( function(e) {
 
-    var _ele_read = document.getElementById("ui_tarot_reading");
-    var _ele_deck = document.getElementById("ui_tarot_deck");
+    let _ele_read = document.getElementById("ui_tarot_reading");
+    let _ele_deck = document.getElementById("ui_tarot_deck");
 
     if (g_ui.button_state.ui_button_deck.state == "off") {
       g_ui.button_state.ui_button_deck.state = "on";
-      var ele = document.getElementById("ui_button_deck");
+      let ele = document.getElementById("ui_button_deck");
       ele.style.backgroundColor = "#777";
       ele.style.color = "#fff";
 
@@ -2141,12 +2082,13 @@ $(document).ready(function() {
       // disable reading...
       //
       g_ui.button_state.ui_button_reading.state = "off";
-      var ele = document.getElementById("ui_button_reading");
+      //let ele = document.getElementById("ui_button_reading");
+      ele = document.getElementById("ui_button_reading");
       ele.style.backgroundColor = "transparent";
       //ele.style.color = "#333";
       ele.style.color = "#777";
 
-      for (var ii=0; ii<10; ii++) {
+      for (let ii=0; ii<10; ii++) {
         $("#caption_" + ii.toString()).fadeOut();
         $("#caption_" + ii.toString() + "_m").fadeOut();
       }
@@ -2154,7 +2096,7 @@ $(document).ready(function() {
     }
     else {
       g_ui.button_state.ui_button_deck.state = "off";
-      var ele = document.getElementById("ui_button_deck");
+      let ele = document.getElementById("ui_button_deck");
       ele.style.backgroundColor = "transparent";
       ele.style.color = "#777";
 
@@ -2192,7 +2134,7 @@ $(document).ready(function() {
     $("#ui_modal").fadeOut();
     $("#ui_content").fadeTo("slow", 1);
 
-    var ele = document.getElementById("ui_modal_text");
+    let ele = document.getElementById("ui_modal_text");
     seed_text = ele.value;
 
     g_data.is_seed_random = false;
@@ -2213,7 +2155,7 @@ $(document).ready(function() {
     setTimeout(init, 1000);
 
     $("#ui_loading").fadeIn();
-    var _lbt = document.getElementById("ui_loading_placeholder");
+    let _lbt = document.getElementById("ui_loading_placeholder");
     _lbt.style.display = "none";
 
   });
@@ -2274,7 +2216,7 @@ $(document).ready(function() {
       $("#ui_modal").fadeOut();
       $("#ui_content").fadeTo("slow", 1);
 
-      var ele = document.getElementById("ui_modal_text");
+      let ele = document.getElementById("ui_modal_text");
       seed_text = ele.value;
 
       g_data.is_seed_random = false;
@@ -2289,7 +2231,7 @@ $(document).ready(function() {
       setTimeout(init, 1000);
 
       $("#ui_loading").fadeIn();
-      var _lbt = document.getElementById("ui_loading_placeholder");
+      let _lbt = document.getElementById("ui_loading_placeholder");
       _lbt.style.display = "none";
     }
   });
@@ -2309,7 +2251,7 @@ $(document).ready(function() {
         $("#ui_modal").fadeOut();
         $("#ui_content").fadeTo("slow", 1);
 
-        var ele = document.getElementById("ui_modal_text");
+        let ele = document.getElementById("ui_modal_text");
         seed_text = ele.value;
 
         g_data.is_seed_random = false;
@@ -2324,7 +2266,7 @@ $(document).ready(function() {
         setTimeout(init, 1000);
 
         $("#ui_loading").fadeIn();
-        var _lbt = document.getElementById("ui_loading_placeholder");
+        let _lbt = document.getElementById("ui_loading_placeholder");
         _lbt.style.display = "none";
       }
     }
@@ -2344,13 +2286,13 @@ $(document).ready(function() {
 });
 
 window.onresize = function() {
-  var prev_mobile_view = g_ui.mobile_view;
+  let prev_mobile_view = g_ui.mobile_view;
   g_ui.mobile_view = ( ($(window).width() < g_ui.mobile_width) ? true : false );
 
   // if we're in the deck view state, turn off all captions
   //
   if (g_ui.button_state.ui_button_deck.state == "on") {
-    for (var ii=0; ii<10; ii++) {
+    for (let ii=0; ii<10; ii++) {
       $("#caption_" + ii.toString() + "_m").fadeOut();
       $("#caption_" + ii.toString()).fadeOut();
     }
@@ -2363,12 +2305,12 @@ window.onresize = function() {
   //
   if (prev_mobile_view != g_ui.mobile_view) {
     g_ui.button_state.ui_button_reading.state = "off";
-    var ele = document.getElementById("ui_button_reading");
+    let ele = document.getElementById("ui_button_reading");
     ele.style.backgroundColor = "transparent";
     ele.style.color = "#333";
 
-    var _m = (g_ui.mobile_view ? "_m" : "");
-    for (var ii=0; ii<10; ii++) {
+    let _m = (g_ui.mobile_view ? "_m" : "");
+    for (let ii=0; ii<10; ii++) {
       if (prev_mobile_view) {
         $("#caption_" + ii.toString() + "_m").fadeOut();
         $("#caption_" + ii.toString()).fadeIn();
@@ -2382,10 +2324,10 @@ window.onresize = function() {
 
   // update captions
   //
-  for (var ii=0; ii<10; ii++) {
-    var _m = (g_ui.mobile_view ? "_m" : "");
-    var ui_id = "ui_card" + ii.toString();
-    var cap_id = "caption_" + ii.toString() + _m;
+  for (let ii=0; ii<10; ii++) {
+    let _m = (g_ui.mobile_view ? "_m" : "");
+    let ui_id = "ui_card" + ii.toString();
+    let cap_id = "caption_" + ii.toString() + _m;
 
     caption_update(ui_id, g_tarot.reading[ii].sentence, cap_id, g_ui.caption_dxy[ui_id]);
   }
@@ -2415,17 +2357,17 @@ function saveAs(blob, filename) {
 }
 
 function downloadDeck() {
-  var zip = new JSZip();
+  let zip = new JSZip();
   zip.file("README", "Resonant Voyant Tarot\n---\n\nseed: " + g_data.seed + "\n");
-  var imgdir = zip.folder("images");
+  let imgdir = zip.folder("images");
 
-  for (var ii=0; ii<=78; ii++) {
-    var ele = document.getElementById("ui_deck"+ ii.toString());
-    var svg = ele.children[0];
+  for (let ii=0; ii<=78; ii++) {
+    let ele = document.getElementById("ui_deck"+ ii.toString());
+    let svg = ele.children[0];
     imgdir.file("card" + ii.toString() + ".svg", svg.outerHTML);
   }
-  var ele = document.getElementById("ui_deck78");
-  var svg = ele.children[0];
+  let ele = document.getElementById("ui_deck78");
+  let svg = ele.children[0];
   imgdir.file("card78.svg", svg.outerHTML);
 
   zip.generateAsync({type:"blob"})

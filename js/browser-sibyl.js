@@ -121,7 +121,7 @@ var vocabulary =
 module.exports = { "vocabulary":vocabulary };
 
 },{}],3:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 /**
  * @license
  * Lodash <https://lodash.com/>
@@ -17332,9 +17332,9 @@ module.exports = { "vocabulary":vocabulary };
   }
 }.call(this));
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],4:[function(require,module,exports){
-(function (process){
+(function (process){(function (){
 /*
  * getopt.js: node.js implementation of POSIX getopt() (and then some)
  *
@@ -17641,9 +17641,9 @@ goBasicParser.prototype.errExtraArg = function (chr)
 	return ({ option: '?', optopt: chr, error: true });
 };
 
-}).call(this,require('_process'))
+}).call(this)}).call(this,require('_process'))
 },{"_process":14,"assert":9}],5:[function(require,module,exports){
-(function (process){
+(function (process){(function (){
 
 
 /*
@@ -17659,22 +17659,27 @@ goBasicParser.prototype.errExtraArg = function (chr)
 
 
 function rseed() {
-  var seed = "";
-  var x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var n = x.length;
-  for (var ii=0; ii<32; ii++) {
+  let seed = "";
+  let x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let n = x.length;
+  for (let ii=0; ii<32; ii++) {
     seed += x[ Math.floor(Math.random()*n) ];
   }
+
+  //DEBUG
+  seed = "01234567890123456789012345678901";
+
   return seed;
 }
 
 function rstr(m) {
   m = ((typeof m === "undefined") ? 32 : m);
-  var seed = "";
-  var x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var n = x.length;
-  for (var ii=0; ii<m; ii++) {
-    seed += x[ Math.floor(Math.random()*n) ];
+  let seed = "";
+  let x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let n = x.length;
+  for (let ii=0; ii<m; ii++) {
+    //seed += x[ Math.floor(Math.random()*n) ];
+    seed += x[ Math.floor(g_rng.double()*n) ];
   }
   return seed;
 }
@@ -17684,19 +17689,19 @@ function reseed(_s) {
   g_rng = new alea(_s);
 }
 
-var alea = require("./alea.js");
-var fs = require("fs");
-var getopt = require("posix-getopt");
-var lodash = require("lodash");
-var tarot_interpretations = require("./tarot_interpretations.js");
+let alea = require("./alea.js");
+let fs = require("fs");
+let getopt = require("posix-getopt");
+let lodash = require("lodash");
+let tarot_interpretations = require("./tarot_interpretations.js");
 
-var parser;
-var opt;
+let parser;
+let opt;
 
-var SEED = rseed();
-var g_rng = new alea(SEED);
+let SEED = rseed();
+let g_rng = new alea(SEED);
 
-var _VERSION = "0.1.9";
+let _VERSION = "0.1.9";
 
 function show_version(fp) {
   fp.write("version: " + _VERSION + "\n");
@@ -17743,7 +17748,7 @@ function show_help(fp) {
   fp.write("\n");
 }
 
-var sibyl_opt = {
+let sibyl_opt = {
   "max_attach_depth" : 1,
   "max_nest_depth" : 2,
   "scale" : 0.5,
@@ -17788,7 +17793,7 @@ var sibyl_opt = {
   "additional_svgjson" : []
 };
 
-var long_opt = [
+let long_opt = [
   "p", ":(primary-color)",
   "s", ":(secondary-color)",
   "b", ":(background-color)",
@@ -17875,10 +17880,12 @@ while ((opt =  parser.getopt()) !== undefined) {
       break;
 
     case 'P':
-      var tok = opt.optarg.split(",");
+      {
+      let tok = opt.optarg.split(",");
       sibyl_opt.dx = parseFloat(tok[0]);
       if (tok.length > 1) {
         sibyl_opt.dy = parseFloat(tok[1]);
+      }
       }
       break;
 
@@ -17894,7 +17901,8 @@ while ((opt =  parser.getopt()) !== undefined) {
       break;
 
     case 'T':
-      var tok = opt.optarg.split(",");
+      {
+      let tok = opt.optarg.split(",");
       if (tok.length == 1) {
         sibyl_opt.background_scale_x = parseFloat(tok[0]);
         sibyl_opt.background_scale_y = parseFloat(tok[0]);
@@ -17904,14 +17912,17 @@ while ((opt =  parser.getopt()) !== undefined) {
         sibyl_opt.background_scale_y = parseFloat(tok[1]);
       }
       sibyl_opt.background_scale_set = true;
+      }
       break;
 
     case 'D':
-      var tok = opt.optarg.split(",");
+      {
+      let tok = opt.optarg.split(",");
 
       sibyl_opt.background_dx = parseFloat(tok[0]);
       if (tok.length > 1) {
         sibyl_opt.background_dy = parseFloat(tok[1]);
+      }
       }
       break;
 
@@ -17993,24 +18004,24 @@ if (sibyl_opt.tile_background && (!sibyl_opt.background_scale_set)) {
 
 // Create random color by default
 //
-var _rcolor = rand_color();
-var primary_color   = _rcolor.primary.hex;
-var secondary_color = _rcolor.secondary.hex;
-var bg_color        = _rcolor.background.hex;
-var bg_color2       = _rcolor.background2.hex;
+let _rcolor = rand_color();
+let primary_color   = _rcolor.primary.hex;
+let secondary_color = _rcolor.secondary.hex;
+let bg_color        = _rcolor.background.hex;
+let bg_color2       = _rcolor.background2.hex;
 
 // SVG header and footer for eventual SVG output
 //
-var svg_header = [
+let svg_header = [
   '<?xml version="1.0" encoding="utf-8"?>',
   '<!-- Generator: Moho 13.5 build 20210422 -->',
   '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">',
   '<svg version="1.1" id="Frame_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720px" height="720px">'
 ].join("");
 
-var svg_footer = "</svg>";
+let svg_footer = "</svg>";
 
-var svg_xmljson = {
+let svg_xmljson = {
   "svg" : {
     "version":"1.1",
     "id" : "",
@@ -18022,8 +18033,8 @@ var svg_xmljson = {
 };
 
 function make_svg_header(data) {
-  var s = "<svg";
-  for (var key in data["svg"]) {
+  let s = "<svg";
+  for (let key in data["svg"]) {
     s += ' ' + key + '="' + data['svg'][key] + '"';
   }
   s += '>';
@@ -18053,7 +18064,7 @@ if (sibyl_opt.background_color2.match(/^#[0-9a-fA-F]{6}/)) {
 //
 // arg_str is the command/dsl string to parse
 //
-var fn = "./_svg-vocabulary-pretty-printed.json";
+let fn = "./_svg-vocabulary-pretty-printed.json";
 
 if ( (process.argv.length - parser.optind()) > 1 ) {
   fn = process.argv[parser.optind()];
@@ -18069,10 +18080,10 @@ if (fn.length == 0) {
   process.exit(1);
 }
 
-for (var ii=0; ii<sibyl_opt.exclude_fn.length; ii++) {
-  var _exclude_dat = fs.readFileSync(sibyl_opt.exclude_fn[ii]).toString('utf-8');
-  var lines = _exclude_dat.split("\n");
-  for (var jj=0; jj<lines.length; jj++) {
+for (let ii=0; ii<sibyl_opt.exclude_fn.length; ii++) {
+  let _exclude_dat = fs.readFileSync(sibyl_opt.exclude_fn[ii]).toString('utf-8');
+  let lines = _exclude_dat.split("\n");
+  for (let jj=0; jj<lines.length; jj++) {
     if (lines[jj].length == 0) { continue; }
     if (lines[jj][0] == '#') { continue; }
     sibyl_opt.exclude.push(lines[jj]);
@@ -18085,18 +18096,18 @@ for (var ii=0; ii<sibyl_opt.exclude_fn.length; ii++) {
 // I got nervous about shallow vs. deep copy so
 // this is why thre are two copies.
 //
-var _vocab0 = require("./mystic_symbolic_vocabulary.js");
-var _vocab1 = require("./mystic_symbolic_vocabulary.js");
-var adata = _vocab0.vocabulary;
-var bg_data = _vocab1.vocabulary;
+let _vocab0 = require("./mystic_symbolic_vocabulary.js");
+let _vocab1 = require("./mystic_symbolic_vocabulary.js");
+let adata = _vocab0.vocabulary;
+let bg_data = _vocab1.vocabulary;
 
-var TAROT_TEMPLATE = {};
+let TAROT_TEMPLATE = {};
 
-var use_custom_tarot_svgjson = true;
+let use_custom_tarot_svgjson = true;
 if (use_custom_tarot_svgjson) {
-  var _v0 = require("./tarot_vocabulary.js");
-  var _v1 = require("./tarot_vocabulary.js");
-  for (var ii=0; ii<_v0.vocabulary.length; ii++) {
+  let _v0 = require("./tarot_vocabulary.js");
+  let _v1 = require("./tarot_vocabulary.js");
+  for (let ii=0; ii<_v0.vocabulary.length; ii++) {
     adata.push(_v0.vocabulary[ii]);
     bg_data.push(_v1.vocabulary[ii]);
   }
@@ -18109,11 +18120,11 @@ if (use_custom_tarot_svgjson) {
 // than having to regenerate the core SVG JSON file.
 // Multiple files can be specified.
 //
-for (var ii=0; ii<sibyl_opt.additional_svgjson.length; ii++) {
-  var _raw_bytes = fs.readFileSync(sibyl_opt.additional_svgjson[ii]);
-  var _dat0 = JSON.parse(_raw_bytes);
-  var _dat1 = JSON.parse(_raw_bytes);
-  for (var jj=0; jj<_dat0.length; jj++) {
+for (let ii=0; ii<sibyl_opt.additional_svgjson.length; ii++) {
+  let _raw_bytes = fs.readFileSync(sibyl_opt.additional_svgjson[ii]);
+  let _dat0 = JSON.parse(_raw_bytes);
+  let _dat1 = JSON.parse(_raw_bytes);
+  for (let jj=0; jj<_dat0.length; jj++) {
     adata.push(_dat0[jj]);
     bg_data.push(_dat1[jj]);
   }
@@ -18122,7 +18133,7 @@ for (var ii=0; ii<sibyl_opt.additional_svgjson.length; ii++) {
 if (sibyl_opt.sched_in_fn.length > 0) {
   sibyl_opt.custom_sched = {};
   sibyl_opt.use_custom_sched = true;
-  var _raw_bytes = fs.readFileSync(sibyl_opt.sched_in_fn);
+  let _raw_bytes = fs.readFileSync(sibyl_opt.sched_in_fn);
   sibyl_opt.custom_sched = JSON.parse(_raw_bytes);
 
   //arg_str = "custom";
@@ -18160,8 +18171,8 @@ function _mod1(val) {
 // so we don't fail if it doesn't find
 // the PEG file.
 //
-var USE_PEGJS = false;
-var pegjs, gram_fn, gram_str, peg_parser;
+let USE_PEGJS = false;
+let pegjs, gram_fn, gram_str, peg_parser;
 if (USE_PEGJS) {
   pegjs = require("pegjs");
 
@@ -18197,7 +18208,7 @@ function _default_emit(ctx, v) {
 
 function convert_ast(ctx, data, emit) {
   emit = ((typeof emit === "undefined") ? _default_emit : emit);
-  var attach_list = {"nesting":1, "horn":1, "crown":1, "arm":1, "leg":1, "tail":1};
+  let attach_list = {"nesting":1, "horn":1, "crown":1, "arm":1, "leg":1, "tail":1};
 
 
   if (data.t == "base") {
@@ -18218,9 +18229,9 @@ function convert_ast(ctx, data, emit) {
 
   else if (data.t == "sub") {
 
-    var prv_attach = ctx.cur_attach;
-    var new_node = create_node();
-    var prv_node = ctx.cur_node;
+    let prv_attach = ctx.cur_attach;
+    let new_node = create_node();
+    let prv_node = ctx.cur_node;
     ctx.cur_node[ctx.cur_attach].push( new_node );
     ctx.cur_node = new_node;
     ctx.cur_attach = "base";
@@ -18241,9 +18252,9 @@ function convert_ast(ctx, data, emit) {
 
   else if (data.t == "ring") {
 
-    var prv_attach = ctx.cur_attach;
-    var new_node = create_node();
-    var prv_node = ctx.cur_node;
+    let prv_attach = ctx.cur_attach;
+    let new_node = create_node();
+    let prv_node = ctx.cur_node;
     ctx.cur_node[ctx.cur_attach].push( new_node );
     ctx.cur_node = new_node;
     ctx.cur_attach = "base";
@@ -18259,9 +18270,9 @@ function convert_ast(ctx, data, emit) {
   }
   else if (data.t == "ring_list") {
 
-    var prv_attach = ctx.cur_attach;
-    var new_node = create_node();
-    var prv_node = ctx.cur_node;
+    let prv_attach = ctx.cur_attach;
+    let new_node = create_node();
+    let prv_node = ctx.cur_node;
     ctx.cur_node[ctx.cur_attach].push( new_node );
     ctx.cur_node = new_node;
     ctx.cur_attach = "base";
@@ -18275,9 +18286,9 @@ function convert_ast(ctx, data, emit) {
     convert_ast(ctx, data.l, emit);
   }
   else if (data.t == "ring_end") {
-    var prv_attach = ctx.cur_attach;
-    var new_node = create_node();
-    var prv_node = ctx.cur_node;
+    let prv_attach = ctx.cur_attach;
+    let new_node = create_node();
+    let prv_node = ctx.cur_node;
     ctx.cur_node[ctx.cur_attach].push( new_node );
     ctx.cur_node = new_node;
     ctx.cur_attach = "base";
@@ -18310,7 +18321,7 @@ function convert_ast(ctx, data, emit) {
 
 
   if ("a" in data) {
-    for (var ii=0; ii<data.a.length; ii++) {
+    for (let ii=0; ii<data.a.length; ii++) {
       convert_ast(ctx, data.a[ii], emit);
     }
 
@@ -18320,15 +18331,15 @@ function convert_ast(ctx, data, emit) {
 }
 
 function cleanup(data) {
-  var attach_list = {"type":1,"base":1, "nesting":1, "horn":1, "crown":1, "arm":1, "leg":1, "tail":1};
-  var res = {};
+  let attach_list = {"type":1,"base":1, "nesting":1, "horn":1, "crown":1, "arm":1, "leg":1, "tail":1};
+  let res = {};
 
   if (typeof data === "string") { return data; }
-  for (var key in attach_list) {
+  for (let key in attach_list) {
     if (data[key].length==0) { continue; }
     if (!(key in res)) { res[key] = []; }
     if (key == "type") { res[key] = data[key]; continue; }
-    for (var ii=0; ii<data[key].length; ii++) {
+    for (let ii=0; ii<data[key].length; ii++) {
       res[key].push( cleanup(data[key][ii]) );
     }
   }
@@ -18337,11 +18348,11 @@ function cleanup(data) {
 
 function ast_find(ast, id) {
 
-  var cur_ast = ast;
-  var cur_id = id;
+  let cur_ast = ast;
+  let cur_id = id;
   while (cur_id.length > 0) {
-    var link_id = cur_id[0];
-    var link_idx = cur_id[1];
+    let link_id = cur_id[0];
+    let link_idx = cur_id[1];
 
     if (!(link_id in cur_ast)) { return ""; }
 
@@ -18356,7 +18367,7 @@ function _flatten_r(data, a, lvl) {
   if (typeof data === "string") { a.push(data); return; }
 
   if ("base" in data) {
-    for (var ii=0; ii<data.base.length; ii++) {
+    for (let ii=0; ii<data.base.length; ii++) {
 
       console.log(lvl, "base...", ii, JSON.stringify(data.base[ii]), JSON.stringify(a));
 
@@ -18365,14 +18376,14 @@ function _flatten_r(data, a, lvl) {
     data.base = a;
   }
 
-  var tdata = {};
-  for (var key in data) {
+  let tdata = {};
+  for (let key in data) {
     if (key == "base") { continue; }
 
     console.log(lvl, "...key", key);
 
-    var sub_a = [];
-    for (var ii=0; ii<data[key].length; ii++) {
+    let sub_a = [];
+    for (let ii=0; ii<data[key].length; ii++) {
       flatten_r(data[key][ii], sub_a, lvl+1);
     }
 
@@ -18382,7 +18393,7 @@ function _flatten_r(data, a, lvl) {
 
   }
 
-  for (var key in tdata) {
+  for (let key in tdata) {
     if (key === "base") { continue; }
     data[key] = tdata[key];
     console.log(lvl, "data[", key, "]", JSON.stringify(data[key]));
@@ -18394,17 +18405,17 @@ function _flatten_r(data, a, lvl) {
 
 /*
 function flatten_r(data, a, lvl) {
-  var key_count = 0;
-  for (var key in data) { key_count++; }
+  let key_count = 0;
+  for (let key in data) { key_count++; }
   if ((key_count==1) && ("base" in data)) {
-    var _a = [];
-    for (var ii=0; ii<data.base.length; ii++) {
+    let _a = [];
+    for (let ii=0; ii<data.base.length; ii++) {
       _a.push( flatten_r(data.base[ii]) );
     }
     return _a;
   }
   else {
-    for (var key in data) {
+    for (let key in data) {
 
     }
   }
@@ -18415,8 +18426,8 @@ function is_simple(data) {
   //if (typeof data === "string") { return true; }
   if (typeof data === "string") { return false; }
   if (!("base" in data)) { return false; }
-  var key_count = 0;
-  for (var key in data) {
+  let key_count = 0;
+  for (let key in data) {
     key_count++;
   }
   if (key_count==1) { return true; }
@@ -18429,15 +18440,15 @@ function flatten_r(data, a, lvl) {
 
   if (typeof data === "string") { return data; return; }
 
-  var tdata = {};
+  let tdata = {};
   if ("base" in data) {
 
     if (is_simple(data)) {
 
       console.log(lvl, "is_simple", JSON.stringify(data));
 
-      var _res = [];
-      for (var ii=0; ii<data.base.length; ii++) {
+      let _res = [];
+      for (let ii=0; ii<data.base.length; ii++) {
         if (is_simple(data.base[ii])) {
           for (jj=0; jj<data.base[ii].base.length; jj++) {
             _res.push(data.base[ii].base[jj]);
@@ -18453,8 +18464,8 @@ function flatten_r(data, a, lvl) {
     }
     else {
 
-      var _a = [];
-      for (var ii=0; ii<data.base.length; ii++) {
+      let _a = [];
+      for (let ii=0; ii<data.base.length; ii++) {
 
         console.log(lvl, "base...", ii, JSON.stringify(data.base[ii]), JSON.stringify(a));
 
@@ -18465,13 +18476,13 @@ function flatten_r(data, a, lvl) {
     }
   }
 
-  for (var key in data) {
+  for (let key in data) {
     if (key == "base") { continue; }
 
     console.log(lvl, "...key", key);
 
-    var sub_a = [];
-    for (var ii=0; ii<data[key].length; ii++) {
+    let sub_a = [];
+    for (let ii=0; ii<data[key].length; ii++) {
       sub_a.push(flatten_r(data[key][ii], a, lvl+1));
     }
 
@@ -18488,12 +18499,12 @@ function flatten_r(data, a, lvl) {
 
 function flatten(data) {
 
-  var new_data = {};
+  let new_data = {};
 
-  var a = [];
-  var x = flatten_r(data, a, 0);
-  var x = flatten_r(x, a, 0);
-  var x = flatten_r(x, a, 0);
+  let a = [];
+  let x = flatten_r(data, a, 0);
+  x = flatten_r(x, a, 0);
+  x = flatten_r(x, a, 0);
 
   console.log("GOT FLATTEN:\n", JSON.stringify(x, undefined, 2));
   //console.log(JSON.stringify(a,undefined,2));
@@ -18502,13 +18513,13 @@ function flatten(data) {
   console.log(">>>", JSON.stringify(data));
 
   if (typeof data === "string") { return; }
-  for (var key in data) {
+  for (let key in data) {
 
     console.log(key);
 
     if (typeof data[key] === "string") { continue; }
-    for (var ii=0; ii<data[key].length; ii++) {
-      var a = [];
+    for (let ii=0; ii<data[key].length; ii++) {
+      let a = [];
 
       console.log("???", key, a);
       flatten_r(data[key], a);
@@ -18521,7 +18532,7 @@ function flatten(data) {
     }
   }
 
-  //for (var key in data) { flatten(data[key]); }
+  //for (let key in data) { flatten(data[key]); }
 }
 
 
@@ -18535,7 +18546,7 @@ function flatten(data) {
 // https://stackoverflow.com/users/96100/tim-down
 //
 function _tohex(c) {
-  var hex = c.toString(16);
+  let hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
 }
 
@@ -18555,12 +18566,12 @@ function _brightness(r, g, b) {
 //
 /* accepts parameters
  * h  Object = {h:x, s:y, v:z}
- * OR 
+ * OR
  * h, s, v
  * 0 <= h,s,v, <=1
 */
 function HSVtoRGB(h, s, v) {
-  var r, g, b, i, f, p, q, t;
+  let r, g, b, i, f, p, q, t;
   if (arguments.length === 1) { s = h.s, v = h.v, h = h.h; }
   i = Math.floor(h * 6);
   f = h * 6 - i;
@@ -18584,14 +18595,14 @@ function HSVtoRGB(h, s, v) {
 
 /* accepts parameters
  * r  Object = {r:x, g:y, b:z}
- * OR 
+ * OR
  * r, g, b
  *
  * 0 <= r,g,b <= 255
 */
 function RGBtoHSV(r, g, b) {
   if (arguments.length === 1) { g = r.g, b = r.b, r = r.r; }
-  var max = Math.max(r, g, b), min = Math.min(r, g, b),
+  let max = Math.max(r, g, b), min = Math.min(r, g, b),
     d = max - min,
     h,
     s = (max === 0 ? 0 : d / max),
@@ -18609,7 +18620,7 @@ function RGBtoHSV(r, g, b) {
 
 function HSVtoHSL(h, s, v) {
   if (arguments.length === 1) { s = h.s, v = h.v, h = h.h; }
-  var _h = h,
+  let _h = h,
     _s = s * v, _l = (2 - s) * v;
   _s /= (_l <= 1) ? _l : 2 - _l;
   _l /= 2;
@@ -18618,7 +18629,7 @@ function HSVtoHSL(h, s, v) {
 
 function HSLtoHSV(h, s, l) {
   if (arguments.length === 1) { s = h.s, l = h.l, h = h.h; }
-  var _h = h, _s, _v; l *= 2;
+  let _h = h, _s, _v; l *= 2;
   s *= (l <= 1) ? l : 2 - l;
   _v = (l + s) / 2;
   _s = (2 * s) / (l + s);
@@ -18639,10 +18650,10 @@ function _irnd(n) {
 
 function _srnd(m) {
   m = ((typeof m === "undefined") ? 32 : m);
-  var _s = "";
-  var x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-  var n = x.length;
-  for (var ii=0; ii<m; ii++) {
+  let _s = "";
+  let x = "abcdefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ01234567890";
+  let n = x.length;
+  for (let ii=0; ii<m; ii++) {
     _s += x[ _irnd(n) ];
   }
   return _s;
@@ -18668,9 +18679,9 @@ function _rnd(a,b) {
 //
 function _crnd(a) {
   if (typeof a === "undefined") { return undefined; }
-  var idx = _irnd(a.length);
+  let idx = _irnd(a.length);
 
-  var copy = undefined;
+  let copy = undefined;
   if (typeof a[idx] === "object") {
     _copy = Object.assign({}, a[idx]);
   }
@@ -18684,14 +18695,14 @@ function _crnd(a) {
 
 function _choose(a_orig, n) {
   if ((typeof n === "undefined") || (n<1)) { return []; }
-  var a = [ ...a_orig ];
+  let a = [ ...a_orig ];
 
   if (n>=a.length) { return a; }
 
-  var len = a.length;
-  for (var ii=0; ii<n; ii++) {
-    var p = _irnd(len-ii);
-    var t = a[ii];
+  let len = a.length;
+  for (let ii=0; ii<n; ii++) {
+    let p = _irnd(len-ii);
+    let t = a[ii];
     a[ii] = a[p];
     a[p] = t;
   }
@@ -18713,16 +18724,16 @@ function _deg(x,y) { return Math.atan2(y,x)*180.0/Math.PI; }
 function jsonsvg2svg_defs(defs, primary_color, secondary_color) {
   if (typeof defs === "undefined") { return ""; }
 
-  var lines = [];
-  for (var def_idx=0; def_idx<defs.length; def_idx++) {
-    var x = defs[def_idx];
-    var _type = x.type;
+  let lines = [];
+  for (let def_idx=0; def_idx<defs.length; def_idx++) {
+    let x = defs[def_idx];
+    let _type = x.type;
 
     if ((_type == "linearGradient") || (_type == "radialGradient")) {
 
-      var _line = "<" + _type + " ";
+      let _line = "<" + _type + " ";
 
-      for (var _key in x) {
+      for (let _key in x) {
         if ((_key === "stops") ||
             (_key === "type")) {
           continue;
@@ -18734,11 +18745,11 @@ function jsonsvg2svg_defs(defs, primary_color, secondary_color) {
       lines.push( _line );
 
       if ("stops" in x) {
-        for (var ii=0; ii<x.stops.length; ii++) {
-          var _stop_line = "<stop ";
-          for (var _key in x.stops[ii]) {
+        for (let ii=0; ii<x.stops.length; ii++) {
+          let _stop_line = "<stop ";
+          for (let _key in x.stops[ii]) {
             if (_key === "color" ) {
-              var c = x.stops[ii][_key];
+              let c = x.stops[ii][_key];
 
               if ((typeof primary_color !== "undefined") && (c == "#ffffff")) {
                 c = primary_color;
@@ -18772,9 +18783,9 @@ function jsonsvg2svg_defs(defs, primary_color, secondary_color) {
 function jsonsvg2svg_child(x, primary_color, secondary_color, disable_gradient, custom_prop) {
   disable_gradient = ((typeof disable_gradient === "undefined") ? false : disable_gradient);
   custom_prop = ((typeof custom_prop === "undefined") ? {} : custom_prop);
-  var lines = [];
+  let lines = [];
 
-  var remap = {
+  let remap = {
     "fillRule": "fill-rule",
     "strokeWidth":"stroke-width",
     "strokeLinejoin":"stroke-linejoin",
@@ -18782,11 +18793,11 @@ function jsonsvg2svg_child(x, primary_color, secondary_color, disable_gradient, 
     "vectorEffect":"vector-effect"
   };
 
-  for (var ii=0; ii<x.length; ii++) {
+  for (let ii=0; ii<x.length; ii++) {
     _json = x[ii];
 
-    var tag = "";
-    var _line = "";
+    let tag = "";
+    let _line = "";
 
     if ("tagName" in _json) {
       _line += "<" + _json["tagName"] + " ";
@@ -18794,9 +18805,9 @@ function jsonsvg2svg_child(x, primary_color, secondary_color, disable_gradient, 
     }
 
     if ("props" in _json) {
-      for (var prop_key in _json.props) {
+      for (let prop_key in _json.props) {
 
-        var _val = _json.props[prop_key];
+        let _val = _json.props[prop_key];
         if ((prop_key == "fill") || (prop_key == "stroke")) {
 
           if ((typeof primary_color !== "undefined") && (_val == "#ffffff")) {
@@ -18810,7 +18821,7 @@ function jsonsvg2svg_child(x, primary_color, secondary_color, disable_gradient, 
           }
         }
 
-        var real_prop_key = prop_key;
+        let real_prop_key = prop_key;
         if (real_prop_key in remap) {
           real_prop_key = remap[prop_key];
         }
@@ -18827,7 +18838,7 @@ function jsonsvg2svg_child(x, primary_color, secondary_color, disable_gradient, 
     if ((tag !== "path") && (tag.length>0)) { _line += ">\n"; }
 
     if ("children" in _json) {
-      var _d = jsonsvg2svg_child(_json.children, primary_color, secondary_color, disable_gradient, custom_prop);
+      let _d = jsonsvg2svg_child(_json.children, primary_color, secondary_color, disable_gradient, custom_prop);
       _line += _d.join("\n");
     }
 
@@ -18862,18 +18873,18 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
   exclude = ((typeof exclude === "undefined") ? [] : exclude);
 
   exclude_h = {};
-  for (var ii=0; ii<exclude.length; ii++) { exclude_h[exclude[ii]] = true; }
+  for (let ii=0; ii<exclude.length; ii++) { exclude_h[exclude[ii]] = true; }
 
-  var xdata = {};
+  let xdata = {};
 
-  for (var idx=0; idx<adata.length; idx++) {
-    var data = adata[idx];
+  for (let idx=0; idx<adata.length; idx++) {
+    let data = adata[idx];
 
-    var svg_width = 720.0, svg_height = 720.0;
+    let svg_width = 720.0, svg_height = 720.0;
 
-    var specs = data.specs;
+    let specs = data.specs;
 
-    for (var _key in specs) {
+    for (let _key in specs) {
 
       // the recursinve bounding box (image to nest under)
       //
@@ -18883,7 +18894,7 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
       // otherwise there are keypoints to anchor to
       //
       else {
-        for (var ii=0; ii<specs[_key].length; ii++) {
+        for (let ii=0; ii<specs[_key].length; ii++) {
 
           // SVG has y inverted (from top of svg image, in this case 720px)
           //
@@ -18893,7 +18904,7 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
       }
     }
 
-    var _svg_inner = [];
+    let _svg_inner = [];
     _svg_inner = jsonsvg2svg_child(data.layers, primary_color, secondary_color, disable_gradient);
 
     adata[idx]["svg_header"] = ['<?xml version="1.0" encoding="utf-8"?>',
@@ -18912,36 +18923,36 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
   xdata["svg_footer"] = "</svg>";
 
   xdata["data"] = [];
-  for (var ii=0; ii<adata.length; ii++) {
+  for (let ii=0; ii<adata.length; ii++) {
     if (adata[ii].name in exclude_h) { continue; }
     xdata.data.push( adata[ii] );
   }
 
   xdata["symbol"] = {};
-  for (var ii=0; ii<adata.length; ii++) {
+  for (let ii=0; ii<adata.length; ii++) {
     if (adata[ii].name in exclude_h) { continue; }
     xdata.symbol[ adata[ii].name ] = adata[ii];
   }
 
   // for restricted choices
   //
-  var attach_list = ["base", "nesting", "crown", "horn", "arm", "leg", "tail", "background"];
+  let attach_list = ["base", "nesting", "crown", "horn", "arm", "leg", "tail", "background"];
   xdata["choice"] = {};
-  for (var ii=0; ii<attach_list.length; ii++) {
+  for (let ii=0; ii<attach_list.length; ii++) {
     xdata.choice[attach_list[ii]] = [];
   }
 
-  for (var ii=0; ii<adata.length; ii++) {
-    var _d = adata[ii];
-    var allowed = { "base": true, "nesting": true, "crown": true, "horn": true, "arm": true, "leg": true, "tail": true, "background":false };
+  for (let ii=0; ii<adata.length; ii++) {
+    let _d = adata[ii];
+    let allowed = { "base": true, "nesting": true, "crown": true, "horn": true, "arm": true, "leg": true, "tail": true, "background":false };
 
-    var _ato = {"crown":false, "horn":false, "arm":false, "leg":false, "tail":false};
+    let _ato = {"crown":false, "horn":false, "arm":false, "leg":false, "tail":false};
 
     // if meta doesn't even exist, just allow everything
     // (excpet background, by default)
     //
     if (!("meta" in _d)) {
-      for (var jj=0; jj<attach_list.length; jj++) {
+      for (let jj=0; jj<attach_list.length; jj++) {
         if (allowed[attach_list[jj]]) {
           if (_d.name in exclude_h) { continue; }
           xdata.choice[attach_list[jj]].push(_d.name);
@@ -18957,7 +18968,7 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
     if (("always_be_nested" in _d.meta) &&
         (_d.meta.always_be_nested)) {
       allowed.base = false;
-      for (var _a in _ato) { allowed[_a] = false; }
+      for (let _a in _ato) { allowed[_a] = false; }
       allowed.nesting = true;
     }
 
@@ -18975,7 +18986,7 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
         _ato[ _d.meta.attach_to[jj] ] = true;
       }
 
-      for (var _a in _ato) {
+      for (let _a in _ato) {
         allowed[_a] = _ato[_a];
       }
     }
@@ -18988,7 +18999,7 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
     // now we can add the creature name
     // to the relevant lists
     //
-    for (var _a in allowed) {
+    for (let _a in allowed) {
       if (allowed[_a]) {
         if (_d.name in exclude_h) { continue; }
         xdata.choice[_a].push( _d.name );
@@ -19001,8 +19012,8 @@ function _preprocess_svgjson(adata, primary_color, secondary_color, disable_grad
 }
 
 function random_creature(ctx, attach_type) {
-  var idx = 0, sub_name = "";
-  var data = ctx.data;
+  let idx = 0, sub_name = "";
+  let data = ctx.data;
 
   if (("bonkers" in ctx) && (ctx.bonkers)) {
     idx = _irnd(data.length);
@@ -19024,7 +19035,7 @@ function random_creature(ctx, attach_type) {
 //            crown
 //      horn          horn
 //         arm     arm
-//           nesting 
+//           nesting
 //         leg     leg
 //             tail
 //
@@ -19076,31 +19087,31 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
   secondary_color = ((typeof secondary_color === "undefined") ? "#000000" : secondary_color);
   bg_color = ((typeof bg_color === "undefined") ? "#777777" : bg_color);
 
-  var realized = {};
+  let realized = {};
 
   //base = ( (typeof base === "undefined") ? ctx.data[ _irnd(ctx.data.length) ] : base ) ;
   if (typeof base === "undefined") {
-    var base_name = random_creature(ctx, "base");
+    let base_name = random_creature(ctx, "base");
     base = ctx.symbol[base_name];
   }
 
   realized["base"] = base.name;
 
-  var _include_background_rect = ctx.create_background_rect;
+  let _include_background_rect = ctx.create_background_rect;
 
   // can randomize this later if desired.
   //
-  var invert_flag = false;
+  let invert_flag = false;
 
-  var scale = ctx.scale;
-  var complexity = ctx.complexity;
+  let scale = ctx.scale;
+  let complexity = ctx.complexity;
 
-  var top_level = false;
+  let top_level = false;
 
   if (ctx.cur_depth == 0) { top_level = true; }
   ctx.cur_depth++;
 
-  var ret_str = "";
+  let ret_str = "";
 
   if (top_level) {
 
@@ -19108,7 +19119,7 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
       ret_str += base.svg_header;
     }
 
-    var _scale = scale;
+    let _scale = scale;
     if ("global_scale" in ctx) {
       _scale *= ctx.global_scale;
     }
@@ -19118,8 +19129,8 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
       " translate(" + (-ctx.svg_width/2).toString() + " " + (-ctx.svg_height/2).toString() + ")\">\n";
 
     if (_include_background_rect) {
-      var w = ctx.svg_width;
-      var h = ctx.svg_height;
+      let w = ctx.svg_width;
+      let h = ctx.svg_height;
       _bg = bg_color;
       ret_str += "<rect x=\"-" + w.toString() + "\" y=\"-" + h.toString() + "\" ";
       ret_str += "width=\"" + (3*w).toString() + "\" height=\"" + (3*h).toString() + "\" fill=\"" + _bg + "\" data-is-background=\"true\">\n</rect>\n";
@@ -19128,17 +19139,17 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
   }
   ret_str += jsonsvg2svg_defs(base.defs, primary_color, secondary_color);
 
-  var base_specs = base.specs;
-  var base_meta = base.meta;
-  var base_bbox = base.bbox;
+  let base_specs = base.specs;
+  let base_meta = base.meta;
+  let base_bbox = base.bbox;
 
   if (ctx.cur_depth <= ctx.max_depth) {
 
     // Attach to logic.
     // Choose candidate limbs to branch off of.
     //
-    var candidate_attach_list = [];
-    for (var spec_key in base_specs) {
+    let candidate_attach_list = [];
+    for (let spec_key in base_specs) {
 
       // Complexity only refers to the limbs, not the nesting.
       // The anchor point is used to position the symbol and not
@@ -19148,18 +19159,18 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
       candidate_attach_list.push(spec_key);
 
     }
-    var attach_list = _choose(candidate_attach_list, complexity);
+    let attach_list = _choose(candidate_attach_list, complexity);
 
-    for (var attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
-      
-      var attach_id = attach_list[attach_list_idx];
+    for (let attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
+
+      let attach_id = attach_list[attach_list_idx];
 
       // Random choice of symbol
       //
-      //var sub_idx = _irnd(ctx.data.length);
-      //var sub_name = ctx.data[sub_idx].name;
+      //let sub_idx = _irnd(ctx.data.length);
+      //let sub_name = ctx.data[sub_idx].name;
 
-      var sub_name = random_creature(ctx, attach_id);
+      let sub_name = random_creature(ctx, attach_id);
 
       if (!("attach" in realized)) {
         realized["attach"] = {};
@@ -19170,31 +19181,31 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
 
       // We reuse the svg to give the symmetry, inverting as needed.
       //
-      var reuse_svg = "";
-      for (var aidx=0; aidx < base.specs[attach_id].length; aidx++) {
+      let reuse_svg = "";
+      for (let aidx=0; aidx < base.specs[attach_id].length; aidx++) {
 
-        var sub = Object.assign({}, ctx.symbol[sub_name]);
+        let sub = Object.assign({}, ctx.symbol[sub_name]);
 
-        var _invert = ( ((aidx%2)==0) ? false : true );
-        var f = (_invert ? -1.0 : 1.0);
+        let _invert = ( ((aidx%2)==0) ? false : true );
+        let f = (_invert ? -1.0 : 1.0);
 
-        var base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
-        var base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
+        let base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
+        let base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
 
-        var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-        var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
+        let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+        let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
 
-        var deg = base_attach_deg - sub_anchor_deg;
+        let deg = base_attach_deg - sub_anchor_deg;
         if (_invert) { deg *= -1; }
 
-        var t_str_s = "<g transform=\"";
+        let t_str_s = "<g transform=\"";
         t_str_s += " translate(" + base_attach_point[0].toString() + " " + base_attach_point[1].toString() + ")";
         t_str_s += " scale(" + scale.toString() + " " + (f*scale).toString() + ")";
         t_str_s += " rotate(" + (deg).toString() + ")";
         t_str_s += " translate(" + (-sub_anchor_point[0]).toString() + " " + (-sub_anchor_point[1]).toString() + ")";
         t_str_s += "\">";
 
-        var t_str_e = "</g>";
+        let t_str_e = "</g>";
 
         if (aidx == 0) {
           ret_str += jsonsvg2svg_defs(sub.defs, primary_color, secondary_color);
@@ -19220,8 +19231,8 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
   // The base symbol
   //
   if (invert_flag) {
-    var w = ctx.svg_width;
-    var h = ctx.svg_height;
+    let w = ctx.svg_width;
+    let h = ctx.svg_height;
 
     ret_str += "<g transform=\"";
     ret_str += " translate(" + (w/2).toString() + " " + (h/2).toString() + ")";
@@ -19244,41 +19255,41 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
 
     // Random choice of nesting symbol
     //
-    //var sub_idx = _irnd(ctx.data.length);
-    //var sub_name = ctx.data[sub_idx].name;
+    //let sub_idx = _irnd(ctx.data.length);
+    //let sub_name = ctx.data[sub_idx].name;
 
-    var sub_name = random_creature(ctx, "nesting");
+    let sub_name = random_creature(ctx, "nesting");
 
-    for (var nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
+    for (let nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
 
-      //var sub = Object.assign({}, ctx.data[sub_idx]);
-      var sub = Object.assign({}, ctx.symbol[sub_name]);
+      //let sub = Object.assign({}, ctx.data[sub_idx]);
+      let sub = Object.assign({}, ctx.symbol[sub_name]);
 
-      var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-      var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
+      let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+      let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
 
-      var nest_anchor_deg = _deg( 0, -1 );
+      let nest_anchor_deg = _deg( 0, -1 );
 
-      var nest_bbox = base.specs.nesting[nest_idx];
-      var nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
+      let nest_bbox = base.specs.nesting[nest_idx];
+      let nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
                           nest_bbox.y.min + ((nest_bbox.y.max - nest_bbox.y.min) / 2.0) ];
 
-      var nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
-      var nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
-      var min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
+      let nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
+      let nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
+      let min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
 
       // We center it along the minimum dimension of the nesting box.
       //
-      var nest_ul = [ nest_center[0] - min_dim/2, nest_center[1] - min_dim/2 ];
+      let nest_ul = [ nest_center[0] - min_dim/2, nest_center[1] - min_dim/2 ];
 
-      var nest_scale = min_dim / ctx.svg_width;
+      let nest_scale = min_dim / ctx.svg_width;
 
-      var t_str_s = "<g transform=\"";
+      let t_str_s = "<g transform=\"";
       t_str_s += " translate(" + nest_ul[0].toString() + " " + nest_ul[1].toString() + ")";
       t_str_s += " scale(" + (nest_scale).toString() + " " + (nest_scale).toString() + ")";
       t_str_s += "\">";
 
-      var t_str_e = "</g>";
+      let t_str_e = "</g>";
 
       ret_str += jsonsvg2svg_defs(sub.defs, secondary_color, primary_color);
       ret_str += t_str_s;
@@ -19317,7 +19328,7 @@ function mystic_symbolic_random(ctx, base, primary_color, secondary_color, bg_co
 // -----
 
 function parse_invert_name(sym) {
-  var res = { "invert":false, "name": null, "primary":null, "secondary":null, "deg_angle":0 };
+  let res = { "invert":false, "name": null, "primary":null, "secondary":null, "deg_angle":0 };
 
   if (typeof sym === "undefined") { return res; }
 
@@ -19332,7 +19343,7 @@ function parse_invert_name(sym) {
   }
 
   if (res.name.match(/\//)) {
-    var tok = res.name.split(/\//);
+    let tok = res.name.split(/\//);
     if (tok.length > 1) {
       res.deg_angle = parseFloat(tok[1]);
       res.name = tok[0];
@@ -19340,7 +19351,7 @@ function parse_invert_name(sym) {
   }
 
   if (res.name.match(/#/)) {
-    var tok = res.name.split("#");
+    let tok = res.name.split("#");
     res.name = tok[0];
     res.primary = "#" + tok[1];
     if (tok.length > 2) {
@@ -19360,17 +19371,17 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
   if (typeof sched === "string") {
     sched = { "base": sched };
   }
-  var _include_background_rect = ctx.create_background_rect;
-  var scale = ctx.scale;
-  var top_level = false;
+  let _include_background_rect = ctx.create_background_rect;
+  let scale = ctx.scale;
+  let top_level = false;
 
-  var use_creature_id = true;
+  let use_creature_id = true;
 
-  var symbol_info = parse_invert_name(sched.base);
-  var invert_flag = symbol_info.invert;
-  var symbol_name = symbol_info.name;
+  let symbol_info = parse_invert_name(sched.base);
+  let invert_flag = symbol_info.invert;
+  let symbol_name = symbol_info.name;
 
-  var _base_pcol = ( symbol_info.primary ? symbol_info.primary : primary_color ),
+  let _base_pcol = ( symbol_info.primary ? symbol_info.primary : primary_color ),
       _base_scol = ( symbol_info.secondary ? symbol_info.secondary : secondary_color ),
       _base_ang = ( symbol_info.deg_angle ? symbol_info.deg_angle : 0.0);
 
@@ -19378,11 +19389,11 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
   // `mystic_symbolic_random` function.
   //
   if (symbol_name == ":rnd") {
-    var _dx = ctx.svg_width/2,
+    let _dx = ctx.svg_width/2,
         _dy = ctx.svg_height/2;
-    var _w = ctx.svg_width, _h = ctx.svg_height;
-    var _rnd_creat = ctx.symbol[random_creature(ctx, "base")];
-    var _r = "";
+    let _w = ctx.svg_width, _h = ctx.svg_height;
+    let _rnd_creat = ctx.symbol[random_creature(ctx, "base")];
+    let _r = "";
 
     _r += mystic_symbolic_random(ctx, undefined, _base_pcol, _base_scol, bg_color);
     return _r;
@@ -19393,10 +19404,10 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
   if (ctx.cur_depth == 0) { top_level = true; }
   ctx.cur_depth++;
 
-  var base = ctx.symbol[symbol_name];
+  let base = ctx.symbol[symbol_name];
   if (!(symbol_name in ctx.symbol)) { return {"error":"could not find symbol " + symbol_name + " (0)"}; }
 
-  var ret_str = "";
+  let ret_str = "";
 
   if (top_level) {
 
@@ -19404,7 +19415,7 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
       ret_str += base.svg_header;
     }
 
-    var _scale = scale;
+    let _scale = scale;
     if ("global_scale" in ctx) {
       _scale *= ctx.global_scale;
     }
@@ -19424,8 +19435,8 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
     }
 
     if (_include_background_rect) {
-      var w = ctx.svg_width;
-      var h = ctx.svg_height;
+      let w = ctx.svg_width;
+      let h = ctx.svg_height;
       _bg = bg_color;
       ret_str += "<rect x=\"-" + w.toString() + "\" y=\"-" + h.toString() + "\" ";
       ret_str += "width=\"" + (3*w).toString() + "\" height=\"" + (3*h).toString() + "\" fill=\"" + _bg + "\" data-is-background=\"true\">\n</rect>\n";
@@ -19433,24 +19444,24 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
 
   }
 
-  var base_specs = base.specs;
-  var base_meta = base.meta;
-  var base_bbox = base.bbox;
+  let base_specs = base.specs;
+  let base_meta = base.meta;
+  let base_bbox = base.bbox;
 
-  var attach_list = [];
+  let attach_list = [];
   if ("attach" in sched) {
-    for (var key in sched.attach) {
+    for (let key in sched.attach) {
       attach_list.push(key);
     }
   }
 
-  for (var attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
+  for (let attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
 
     // if attach id is in our schedule...
     // find the sub component name
     //
-    var attach_id = attach_list[attach_list_idx];
-    var sched_mod_data = sched.attach[attach_id];
+    let attach_id = attach_list[attach_list_idx];
+    let sched_mod_data = sched.attach[attach_id];
 
     // make sure we have it in our compnent and
     // skip the nesting, as that will be handled below
@@ -19458,11 +19469,11 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
     if (!(attach_id in base.specs)) { continue; }
     if (attach_id === "nesting") { continue; }
 
-    var reuse_svg = "";
-    for (var aidx=0; aidx < base.specs[attach_id].length; aidx++) {
+    let reuse_svg = "";
+    for (let aidx=0; aidx < base.specs[attach_id].length; aidx++) {
 
-      var sub_name = "";
-      var m_aidx = aidx % sched_mod_data.length
+      let sub_name = "";
+      let m_aidx = aidx % sched_mod_data.length
       if (typeof sched_mod_data[m_aidx] === "string") {
         sub_name = sched_mod_data[m_aidx];
       }
@@ -19470,19 +19481,19 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
         sub_name = sched_mod_data[m_aidx].base;
       }
 
-      var sub_symbol_info = parse_invert_name(sub_name);
-      var sub_invert_flag = sub_symbol_info.invert;
-      var sub_symbol_name = sub_symbol_info.name;
+      let sub_symbol_info = parse_invert_name(sub_name);
+      let sub_invert_flag = sub_symbol_info.invert;
+      let sub_symbol_name = sub_symbol_info.name;
 
-      var _sub_pcol = ( sub_symbol_info.primary ? sub_symbol_info.primary : primary_color );
-      var _sub_scol = ( sub_symbol_info.secondary ? sub_symbol_info.secondary : secondary_color );
-      var _sub_deg_ang = ( sub_symbol_info.deg_angle ? sub_symbol_info.deg_angle : 0.0 );
+      let _sub_pcol = ( sub_symbol_info.primary ? sub_symbol_info.primary : primary_color );
+      let _sub_scol = ( sub_symbol_info.secondary ? sub_symbol_info.secondary : secondary_color );
+      let _sub_deg_ang = ( sub_symbol_info.deg_angle ? sub_symbol_info.deg_angle : 0.0 );
 
-      var do_random_recur = false;
+      let do_random_recur = false;
 
 
       if (sub_symbol_name == ":rnd") {
-        var _rnd_creat = ctx.symbol[random_creature(ctx, attach_id)];
+        let _rnd_creat = ctx.symbol[random_creature(ctx, attach_id)];
         sub_symbol_name = _rnd_creat.name;
         do_random_recur = true;
       }
@@ -19492,36 +19503,35 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
         return {"error":"could not find symbol " + sub_symbol_name + " (1)"};
       }
 
-      var sub_sched = sched.attach[attach_id][m_aidx];
+      let sub_sched = sched.attach[attach_id][m_aidx];
 
-      var sub = Object.assign({}, ctx.symbol[sub_symbol_name]);
+      let sub = Object.assign({}, ctx.symbol[sub_symbol_name]);
 
-      var _invert = ( ((aidx%2)==0) ? false : true );
-      var f = (_invert ? -1.0 : 1.0);
+      let _invert = ( ((aidx%2)==0) ? false : true );
+      let f = (_invert ? -1.0 : 1.0);
       if (sub_invert_flag) {
         _invert = (_invert ? false : true);
         f *= -1.0;
       }
 
-      var base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
-      var base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
+      let base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
+      let base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
 
-      var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-      var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
+      let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+      let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
 
-      var deg = base_attach_deg - sub_anchor_deg + _sub_deg_ang;
+      let deg = base_attach_deg - sub_anchor_deg + _sub_deg_ang;
       if (_invert) { deg *= -1; }
 
-      var t_str_s = "<g transform=\"";
+      let t_str_s = "<g transform=\"";
       t_str_s += " translate(" + base_attach_point[0].toString() + " " + base_attach_point[1].toString() + ")";
       t_str_s += " scale(" + scale.toString() + " " + (f*scale).toString() + ")";
       t_str_s += " rotate(" + (deg).toString() + ")";
       t_str_s += " translate(" + (-sub_anchor_point[0]).toString() + " " + (-sub_anchor_point[1]).toString() + ")";
       t_str_s += "\">";
 
-      var t_str_e = "</g>";
+      let t_str_e = "</g>";
 
-     
       if (do_random_recur) {
         reuse_svg = mystic_symbolic_random(ctx, ctx.symbol[sub_symbol_name], _sub_pcol, _sub_scol);
       }
@@ -19547,32 +19557,32 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
   //
   if (("attach" in sched) && ("nesting" in sched.attach) && ("nesting" in base.specs)) {
 
-    for (var nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
+    for (let nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
 
-      var sched_nest_n = sched.attach.nesting.length;
+      let sched_nest_n = sched.attach.nesting.length;
 
-      var sub_sched = {};
+      let sub_sched = {};
       if (typeof sched.attach.nesting[nest_idx % sched_nest_n] === "string") {
         sub_sched = {"base":sched.attach.nesting[nest_idx % sched_nest_n]};
       }
       else {
         sub_sched = sched.attach.nesting[nest_idx % sched_nest_n];
       }
-      var sub_name = sub_sched.base;
+      let sub_name = sub_sched.base;
 
 
-      var sub_symbol_info = parse_invert_name(sub_name);
-      var sub_invert_flag = sub_symbol_info.invert;
-      var sub_symbol_name = sub_symbol_info.name;
+      let sub_symbol_info = parse_invert_name(sub_name);
+      let sub_invert_flag = sub_symbol_info.invert;
+      let sub_symbol_name = sub_symbol_info.name;
 
-      var _sub_pcol = ( sub_symbol_info.primary ? sub_symbol_info.primary : primary_color );
-      var _sub_scol = ( sub_symbol_info.secondary ? sub_symbol_info.secondary : secondary_color );
-      var _sub_deg_ang = ( sub_symbol_info.deg_angle ? sub_symbol_info.deg_angle : 0.0 );
+      let _sub_pcol = ( sub_symbol_info.primary ? sub_symbol_info.primary : primary_color );
+      let _sub_scol = ( sub_symbol_info.secondary ? sub_symbol_info.secondary : secondary_color );
+      let _sub_deg_ang = ( sub_symbol_info.deg_angle ? sub_symbol_info.deg_angle : 0.0 );
 
-      var do_random_recur = false;
+      let do_random_recur = false;
 
       if (sub_symbol_name == ":rnd") {
-        var _rnd_creat = ctx.symbol[random_creature(ctx, "nesting")];
+        let _rnd_creat = ctx.symbol[random_creature(ctx, "nesting")];
         sub_symbol_name = _rnd_creat.name;
         do_random_recur = true;
       }
@@ -19581,24 +19591,24 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
         return {"error":"could not find symbol " + sub_symbol_name + " (2)"};
       }
 
-      var sub = Object.assign({}, ctx.symbol[sub_symbol_name]);
+      let sub = Object.assign({}, ctx.symbol[sub_symbol_name]);
 
-      var nest_f = (sub_invert_flag ? -1.0 : 1.0);
+      let nest_f = (sub_invert_flag ? -1.0 : 1.0);
 
-      var nest_bbox = base.specs.nesting[nest_idx];
-      var nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
+      let nest_bbox = base.specs.nesting[nest_idx];
+      let nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
                           nest_bbox.y.min + ((nest_bbox.y.max - nest_bbox.y.min) / 2.0) ];
 
 
-      var nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
-      var nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
-      var min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
+      let nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
+      let nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
+      let min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
 
-      var nest_ul = [ nest_center[0] - min_dim/2, nest_center[1] - min_dim/2 ];
+      let nest_ul = [ nest_center[0] - min_dim/2, nest_center[1] - min_dim/2 ];
 
-      var nest_scale = min_dim / ctx.svg_width;
+      let nest_scale = min_dim / ctx.svg_width;
 
-      var nest_deg = 0.0;
+      let nest_deg = 0.0;
       if (sub_invert_flag) {
         nest_deg = 180;
         nest_f = -1.0;
@@ -19606,7 +19616,7 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
 
       nest_deg += _sub_deg_ang;
 
-      var t_str_s = "<g transform=\"";
+      let t_str_s = "<g transform=\"";
       t_str_s += " translate(" + nest_ul[0].toString() + " " + nest_ul[1].toString() + ")";
       t_str_s += " scale(" + (nest_scale).toString() + " " + (nest_scale).toString() + ")";
       t_str_s += " translate(" + (720/2).toString() + " " + (720/2).toString() + ")";
@@ -19615,7 +19625,7 @@ function mystic_symbolic_sched(ctx, sched, primary_color, secondary_color, bg_co
       t_str_s += " translate(" + (-720/2).toString() + " " + (-720/2).toString() + ")";
       t_str_s += "\">";
 
-      var t_str_e = "</g>";
+      let t_str_e = "</g>";
 
       ret_str += t_str_s;
 
@@ -19669,9 +19679,9 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
   secondary_color = ((typeof secondary_color === "undefined") ? "#000000" : secondary_color);
   bg_color = ((typeof bg_color === "undefined") ? "#777777" : bg_color);
 
-  var use_bottom_nest_anchor_point = false;
+  let use_bottom_nest_anchor_point = false;
 
-  var symbol_name = sched;
+  let symbol_name = sched;
   if (typeof symbol_name !== "string") {
 
     if (!("base" in sched)) {
@@ -19688,14 +19698,14 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
     sched = { "base": sched };
   }
 
-  var _include_background_rect = true;
-  var scale = ctx.scale;
-  var top_level = false;
+  let _include_background_rect = true;
+  let scale = ctx.scale;
+  let top_level = false;
 
   if (ctx.cur_depth == 0) { top_level = true; }
   ctx.cur_depth++;
 
-  var ret_str = "";
+  let ret_str = "";
 
   if (top_level) {
 
@@ -19706,8 +19716,8 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
     ret_str += "<g transform=\"translate(360 360) scale(0.5 0.5) translate(-360 -360)\">\n";
 
     if (_include_background_rect) {
-      var w = ctx.svg_width;
-      var h = ctx.svg_height;
+      let w = ctx.svg_width;
+      let h = ctx.svg_height;
       _bg = bg_color;
       ret_str += "<rect x=\"-" + w.toString() + "\" y=\"-" + h.toString() + "\" ";
       ret_str += "width=\"" + (3*w).toString() + "\" height=\"" + (3*h).toString() + "\" fill=\"" + _bg + "\" data-is-background=\"true\">\n</rect>\n";
@@ -19716,27 +19726,27 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
     ret_str += jsonsvg2svg_defs(base.defs, primary_color, secondary_color);
   }
 
-  var base_specs = base.specs;
-  var base_meta = base.meta;
-  var base_bbox = base.bbox;
+  let base_specs = base.specs;
+  let base_meta = base.meta;
+  let base_bbox = base.bbox;
 
-  var attach_kind = ["nesting", "crown", "horn", "arm", "leg", "tail"];
+  let attach_kind = ["nesting", "crown", "horn", "arm", "leg", "tail"];
 
-  var attach_list = [];
+  let attach_list = [];
 
-  for (var ii=0; ii<attach_kind.length; ii++) {
+  for (let ii=0; ii<attach_kind.length; ii++) {
     if (attach_kind[ii] in sched) {
       attach_list.push(attach_kind[ii]);
     }
   }
 
-  for (var attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
+  for (let attach_list_idx=0; attach_list_idx < attach_list.length; attach_list_idx++) {
 
     // if attach id is in our schedule...
     // find the sub component name
     //
-    var attach_id = attach_list[attach_list_idx];
-    var sched_mod_data = sched[attach_id];
+    let attach_id = attach_list[attach_list_idx];
+    let sched_mod_data = sched[attach_id];
 
     // make sure we have it in our compnent and
     // skip the nesting, as that will be handled below
@@ -19744,11 +19754,11 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
     if (!(attach_id in base.specs)) { continue; }
     if (attach_id === "nesting") { continue; }
 
-    var reuse_svg = "";
-    for (var aidx=0; aidx < base.specs[attach_id].length; aidx++) {
+    let reuse_svg = "";
+    for (let aidx=0; aidx < base.specs[attach_id].length; aidx++) {
 
-      var sub_name = "";
-      var m_aidx = aidx % sched_mod_data.length
+      let sub_name = "";
+      let m_aidx = aidx % sched_mod_data.length
       if (typeof sched_mod_data[m_aidx] === "string") {
         sub_name = sched_mod_data[m_aidx];
       }
@@ -19756,30 +19766,30 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
         sub_name = get_base_string(sched_mod_data[aidx%sched_mod_data.length], aidx);
       }
 
-      var sub_sched = sched.attach[attach_id][m_aidx];
+      let sub_sched = sched.attach[attach_id][m_aidx];
 
-      var sub = Object.assign({}, ctx.symbol[sub_name]);
+      let sub = Object.assign({}, ctx.symbol[sub_name]);
 
-      var _invert = ( ((aidx%2)==0) ? false : true );
-      var f = (_invert ? -1.0 : 1.0);
+      let _invert = ( ((aidx%2)==0) ? false : true );
+      let f = (_invert ? -1.0 : 1.0);
 
-      var base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
-      var base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
+      let base_attach_point = [ base.specs[attach_id][aidx].point.x, base.specs[attach_id][aidx].point.y ];
+      let base_attach_deg = _deg( base.specs[attach_id][aidx].normal.x, base.specs[attach_id][aidx].normal.y );
 
-      var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-      var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
+      let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+      let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, f*sub.specs.anchor[0].normal.y );
 
-      var deg = base_attach_deg - sub_anchor_deg;
+      let deg = base_attach_deg - sub_anchor_deg;
       if (_invert) { deg *= -1; }
 
-      var t_str_s = "<g transform=\"";
+      let t_str_s = "<g transform=\"";
       t_str_s += " translate(" + base_attach_point[0].toString() + " " + base_attach_point[1].toString() + ")";
       t_str_s += " scale(" + scale.toString() + " " + (f*scale).toString() + ")";
       t_str_s += " rotate(" + (deg).toString() + ")";
       t_str_s += " translate(" + (-sub_anchor_point[0]).toString() + " " + (-sub_anchor_point[1]).toString() + ")";
       t_str_s += "\">";
 
-      var t_str_e = "</g>";
+      let t_str_e = "</g>";
 
       ret_str += jsonsvg2svg_defs(sub.defs, primary_color, secondary_color);
       reuse_svg = mystic_symbolic_sched2(ctx, sub_sched, primary_color, secondary_color);
@@ -19798,49 +19808,49 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
   //
   if (("attach" in sched) && ("nesting" in sched.attach) && ("nesting" in base.specs)) {
 
-    for (var nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
+    for (let nest_idx=0; nest_idx<base.specs.nesting.length; nest_idx++) {
 
-      var sched_nest_n = sched.attach.nesting.length;
+      let sched_nest_n = sched.attach.nesting.length;
 
-      var sub_sched = {};
+      let sub_sched = {};
       if (typeof sched.attach.nesting[nest_idx % sched_nest_n] === "string") {
         sub_sched = {"base":sched.attach.nesting[nest_idx % sched_nest_n]};
       }
       else {
         sub_sched = sched.attach.nesting[nest_idx % sched_nest_n];
       }
-      var sub_name = sub_sched.base;
-      var sub = Object.assign({}, ctx.symbol[sub_name]);
+      let sub_name = sub_sched.base;
+      let sub = Object.assign({}, ctx.symbol[sub_name]);
 
       if (use_bottom_nest_anchor_point) {
 
-        var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-        var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
+        let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+        let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
 
-        var nest_anchor_deg = _deg( 0, -1 );
+        let nest_anchor_deg = _deg( 0, -1 );
 
-        var nest_bbox = base.specs.nesting[nest_idx];
-        var base_attach = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
+        let nest_bbox = base.specs.nesting[nest_idx];
+        let base_attach = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
                             (nest_bbox.y.max) ];
 
-        var nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
-        var nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
-        var min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
+        let nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
+        let nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
+        let min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
 
-        var nest_scale = min_dim / ctx.svg_width;
+        let nest_scale = min_dim / ctx.svg_width;
 
         // nest areas are always axis aligned, pointing up
         //
-        var deg = nest_anchor_deg - sub_anchor_deg;
+        let deg = nest_anchor_deg - sub_anchor_deg;
 
-        var t_str_s = "<g transform=\"";
+        let t_str_s = "<g transform=\"";
         t_str_s += " translate(" + base_attach[0].toString() + " " + base_attach[1].toString() + ")";
         t_str_s += " scale(" + (nest_scale).toString() + " " + (nest_scale).toString() + ")";
         t_str_s += " rotate(" + (deg).toString() + ")";
         t_str_s += " translate(" + (-sub_anchor_point[0]).toString() + " " + (-sub_anchor_point[1]).toString() + ")";
         t_str_s += "\">";
 
-        var t_str_e = "</g>";
+        let t_str_e = "</g>";
 
         ret_str += jsonsvg2svg_defs(sub.defs, secondary_color, primary_color);
         ret_str += t_str_s;
@@ -19850,29 +19860,29 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
       else {
 
 
-        var sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
-        var sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
+        let sub_anchor_point = [ sub.specs.anchor[0].point.x, sub.specs.anchor[0].point.y ];
+        let sub_anchor_deg = _deg( sub.specs.anchor[0].normal.x, sub.specs.anchor[0].normal.y );
 
-        var nest_anchor_deg = _deg( 0, -1 );
+        let nest_anchor_deg = _deg( 0, -1 );
 
-        var nest_bbox = base.specs.nesting[nest_idx];
-        var nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
+        let nest_bbox = base.specs.nesting[nest_idx];
+        let nest_center = [ nest_bbox.x.min + ((nest_bbox.x.max - nest_bbox.x.min) / 2.0),
                             nest_bbox.y.min + ((nest_bbox.y.max - nest_bbox.y.min) / 2.0) ];
 
-        var nest_ul = [ nest_bbox.x.min , nest_bbox.y.min ];
+        let nest_ul = [ nest_bbox.x.min , nest_bbox.y.min ];
 
-        var nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
-        var nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
-        var min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
+        let nest_dx = Math.abs(nest_bbox.x.max - nest_bbox.x.min);
+        let nest_dy = Math.abs(nest_bbox.y.max - nest_bbox.y.min);
+        let min_dim = ( (nest_dx < nest_dy) ? nest_dx : nest_dy );
 
-        var nest_scale = min_dim / ctx.svg_width;
+        let nest_scale = min_dim / ctx.svg_width;
 
-        var t_str_s = "<g transform=\"";
+        let t_str_s = "<g transform=\"";
         t_str_s += " translate(" + nest_ul[0].toString() + " " + nest_ul[1].toString() + ")";
         t_str_s += " scale(" + (nest_scale).toString() + " " + (nest_scale).toString() + ")";
         t_str_s += "\">";
 
-        var t_str_e = "</g>";
+        let t_str_e = "</g>";
 
         ret_str += jsonsvg2svg_defs(sub.defs, secondary_color, primary_color);
         ret_str += t_str_s;
@@ -19896,9 +19906,9 @@ function mystic_symbolic_sched2(ctx, sched, idx, primary_color, secondary_color,
 //
 function luminance(sr,sg,sb) {
 
-  var r = ((sr < 0.03928) ? (sr/12.92) : Math.pow(((sr + 0.055)/1.055),2.4));
-  var g = ((sg < 0.03928) ? (sg/12.92) : Math.pow(((sg + 0.055)/1.055),2.4));
-  var b = ((sb < 0.03928) ? (sb/12.92) : Math.pow(((sb + 0.055)/1.055),2.4));
+  let r = ((sr < 0.03928) ? (sr/12.92) : Math.pow(((sr + 0.055)/1.055),2.4));
+  let g = ((sg < 0.03928) ? (sg/12.92) : Math.pow(((sg + 0.055)/1.055),2.4));
+  let b = ((sb < 0.03928) ? (sb/12.92) : Math.pow(((sb + 0.055)/1.055),2.4));
 
   return (0.2126*r) + (0.7152*g) + (0.0722*b);
 }
@@ -19906,36 +19916,36 @@ function luminance(sr,sg,sb) {
 // experiment
 //
 function _rand_color() {
-  var res = {
+  let res = {
     "primary" : { "hex":"#000000" },
     "secondary" : {"hex":"#ffffff" },
     "background": { "hex":"#777777" },
     "background2": { "hex":"#555555" }
   };
 
-  var palette = [ [], [], [], [] ];
+  let palette = [ [], [], [], [] ];
 
-  var n = 5;
-  //var base_hue = Math.random();
-  var base_hue = g_rng.double();
+  let n = 5;
+  //let base_hue = Math.random();
+  let base_hue = g_rng.double();
 
-  for (var p=0; p<palette.length; p++) {
-    for (var i=1; i<(n+2); i++) {
-      var _val = i/(n+2);
-      var _sat = _rnd(0.35, 0.70);
+  for (let p=0; p<palette.length; p++) {
+    for (let i=1; i<(n+2); i++) {
+      let _val = i/(n+2);
+      let _sat = _rnd(0.35, 0.70);
 
       palette[p].push( HSVtoRGB(_hue, _sat, _val) );
     }
   }
 
-  var prim_hue = g_rng.double();
-  var prim_sat = _rnd(0.35, 0.70);
-  var prim_val = _rnd(0.75, 1.0);
+  let prim_hue = g_rng.double();
+  let prim_sat = _rnd(0.35, 0.70);
+  let prim_val = _rnd(0.75, 1.0);
 
 
-  var seco_hue = prim_hue + 0.35;
-  var seco_sat = 1.0 - prim_sat;
-  var seco_val = _rnd(0.25, 0.6);
+  let seco_hue = prim_hue + 0.35;
+  let seco_sat = 1.0 - prim_sat;
+  let seco_val = _rnd(0.25, 0.6);
   if (seco_hue > 1.0) { seco_hue - 1.0; }
 
 
@@ -19959,7 +19969,7 @@ function _rand_color() {
 // small variation but otherwise it's basically just
 // chosen to be much darker.
 //
-// The background is chosen to be light and highly 
+// The background is chosen to be light and highly
 // desaturated, so as not to take away attention from
 // the foreground.
 // The complementary
@@ -19972,16 +19982,16 @@ function _rand_color() {
 //
 function rand_color(base_hue) {
   base_hue = ((typeof base_hue === "undefined") ? g_rng.double() : base_hue);
-  var res = {
+  let res = {
     "primary" : { "hex":"#000000", "hsv":[0,0,0] },
     "secondary" : {"hex":"#ffffff", "hsv":[0,0,0] },
     "background": { "hex":"#777777", "hsv":[0,0,0] },
     "background2": { "hex":"#555555", "hsv":[0,0,0] }
   };
 
-  var prim_hue = base_hue;
-  var prim_sat = _rnd(0.4, 0.6);
-  var prim_val = _rnd(0.675, 0.95);
+  let prim_hue = base_hue;
+  let prim_sat = _rnd(0.4, 0.6);
+  let prim_val = _rnd(0.675, 0.95);
 
   res.primary.hsv = [ prim_hue, prim_sat, prim_val ];
 
@@ -19997,9 +20007,9 @@ function rand_color(base_hue) {
   // Choosing a random hue gives it a little variation but
   // otherwise is probably not that important.
   //
-  var _del_hue = 0.2;
-  var seco_hue = _mod1( prim_hue + _crnd([-1,1])*_rnd(_del_hue/2, 1.0) );
-  var seco_sat = _clamp( prim_sat + _crnd([-1,1])*_rnd(0.2, 0.3), 0.3, 0.6 );
+  let _del_hue = 0.2;
+  let seco_hue = _mod1( prim_hue + _crnd([-1,1])*_rnd(_del_hue/2, 1.0) );
+  let seco_sat = _clamp( prim_sat + _crnd([-1,1])*_rnd(0.2, 0.3), 0.3, 0.6 );
   seco_val = _rnd(0.1,0.325);
 
   res.secondary.hsv = [ seco_hue, seco_sat, seco_val ];
@@ -20008,7 +20018,7 @@ function rand_color(base_hue) {
   // I kind of like backgrounds that are lighter, but it's hard
   // to say.
   // It might be better to have this as a user option.
-  // 
+  //
   // I think having the bg2_val be 'repelled' in value
   // from the bg_val works out pretty well, as it gives
   // a good contrast.
@@ -20017,35 +20027,35 @@ function rand_color(base_hue) {
   // the foreground.
   //
 
-  var bg_dark_opt = false;
+  let bg_dark_opt = false;
   if (_rnd() < 0.5) { bg_dark_opt = true; }
 
-  //var bg_hue = Math.random();
-  var bg_hue = g_rng.double();
-  var bg_sat = _rnd(0.05, 0.2);
-  var bg_val = ( bg_dark_opt ? _rnd(0.05, 0.5) : _rnd(0.5, 0.95) );
+  //let bg_hue = Math.random();
+  let bg_hue = g_rng.double();
+  let bg_sat = _rnd(0.05, 0.2);
+  let bg_val = ( bg_dark_opt ? _rnd(0.05, 0.5) : _rnd(0.5, 0.95) );
 
   res.background.hsv = [ bg_hue, bg_sat, bg_val ];
 
-  var bg2_hue = g_rng.double();
-  var bg2_sat = _rnd(0.05, 0.2);
+  let bg2_hue = g_rng.double();
+  let bg2_sat = _rnd(0.05, 0.2);
 
   // this needs fixing
   // there should be a 'dead zone' around the bg_val above (of 0.05 in each direction,
   // say) where you can pick another value outside of that dead zone but restricted to
   // some other window.
   //
-  var bg2_val = 0.5 + (_mod1(bg_val + _crnd([-1,1])*_rnd(0.1, 0.25))/2.0);
+  let bg2_val = 0.5 + (_mod1(bg_val + _crnd([-1,1])*_rnd(0.1, 0.25))/2.0);
   if (bg_dark_opt) {
     bg2_val = (_mod1(2*bg_val + _crnd([-1,1])*_rnd(0.1, 0.25))/2.0);
   }
 
   res.background2.hsv = [ bg2_hue, bg2_sat, bg2_val ];
 
-  var prim_rgb = HSVtoRGB(prim_hue,  prim_sat, prim_val);
-  var seco_rgb = HSVtoRGB(seco_hue,  seco_sat, seco_val);
-  var bg_rgb = HSVtoRGB(bg_hue,  bg_sat, bg_val);
-  var bg2_rgb = HSVtoRGB(bg2_hue,  bg2_sat, bg2_val);
+  let prim_rgb = HSVtoRGB(prim_hue,  prim_sat, prim_val);
+  let seco_rgb = HSVtoRGB(seco_hue,  seco_sat, seco_val);
+  let bg_rgb = HSVtoRGB(bg_hue,  bg_sat, bg_val);
+  let bg2_rgb = HSVtoRGB(bg2_hue,  bg2_sat, bg2_val);
 
   res.primary.hex = _rgb2hex(prim_rgb.r, prim_rgb.g, prim_rgb.b);
   res.secondary.hex = _rgb2hex(seco_rgb.r, seco_rgb.g, seco_rgb.b);
@@ -20059,37 +20069,37 @@ function rand_color(base_hue) {
 // pick random hsv in a restricted range
 //
 function rand_color_hsv() {
-  var res = {
+  let res = {
     "primary" : { "hex":"#000000" },
     "secondary" : {"hex":"#ffffff" },
     "background": { "hex":"#777777" }
   };
 
 
-  //var prim_hue = Math.random();
-  var prim_hue = g_rng.double();
-  var prim_sat = _rnd(0.45, 0.60);
-  var prim_val = _rnd(0.75, 1.0);
+  //let prim_hue = Math.random();
+  let prim_hue = g_rng.double();
+  let prim_sat = _rnd(0.45, 0.60);
+  let prim_val = _rnd(0.75, 1.0);
 
-  var seco_hue = prim_hue + 0.35;
-  var seco_sat = 1.0 - prim_sat;
-  var seco_val = _rnd(0.25, 0.6);
+  let seco_hue = prim_hue + 0.35;
+  let seco_sat = 1.0 - prim_sat;
+  let seco_val = _rnd(0.25, 0.6);
   if (seco_hue > 1.0) { seco_hue -= 1.0; }
 
-  var bg_hue = prim_hue - 0.35;
-  //var bg_sat = (Math.random()*.5);
-  //var bg_val = (Math.random()*0.5)+0.5;
+  let bg_hue = prim_hue - 0.35;
+  //let bg_sat = (Math.random()*.5);
+  //let bg_val = (Math.random()*0.5)+0.5;
 
-  var bg_sat = (g_rng.double()*.5);
-  var bg_val = (g_rng.double()*0.5)+0.5;
+  let bg_sat = (g_rng.double()*.5);
+  let bg_val = (g_rng.double()*0.5)+0.5;
 
   if (bg_hue < 0.0) { bg_hue += 1.0; }
 
-  var prim_rgb = HSVtoRGB(prim_hue, prim_sat, prim_val);
-  var seco_rgb = HSVtoRGB(seco_hue, seco_sat, seco_val);
-  var bg_rgb = HSVtoRGB(bg_hue, bg_sat, bg_val);
+  let prim_rgb = HSVtoRGB(prim_hue, prim_sat, prim_val);
+  let seco_rgb = HSVtoRGB(seco_hue, seco_sat, seco_val);
+  let bg_rgb = HSVtoRGB(bg_hue, bg_sat, bg_val);
 
-  //var prim_xyz = 
+  //let prim_xyz =
 
   res.primary.hex = _rgb2hex(prim_rgb.r, prim_rgb.g, prim_rgb.b);
   res.secondary.hex = _rgb2hex(seco_rgb.r, seco_rgb.g, seco_rgb.b);
@@ -20099,25 +20109,25 @@ function rand_color_hsv() {
 }
 
 function rand_color_n(n) {
-  var res = [ ];
+  let res = [ ];
 
-  for (var ii=0; ii<n; ii++) {
+  for (let ii=0; ii<n; ii++) {
     res.push([ { "hex":"#000000", "hsv":[0,0,0] }, { "hex":"#000000", "hsv":[0,0,0] } ]);
   }
 
-  //var base_hue = Math.random();
-  var base_hue = g_rng.double();
-  var cur_hue = base_hue;
+  //let base_hue = Math.random();
+  let base_hue = g_rng.double();
+  let cur_hue = base_hue;
 
-  var dir = _crnd([1,-1]);
+  let dir = _crnd([1,-1]);
 
-  var _s = (1/(n*n));
+  let _s = (1/(n*n));
 
-  for (var ii=0; ii<res.length; ii++) {
+  for (let ii=0; ii<res.length; ii++) {
 
-    var prim_hue = cur_hue;
-    var prim_sat = _rnd(0.4, 0.6);
-    var prim_val = _rnd(0.675, 0.95);
+    let prim_hue = cur_hue;
+    let prim_sat = _rnd(0.4, 0.6);
+    let prim_val = _rnd(0.675, 0.95);
 
     res[ii][0].hsv = [ prim_hue, prim_sat, prim_val ];
 
@@ -20133,15 +20143,15 @@ function rand_color_n(n) {
     // Choosing a random hue gives it a little variation but
     // otherwise is probably not that important.
     //
-    var _del_hue = 0.2;
-    var seco_hue = _mod1( prim_hue + _crnd([-1,1])*_rnd(_del_hue/2, 1.0 - _del_hue/2) );
-    var seco_sat = _clamp( prim_sat + _crnd([-1,1])*_rnd(0.2, 0.3), 0.3, 0.6 );
+    let _del_hue = 0.2;
+    let seco_hue = _mod1( prim_hue + _crnd([-1,1])*_rnd(_del_hue/2, 1.0 - _del_hue/2) );
+    let seco_sat = _clamp( prim_sat + _crnd([-1,1])*_rnd(0.2, 0.3), 0.3, 0.6 );
     seco_val = _rnd(0.1,0.325);
 
     res[ii][1].hsv = [ seco_hue, seco_sat, seco_val ];
 
-    var prim_rgb = HSVtoRGB(prim_hue,  prim_sat, prim_val);
-    var seco_rgb = HSVtoRGB(seco_hue,  seco_sat, seco_val);
+    let prim_rgb = HSVtoRGB(prim_hue,  prim_sat, prim_val);
+    let seco_rgb = HSVtoRGB(seco_hue,  seco_sat, seco_val);
 
     res[ii][0].hex = _rgb2hex(prim_rgb.r, prim_rgb.g, prim_rgb.b);
     res[ii][1].hex = _rgb2hex(seco_rgb.r, seco_rgb.g, seco_rgb.b);
@@ -20158,14 +20168,14 @@ function rand_color_n(n) {
 
 function mystic_symbolic_dsl2sched_ring(_s, data) {
   if (typeof _s === "undefined") { return {}; }
-  var s = _s.replace(/ /g, '');
+  let s = _s.replace(/ /g, '');
   if ((s.length) == 0) { return {}; }
 
-  var ret = { "tok":"", "obj":[], "del_idx":0, "state":"" };
+  let ret = { "tok":"", "obj":[], "del_idx":0, "state":"" };
   if (s[0] != '[') { return {}; }
-  var cur_idx = 1;
+  let cur_idx = 1;
   while (cur_idx < s.length) {
-    var r = mystic_symbolic_dsl2sched(s.slice(cur_idx), data);
+    let r = mystic_symbolic_dsl2sched(s.slice(cur_idx), data);
     if ("error" in r) { return r; }
 
     cur_idx += r.del_idx;
@@ -20191,42 +20201,42 @@ function mystic_symbolic_dsl2sched_ring(_s, data) {
 
 function mystic_symbolic_dsl2sched_rnd(_s, data) {
   if (typeof _s === "undefined") { return {}; }
-  var s = _s.replace(/ /g, '');
+  let s = _s.replace(/ /g, '');
   if ((s.length) == 0) { return {}; }
 
-  var state = "init";
+  let state = "init";
 
-  var ret = { "tok":"", "obj":[], "del_idx":0, "state":"" };
+  let ret = { "tok":"", "obj":[], "del_idx":0, "state":"" };
   if (s[0] != '{') { return {}; }
-  var end_idx = s.search('}');
+  let end_idx = s.search('}');
   if (end_idx < 0) {
     return { "error":"could not find end token '}'"};
   }
 
-  var neg_lookup = {}, pos_lookup = {};
+  let neg_lookup = {}, pos_lookup = {};
 
-  var rlist = s.slice(1, end_idx).split(",");
-  for (var ii=0; ii<rlist.length; ii++) {
+  let rlist = s.slice(1, end_idx).split(",");
+  for (let ii=0; ii<rlist.length; ii++) {
     if (rlist[ii].length==0) { continue; }
     if (rlist[ii] == '*') {
-      for (var symbol_name in data.symbol) {
+      for (let symbol_name in data.symbol) {
         pos_lookup[symbol_name] = ii;
       }
     }
     else if (rlist[ii][0] == '-') {
-      var _name = rlist[ii].slice(1);
+      let _name = rlist[ii].slice(1);
       if (!(_name in data.symbol)) { return {"error": "could not find " + _name }; }
       neg_lookup[_name] = ii;
     }
     else {
-      var _name = rlist[ii];
+      let _name = rlist[ii];
       if (!(_name in data.symbol)) { return {"error": "could not find " + _name }; }
       pos_lookup[_name] = ii;
     }
   }
 
-  var choice_a = [];
-  for (var key in pos_lookup) {
+  let choice_a = [];
+  for (let key in pos_lookup) {
     if (key in neg_lookup) { continue; }
     choice_a.push(key);
   }
@@ -20240,15 +20250,15 @@ function mystic_symbolic_dsl2sched_rnd(_s, data) {
 function mystic_symbolic_dsl2sched(_s, data) {
   if (typeof _s === "undefined") { return {}; }
 
-  var s = _s.replace(/ /g, '');
+  let s = _s.replace(/ /g, '');
 
-  var sched = { "base": "" };
-  var base_str = "";
-  var cur_tok = "";
+  let sched = { "base": "" };
+  let base_str = "";
+  let cur_tok = "";
 
-  var state = "base";
+  let state = "base";
 
-  var tok_kw = {
+  let tok_kw = {
     "@" : "nesting",
     "^" : "crown",
     "!" : "horn",
@@ -20265,7 +20275,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
     ")" : "#sub#end"
   };
 
-  var tok_kw_skip = {
+  let tok_kw_skip = {
     //":" : "#list#null",
     "," : "#list#sep",
     "[" : "#list#beg",
@@ -20275,7 +20285,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
     //")" : "#sub#end"
   }
 
-  var state_skip = {
+  let state_skip = {
     "#list#null" : 1,
     "#list#sep" : 1,
     "#list#beg" : 1,
@@ -20284,10 +20294,10 @@ function mystic_symbolic_dsl2sched(_s, data) {
     //"#sub#end" : 1
   }
 
-  var cur_idx = 0;
-  var cur_obj = {};
-  var cur_val_type = "";
-  var cur_tok = "";
+  let cur_idx = 0;
+  let cur_obj = {};
+  let cur_val_type = "";
+  cur_tok = "";
   while (cur_idx < s.length) {
 
     if (s[cur_idx] in tok_kw) {
@@ -20296,7 +20306,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
       // and add it the appropriate current state structure
       // element.
       //
-      var new_state = tok_kw[s[cur_idx]];
+      let new_state = tok_kw[s[cur_idx]];
 
       // proces previous state
       //
@@ -20327,7 +20337,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
       else { }
 
       if (new_state == "#list#beg") {
-        var ret = mystic_symbolic_dsl2sched_ring(s.slice(cur_idx), data);
+        let ret = mystic_symbolic_dsl2sched_ring(s.slice(cur_idx), data);
         if ("error" in ret) { return ret; }
 
         cur_obj = ret.obj;
@@ -20341,7 +20351,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
       }
 
       else if (new_state == "#rnd#beg") {
-        var ret = mystic_symbolic_dsl2sched_rnd(s.slice(cur_idx), data);
+        let ret = mystic_symbolic_dsl2sched_rnd(s.slice(cur_idx), data);
         if ("error" in ret) { return ret; }
 
         cur_tok = ret.tok;
@@ -20362,7 +20372,7 @@ function mystic_symbolic_dsl2sched(_s, data) {
       else if (new_state == "#sub#beg") {
 
         cur_idx++;
-        var ret = mystic_symbolic_dsl2sched(s.slice(cur_idx), data);
+        let ret = mystic_symbolic_dsl2sched(s.slice(cur_idx), data);
         if ("error" in ret) { return ret; }
 
         cur_tok = ret.tok;
@@ -20447,17 +20457,17 @@ function mystic_symbolic_dsl2sched(_s, data) {
 function sched2sentence(sched, is_root) {
   is_root = ((typeof is_root === "undefined") ? true : is_root);
 
-  var sentence = (sched.base.match(/^[aeiouAEIOU]/) ? "an " : "a ");
+  let sentence = (sched.base.match(/^[aeiouAEIOU]/) ? "an " : "a ");
   sentence += sched.base;
 
-  var attach_order = ["nesting", "crown", "horn", "arm", "leg", "tail"];
-  var count=0;
+  let attach_order = ["nesting", "crown", "horn", "arm", "leg", "tail"];
+  let count=0;
 
-  var attach_count=0;
-  for (var akey in sched.attach) { attach_count++; }
+  let attach_count=0;
+  for (let akey in sched.attach) { attach_count++; }
 
-  for (var ii=0; ii<attach_order.length; ii++) {
-    var attach_id = attach_order[ii];
+  for (let ii=0; ii<attach_order.length; ii++) {
+    let attach_id = attach_order[ii];
     if (!(attach_id in sched.attach)) { continue; }
 
     if (count>0) {
@@ -20469,7 +20479,7 @@ function sched2sentence(sched, is_root) {
     }
 
     if (typeof sched.attach[attach_id][0] === "string") {
-      var ele = sched.attach[attach_id][0]; 
+      let ele = sched.attach[attach_id][0];
 
       sentence += (ele.match(/^[aeiouAEIOU]/) ? " an" : " a");
       sentence += " " + ele;
@@ -20492,7 +20502,7 @@ function sched2sentence(sched, is_root) {
   return sentence;
 }
 
-var tarot = {
+let tarot = {
   "major": ["fool", "magician", "priestess", "empress", "emperor", "hierophant",
             // lovers                                                           justice
             "woman_stand man_stand", "chariot", "strength", "hermit", "wheel", "?",
@@ -20506,12 +20516,12 @@ var tarot = {
 
 function repr_realized(realized, lvl) {
   lvl = ((typeof lvl === "undefined") ? 0 : lvl);
-  var _ret = "";
-  var limbs = {"crown":'^', "horn":'!', "arm":'~', "leg":'|', "tail":'.', "nesting":'@'};
+  let _ret = "";
+  let limbs = {"crown":'^', "horn":'!', "arm":'~', "leg":'|', "tail":'.', "nesting":'@'};
 
-  var is_sub = false;
+  let is_sub = false;
   if ("attach" in realized) {
-    for (var limb in limbs) {
+    for (let limb in limbs) {
       if ((lvl>0) && (limb in realized.attach)) {
         is_sub = true;
       }
@@ -20522,7 +20532,7 @@ function repr_realized(realized, lvl) {
     if (is_sub) { _ret += "("; };
     _ret += realized.base;
     if ("attach" in realized) {
-      for (var limb in limbs) {
+      for (let limb in limbs) {
         if (limb in realized.attach) {
           _ret += limbs[limb];
           _ret += repr_realized(realized.attach[limb][0], lvl+1);
@@ -20536,20 +20546,20 @@ function repr_realized(realized, lvl) {
 }
 
 //---------------------------
-//                   _       
-//   _ __ ___   __ _(_)_ __  
-//  | '_ ` _ \ / _` | | '_ \ 
+//
+//   _ __ ___   __ _(_)_ __
+//  | '_ ` _ \ / _` | | '_ \
 //  | | | | | | (_| | | | | |
 //  |_| |_| |_|\__,_|_|_| |_|
-//                           
+//
 //---------------------------
 
 function create_ctx(_fn) {
-  var _ctx = {};
+  let _ctx = {};
   _ctx["create_svg_header"] = true;
   _ctx["create_background_rect"] = true;
   _ctx["cur_depth"] = 0;
-  _ctx["max_depth"] = 2; 
+  _ctx["max_depth"] = 2;
   _ctx["max_nest_depth"] = 3;
   _ctx["scale"] = 0.5;
   _ctx["global_scale"] = 1.0;
@@ -20588,10 +20598,10 @@ function _remap_fill_id_collect(_dat, id_remap) {
   if (!_dat) { return; }
   if (typeof _dat === "string") { return; }
 
-  for (var key in _dat) {
+  for (let key in _dat) {
     if (key === "fill") {
       if (_dat[key].slice(0,5) === "url(#") {
-        var old_id = _dat[key].slice(5,-1);
+        let old_id = _dat[key].slice(5,-1);
         if (!(old_id in id_remap)) {
           id_remap[old_id] = rstr(32);
         }
@@ -20607,16 +20617,16 @@ function _remap_fill_id_overwrite(_dat, id_remap) {
   if (!_dat) { return; }
   if (typeof _dat === "string") { return; }
 
-  for (var key in _dat) {
+  for (let key in _dat) {
     if (key === "id") {
-      var old_id = _dat[key];
+      let old_id = _dat[key];
       if (old_id in id_remap) {
         _dat[key] = id_remap[old_id];
       }
     }
     else if ((key === "fill")  &&
              (_dat[key].slice(0,5) === "url(#")) {
-      var old_id = _dat[key].slice(5,-1);
+      let old_id = _dat[key].slice(5,-1);
       _dat[key] = "url(#" + id_remap[old_id] + ")";
     }
 
@@ -20627,7 +20637,7 @@ function _remap_fill_id_overwrite(_dat, id_remap) {
 }
 
 function remap_fill_id(_dat) {
-  var id_remap = {};
+  let id_remap = {};
   _remap_fill_id_collect(_dat, id_remap);
   _remap_fill_id_overwrite(_dat, id_remap);
 }
@@ -20637,7 +20647,7 @@ remap_fill_id(bg_data);
 
 //----
 
-var bg_ctx = _preprocess_svgjson(bg_data, bg_color, bg_color, !sibyl_opt.use_gradient, sibyl_opt.exclude);
+let bg_ctx = _preprocess_svgjson(bg_data, bg_color, bg_color, !sibyl_opt.use_gradient, sibyl_opt.exclude);
 bg_ctx["create_svg_header"] = false;
 bg_ctx["create_background_rect"] = true;
 bg_ctx["cur_depth"] = 0;
@@ -20656,7 +20666,7 @@ bg_ctx["line_width"] = sibyl_opt.line_width;
 
 bg_ctx["custom_prop"] = { "stroke-width" : bg_ctx["line_width"] };
 
-var fg_ctx = _preprocess_svgjson(adata, primary_color, secondary_color, !sibyl_opt.use_gradient, sibyl_opt.exclude);
+let fg_ctx = _preprocess_svgjson(adata, primary_color, secondary_color, !sibyl_opt.use_gradient, sibyl_opt.exclude);
 fg_ctx["create_svg_header"] = true;
 fg_ctx["create_background_rect"] = true;
 fg_ctx["cur_depth"] = 0;
@@ -20677,9 +20687,9 @@ fg_ctx["line_width"] = sibyl_opt.line_width;
 
 fg_ctx["custom_prop"] = { "stroke-width" : fg_ctx["line_width"] };
 
-var base_symbol = fg_ctx.symbol["eye_up"];
+let base_symbol = fg_ctx.symbol["eye_up"];
 
-var sched = {
+let sched = {
   "base" : "globe",
   "attach" : {
     "nest" : "eye_up",
@@ -20691,7 +20701,7 @@ var sched = {
 };
 
 
-var repri=
+let repri=
 "           " +
 "  !^!      " +
 " ~(@)~ []  " +
@@ -20701,14 +20711,14 @@ var repri=
 
 function sibyl_cmd() {
 
-  var out_str = "";
+  let out_str = "";
 
   svg_xmljson.svg.width = sibyl_opt.svg_width;
   svg_xmljson.svg.height = sibyl_opt.svg_height;
 
   if (sibyl_opt.cmd == "random") {
 
-    var bg_svg = "";
+    let bg_svg = "";
     if (sibyl_opt.use_background_image) {
 
       fg_ctx.create_svg_header = false;
@@ -20720,34 +20730,34 @@ function sibyl_cmd() {
 
         bg_ctx.create_background_rect = false;
 
-        var bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
-        var bg_svg_single = mystic_symbolic_sched(bg_ctx, bg_sched , bg_color, bg_color2, bg_color);
+        let bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
+        let bg_svg_single = mystic_symbolic_sched(bg_ctx, bg_sched , bg_color, bg_color2, bg_color);
 
-        var _n = Math.floor(2.0 / sibyl_opt.background_scale_x);
+        let _n = Math.floor(2.0 / sibyl_opt.background_scale_x);
 
-        var _w2 = bg_ctx.svg_width/2.0;
-        var _h2 = bg_ctx.svg_height/2.0;
+        let _w2 = bg_ctx.svg_width/2.0;
+        let _h2 = bg_ctx.svg_height/2.0;
 
-        var _bg_scale_x = sibyl_opt.background_scale_x;
-        var _bg_scale_y = sibyl_opt.background_scale_y;
+        let _bg_scale_x = sibyl_opt.background_scale_x;
+        let _bg_scale_y = sibyl_opt.background_scale_y;
 
-        var dx = _bg_scale_x*bg_ctx.svg_width;
-        var dy = _bg_scale_y*bg_ctx.svg_height;
+        let dx = _bg_scale_x*bg_ctx.svg_width;
+        let dy = _bg_scale_y*bg_ctx.svg_height;
 
-        var offset_x = sibyl_opt.background_dx;
-        var offset_y = sibyl_opt.background_dy;
+        let offset_x = sibyl_opt.background_dx;
+        let offset_y = sibyl_opt.background_dy;
 
-        var w = bg_ctx.svg_width;
-        var h = bg_ctx.svg_height;
+        let w = bg_ctx.svg_width;
+        let h = bg_ctx.svg_height;
         _bg = bg_color;
         bg_svg += "<rect x=\"-" + w.toString() + "\" y=\"-" + h.toString() + "\" ";
         bg_svg += "width=\"" + (3*w).toString() + "\" height=\"" + (3*h).toString() + "\" fill=\"" + _bg + "\" data-is-background=\"true\">\n</rect>\n";
 
-        for (var x_idx=0; x_idx <= _n; x_idx++) {
-          for (var y_idx=0; y_idx <= _n; y_idx++) {
+        for (let x_idx=0; x_idx <= _n; x_idx++) {
+          for (let y_idx=0; y_idx <= _n; y_idx++) {
 
-            var _x = Math.floor( x_idx - (_n/2) )*dx + offset_x;
-            var _y = Math.floor( y_idx - (_n/2) )*dy + offset_y;
+            let _x = Math.floor( x_idx - (_n/2) )*dx + offset_x;
+            let _y = Math.floor( y_idx - (_n/2) )*dy + offset_y;
 
             if ((y_idx%2)==1) { _x += dx/2; }
 
@@ -20764,10 +20774,10 @@ function sibyl_cmd() {
 
       }
       else {
-        var bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
+        let bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
 
-        var _x = sibyl_opt.background_dx;
-        var _y = sibyl_opt.background_dy;
+        let _x = sibyl_opt.background_dx;
+        let _y = sibyl_opt.background_dy;
 
         bg_svg += "<g transform=\"";
         bg_svg += " translate(" + (-_x).toString() + " " + (-_y).toString() + ")";
@@ -20781,7 +20791,7 @@ function sibyl_cmd() {
 
     }
 
-    var creature_svg = mystic_symbolic_random(fg_ctx, undefined, primary_color, secondary_color, bg_color);
+    let creature_svg = mystic_symbolic_random(fg_ctx, undefined, primary_color, secondary_color, bg_color);
 
     if (sibyl_opt.output_sched) {
       out_str += JSON.stringify(fg_ctx.realized_child, undefined, 2);
@@ -20791,7 +20801,7 @@ function sibyl_cmd() {
 
       if (sibyl_opt.use_background_image) {
 
-        var _custom_svg_header = make_svg_header(svg_xmljson);
+        let _custom_svg_header = make_svg_header(svg_xmljson);
         out_str += _custom_svg_header;
 
         out_str += bg_svg;
@@ -20812,9 +20822,9 @@ function sibyl_cmd() {
 
   else {
 
-    var svg_extra_header = "";
+    let svg_extra_header = "";
 
-    var bg_svg = "";
+    let bg_svg = "";
     if (sibyl_opt.use_background_image) {
 
       fg_ctx.create_svg_header = false;
@@ -20827,39 +20837,39 @@ function sibyl_cmd() {
 
         bg_ctx.svg_id = "__background_creature_" + SEED;
 
-        var bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
-        var bg_svg_single = mystic_symbolic_sched(bg_ctx, bg_sched , bg_color, bg_color2, bg_color);
+        let bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
+        let bg_svg_single = mystic_symbolic_sched(bg_ctx, bg_sched , bg_color, bg_color2, bg_color);
 
-        var _n = Math.floor(4.0 / sibyl_opt.background_scale_x);
+        let _n = Math.floor(4.0 / sibyl_opt.background_scale_x);
 
-        var _w2 = bg_ctx.svg_width/2.0;
-        var _h2 = bg_ctx.svg_height/2.0;
+        let _w2 = bg_ctx.svg_width/2.0;
+        let _h2 = bg_ctx.svg_height/2.0;
 
-        var _bg_scale_x = sibyl_opt.background_scale_x;
-        var _bg_scale_y = sibyl_opt.background_scale_y;
+        let _bg_scale_x = sibyl_opt.background_scale_x;
+        let _bg_scale_y = sibyl_opt.background_scale_y;
 
-        var dx = _bg_scale_x*bg_ctx.svg_width;
-        var dy = _bg_scale_y*bg_ctx.svg_height;
+        let dx = _bg_scale_x*bg_ctx.svg_width;
+        let dy = _bg_scale_y*bg_ctx.svg_height;
 
-        var offset_x = sibyl_opt.background_dx;
-        var offset_y = sibyl_opt.background_dy;
+        let offset_x = sibyl_opt.background_dx;
+        let offset_y = sibyl_opt.background_dy;
 
-        var w = bg_ctx.svg_width;
-        var h = bg_ctx.svg_height;
+        let w = bg_ctx.svg_width;
+        let h = bg_ctx.svg_height;
         _bg = bg_color;
 
         svg_extra_header += "<rect x=\"-" + w.toString() + "\" y=\"-" + h.toString() + "\" ";
         svg_extra_header += "width=\"" + (3*w).toString() + "\" height=\"" + (3*h).toString() + "\" fill=\"" + _bg + "\" data-is-background=\"true\">\n</rect>\n";
 
-        var first_bg = true;
-        var bg_id = "__bg_single_" + _srnd();
+        let first_bg = true;
+        let bg_id = "__bg_single_" + _srnd();
         bg_svg_single = '<g id="' + bg_id + '">\n' + bg_svg_single + '\n</g>';
 
-        for (var x_idx=0; x_idx <= _n; x_idx++) {
-          for (var y_idx=0; y_idx <= _n; y_idx++) {
+        for (let x_idx=0; x_idx <= _n; x_idx++) {
+          for (let y_idx=0; y_idx <= _n; y_idx++) {
 
-            var _x = Math.floor( x_idx - (_n/2) )*dx + offset_x;
-            var _y = Math.floor( y_idx - (_n/2) )*dy + offset_y;
+            let _x = Math.floor( x_idx - (_n/2) )*dx + offset_x;
+            let _y = Math.floor( y_idx - (_n/2) )*dy + offset_y;
 
             if ((y_idx%2)==1) { _x += dx/2; }
 
@@ -20886,21 +20896,21 @@ function sibyl_cmd() {
         bg_ctx.create_background_rect = true;
         bg_ctx.svg_id = "__background_creature_" + SEED;
 
-        var _x = sibyl_opt.background_dx;
-        var _y = sibyl_opt.background_dy;
+        let _x = sibyl_opt.background_dx;
+        let _y = sibyl_opt.background_dy;
 
         bg_svg += "<g transform=\"";
         bg_svg += " translate(" + (-_x).toString() + " " + (-_y).toString() + ")";
         bg_svg += "\">";
 
-        var bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
+        let bg_sched  = mystic_symbolic_dsl2sched( sibyl_opt.background_image, bg_ctx );
         bg_svg += mystic_symbolic_sched(bg_ctx, bg_sched , bg_color, bg_color2, bg_color);
 
         bg_svg += "</g>";
       }
     }
 
-    var sched = {};
+    let sched = {};
 
     if (sibyl_opt.use_custom_sched) {
       sched = sibyl_opt.custom_sched;
@@ -20919,14 +20929,14 @@ function sibyl_cmd() {
 
       fg_ctx.svg_id = "creature_" + SEED;
 
-      var creature_svg = mystic_symbolic_sched(fg_ctx, sched , primary_color, secondary_color, bg_color);
+      let creature_svg = mystic_symbolic_sched(fg_ctx, sched , primary_color, secondary_color, bg_color);
 
       if (sibyl_opt.use_background_image) {
-        var _custom_svg_header = make_svg_header(svg_xmljson);
+        let _custom_svg_header = make_svg_header(svg_xmljson);
         out_str += _custom_svg_header;
 
         if (sibyl_opt.use_mask) {
-          var svg_mask_start = '<defs>\n' +
+          let svg_mask_start = '<defs>\n' +
             '<mask id="mask0" x="0" y="0" width="432" height="720" >\n' +
             '<rect rx="23" x="0" y="0" width="432" height="720" style="stroke:none; fill: #ffffff"/>\n' +
             '</mask>\n' +
@@ -20955,7 +20965,7 @@ function sibyl_cmd() {
 
 
       if (sibyl_opt.use_mask) {
-        var svg_mask_end = '</g>\n';
+        let svg_mask_end = '</g>\n';
         out_str += svg_mask_end;
       }
 
@@ -21035,7 +21045,7 @@ else {
 }
 
 
-}).call(this,require('_process'))
+}).call(this)}).call(this,require('_process'))
 },{"./alea.js":1,"./mystic_symbolic_vocabulary.js":2,"./tarot_interpretations.js":6,"./tarot_vocabulary.js":7,"_process":14,"fs":8,"lodash":3,"posix-getopt":4}],6:[function(require,module,exports){
 var description = "Tarot card interpretations, from Mark McElroy's _A Guide to Tarot Meanings_ (http://www.madebymark.com/a-guide-to-tarot-card-meanings/)";
 var tarot_interpretations = 
@@ -23697,7 +23707,7 @@ module.exports = { "vocabulary":vocabulary };
 },{}],8:[function(require,module,exports){
 
 },{}],9:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 'use strict';
 
 var objectAssign = require('object-assign');
@@ -24205,7 +24215,7 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"object-assign":13,"util/":12}],10:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
@@ -24239,7 +24249,7 @@ module.exports = function isBuffer(arg) {
     && typeof arg.readUInt8 === 'function';
 }
 },{}],12:[function(require,module,exports){
-(function (process,global){
+(function (process,global){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -24827,7 +24837,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":11,"_process":14,"inherits":10}],13:[function(require,module,exports){
 /*
 object-assign
