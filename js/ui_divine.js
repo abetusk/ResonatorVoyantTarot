@@ -117,7 +117,8 @@ var g_ui = {
     //"ui_card8" : [-220,-120],
     "ui_card8" : [-220,-150],
     "ui_card9" : [-220,-20]
-  }
+  },
+  "ready": false
 };
 
 var g_data = {
@@ -1586,6 +1587,8 @@ function caption_update(ui_id, txt, cap_name, dxy) {
   dxy = ((typeof dxy === "undefined") ? [-220, 120] : dxy);
   //let _m = (g_ui.mobile_view?"_m":"");
 
+  if (!g_ui.ready) { console.log("not ready! (", cap_name, ")"); return; }
+
   let caption = document.getElementById(cap_name)
   let captxt = document.getElementById(cap_name + "_text");
   captxt.innerHTML = txt;
@@ -1743,6 +1746,8 @@ function ui_modal_text_keypress(e) {
 }
 
 $(document).ready(function() {
+
+  g_ui.ready = true;
 
   // Initially hide the 10 divination cards so we don't
   // get a jerky update as the canvases start to render
