@@ -1630,8 +1630,10 @@ function init_svg_text() {
     '  y="28"' +
     ' text-anchor="middle"' +
     '  style="fill:rgb(50,50,50);font-style:normal;font-variant:normal;font-weight:bold;' +
+
       //'font-stretch:normal;font-size:33px;font-family:\'Caviar Dreams\';' +
       'font-stretch:normal;font-size:15px;font-family:\'Caviar Dreams\';' +
+
       '-inkscape-font-specification:\'Caviar Dreams, Bold\';' +
       'font-variant-ligatures:normal;font-variant-caps:' +
       'normal;font-variant-numeric:normal;font-feature-settings:' +
@@ -1645,7 +1647,9 @@ function init_svg_text() {
     //'<rect rx="23" x="41" y="608" width="351" height="46" fill="#efefef" > ' +
     //'<rect rx="10" x="18" y="267" width="154" height="20" fill="#efefef" > ' +
     //'<rect rx="10" x="12" y="267" width="166" height="20" fill="#efefef" > ' +
-    '<rect rx="10" x="5" y="267" width="182" height="20" fill="#efefef" > ' +
+    //'<rect rx="10" x="5" y="267" width="182" height="20" fill="#efefef" > ' +
+    '<rect rx="10" x="15" y="272" width="163" height="13" fill="#efefef" > ' +
+
     '</rect>' +
     '<text x="0" y="0" id="_text_name">' +
     '<tspan' +
@@ -1656,8 +1660,11 @@ function init_svg_text() {
     //'  y="644"' +
     '  y="283"' +
     '  style="fill:rgb(50,50,50);font-style:normal;font-variant:normal;' +
+
       //'font-weight:bold;font-stretch:normal;font-size:33px;' +
-      'font-weight:bold;font-stretch:normal;font-size:15px;' +
+      //'font-weight:bold;font-stretch:normal;font-size:15px;' +
+      'font-weight:bold;font-stretch:normal;font-size:11px;' +
+
       'font-family:\'Caviar Dreams\';-inkscape-font-specification:\'Caviar Dreams, Bold\';'+
       'font-variant-ligatures:normal;font-variant-caps:normal;' +
       'font-variant-numeric:normal;font-feature-settings:normal;' +
